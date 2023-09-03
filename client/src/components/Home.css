@@ -1,0 +1,66 @@
+/* Home.css */
+/* Home.css */
+.home-container {
+    background-color: #f5f5f5;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+body {
+    margin: 0;
+    background-image: url('../images/atm5.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+
+.home-container .section-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.transaction-count {
+    font-size: 18px;
+    font-weight: bold;
+    /* You can choose your desired color */
+    margin-top: 10px;
+}
+
+.balance-text {
+    margin-top: 10px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-control {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.btn {
+    min-width: 120px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .input-group {
+        flex-direction: column;
+    }
+
+    .form-control {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        min-width: 100%;
+    }
+}
