@@ -50,3 +50,39 @@ To get started with Parental Control, follow these installation steps:
 
    ```bash
    git clone https://github.com/HiteshMittal07/parental-control.git
+
+## Usage
+
+To use the Parental Control system, follow these steps:
+
+1. **Access the Parental Control Web Application**:
+   Open a web browser and navigate to the provided URL, which is typically `http://localhost:3000`.
+
+2. **Sign In as a Parent or Guardian**:
+   - Sign in using your parent or guardian account credentials.
+   - If you don't have an account, you may need to register or create one through the application.
+
+3. **Set Up Permissions for Your Child's Account**:
+   - After logging in, you should have access to a dashboard or settings page where you can set up permissions for your child's account.
+   - Define the rules and conditions under which your child can request payments.
+
+4. **Child Requests Payments**:
+   - Your child can use the application to request payments for various purposes.
+   - The system will ensure that these payment requests require parental approval before processing.
+
+5. **Parental Approval**:
+   - As a parent or guardian, you will receive notifications or alerts when your child requests a payment.
+   - Review the payment requests and decide whether to approve or reject them through the application's interface.
+
+6. **Payment Execution**:
+   - Once you, as a parent, approve a payment request, the system will execute the payment.
+   - The approved amount will be transferred to the child's account, and the transaction will be securely processed on the Ethereum blockchain.
+
+7. **Transaction Record**:
+   - All approved payments will be recorded and stored on the Ethereum blockchain, ensuring transparency and a secure transaction history.
+
+This process helps parents or guardians oversee and control their child's financial activities, ensuring responsible spending and financial management.
+
+Enjoy using the Parental Control system to enhance your family's financial management and security!
+
+---
