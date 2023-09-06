@@ -46,7 +46,7 @@ To get started with Parental Control, follow these installation steps:
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/parental-control.git
+   git clone https://github.com/HiteshMittal07/parental-control.git
 
 ## Usage
 
