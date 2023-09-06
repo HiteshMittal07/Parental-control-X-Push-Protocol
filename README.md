@@ -1,6 +1,6 @@
 # Parental Control
 
-![Parental Control Logo](logo.png)
+![Parental Control Logo](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTskbSkcMG2EwM-8kGuNcm2_RV-g8TxE_DZIe8zFrw&s)
 
 ## Table of Contents
 
