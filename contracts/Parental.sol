@@ -90,14 +90,7 @@ contract Parental{
         emit ExecuteTrans(msg.sender, _txIndex);
     }
 
-   function removeTx(uint256 index)public onlyOwner txExist(index) notExecuted(index) {
-        require(index<transactions.length,"tx dont exist");
-
-        for (uint i = index; i<transactions.length-1; i++){
-            transactions[i] = transactions[i+1];
-        }
-        transactions.pop();
-    }
+   
 
     function getowners() public view returns(address[] memory){
         return owners;
