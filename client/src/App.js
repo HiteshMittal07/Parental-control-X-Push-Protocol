@@ -13,9 +13,10 @@ function App() {
     contract: null,
     contractRead: null,
   });
+  const [login, setLogin] = useState(false);
   const [account, setAccount] = useState("not connected");
   const connectWallet = async () => {
-    const contractAddress = "0x792A9Fd227C690f02beB23678a52BF766849DFc0";
+    const contractAddress = "0xf4c8CDFFa21c2064A0740054965d00Ee9395d6B4";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -38,6 +39,10 @@ function App() {
         contractABI,
         provider
       );
+      contractRead.on("login", (status) => {
+        setLogin(true);
+        alert("Login successfull");
+      });
       setState({ provider, signer, contract, contractRead });
     } catch (error) {
       alert(error);

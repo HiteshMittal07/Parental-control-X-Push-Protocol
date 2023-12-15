@@ -11,6 +11,7 @@ export const Signup = (props) => {
       if (Setpass === Repass) {
         const tx = await contract.SignUp(address, Setpass.toString());
         await tx.wait();
+        console.log(tx);
       } else {
         alert("Password Mismatch");
       }
