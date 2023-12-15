@@ -41,7 +41,13 @@ function App() {
       );
       contractRead.on("login", (status) => {
         setLogin(true);
-        alert("Login successfull");
+        console.log("hi");
+        alert("Login Successful");
+      });
+      contractRead.on("Signup", (status) => {
+        setLogin(true);
+        console.log("hello");
+        alert("Login Successful");
       });
       setState({ provider, signer, contract, contractRead });
     } catch (error) {
@@ -49,12 +55,17 @@ function App() {
     }
   };
 
+  const handleLogout = () => {
+    setLogin(false); // Update login state to false
+  };
   return (
     <div className="App">
-      <Header connectWallet={connectWallet} />
-      {/* <Router {...state} />
-       */}
-      <Authenication {...state} />
+      <Header
+        connectWallet={connectWallet}
+        login={login}
+        handleLogout={handleLogout}
+      />
+      {login ? <Router {...state} /> : <Authenication {...state} />}
     </div>
   );
 }

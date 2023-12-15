@@ -37,6 +37,18 @@ const Header = (props) => {
                 Connect wallet
               </button>
             </li>
+            {props.login ? (
+              <li className="nav-item">
+                <button
+                  className="btn btn-light ms-2"
+                  onClick={props.handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
       </div>
