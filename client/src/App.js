@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Router from "./routes/Router";
 import abi from "./contractJson/Parental.json";
 import "./App.css";
+import { Authenication } from "./components/Authenication";
 function App() {
   const [state, setState] = useState({
     provider: null,
@@ -14,7 +15,7 @@ function App() {
   });
   const [account, setAccount] = useState("not connected");
   const connectWallet = async () => {
-    const contractAddress = "0xd83D72db394Bd5A56461Aa86EcF116E7b4BDAe19";
+    const contractAddress = "0x792A9Fd227C690f02beB23678a52BF766849DFc0";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -46,7 +47,9 @@ function App() {
   return (
     <div className="App">
       <Header connectWallet={connectWallet} />
-      <Router {...state} />
+      {/* <Router {...state} />
+       */}
+      <Authenication {...state} />
     </div>
   );
 }

@@ -8,12 +8,16 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY;
 module.exports = {
   solidity: "0.8.6",
   networks: {
-    sepolia:{
+    sepolia: {
       url: GOERLI_URL,
       accounts: [PRIVATE_KEY],
     },
-    hardhat:{
-      chainId:31337,
-    }
+    hardhat: {
+      chainId: 31337,
+    },
+    zkEVM: {
+      url: "https://rpc.public.zkevm-test.net",
+      accounts: [PRIVATE_KEY],
+    },
   },
 };

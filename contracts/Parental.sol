@@ -78,8 +78,7 @@ contract Parental{
     //     }
     //     votes=_votes;
     // }
-    function SignUp(address a,string memory SetPassword,string memory ConfirmPassword) public userExist(a) {
-        require( keccak256(abi.encodePacked(SetPassword)) == keccak256(abi.encodePacked(ConfirmPassword)),"password mismatch");
+    function SignUp(address a,string memory SetPassword) public userExist(a) {
         users[a]=true;
         data[a]=SetPassword;
         emit Signup(true);
