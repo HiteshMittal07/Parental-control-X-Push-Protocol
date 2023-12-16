@@ -41,7 +41,7 @@ export default function Login(props) {
           {passwordVisible ? "Hide" : "Show"}
         </button>
       </div>
-      <button className="btn btn-light" onClick={login}>
+      <button className="btn btn-dark" onClick={login}>
         Login
       </button>
     </div>

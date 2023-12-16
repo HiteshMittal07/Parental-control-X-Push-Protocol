@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const Header = (props) => {
+  const { contract } = props;
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark">
       <div className="container">
@@ -29,14 +30,25 @@ const Header = (props) => {
                 Owners
               </Link>
             </li>
-            <li className="nav-item">
-              <button
-                className="btn btn-light ms-2"
-                onClick={props.connectWallet}
-              >
-                Connect wallet
-              </button>
-            </li>
+            {contract == null ? (
+              <li className="nav-item">
+                <button
+                  className="btn btn-light ms-2"
+                  onClick={props.connectWallet}
+                >
+                  Connect wallet
+                </button>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <button
+                  className="btn btn-light ms-2"
+                  onClick={props.connectWallet}
+                >
+                  Connected
+                </button>
+              </li>
+            )}
             {props.login ? (
               <li className="nav-item">
                 <button

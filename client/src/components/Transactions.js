@@ -47,45 +47,52 @@ const Transactions = (props) => {
 
   return (
     <>
-      <h5 className="text-uppercase text-light">Transactions</h5>
-      <div className="container-fluid">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Receiver</th>
-              <th>Value</th>
-              <th>Executed</th>
-              <th>Votes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction, index) => (
-              <tr key={index}>
-                <td>{transaction.to}</td>
-                <td>{parseFloat(transaction.value) / Math.pow(10, 18)} ETH</td>
-                <td>{checkStatus(transaction.executed.toString())}</td>
-                <td>{parseInt(transaction.noOfvotes)}/2</td>
-                <td>
-                  <div className="btn-group" role="group">
-                    <button
-                      className="btn btn-success btn-sm"
-                      onClick={() => handleExecute(index)}
-                    >
-                      Execute
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleCancel(index)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </td>
+      <div>
+        <h5 className="text-uppercase text-light">Transactions</h5>
+        <div className="container-fluid">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Receiver</th>
+                <th>Value</th>
+                <th>Executed</th>
+                <th>Votes</th>
+                <th>Actions</th>
+                <th>Message</th> {/* New heading */}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {transactions.map((transaction, index) => (
+                <tr key={index}>
+                  <td>{transaction.to}</td>
+                  <td>
+                    {parseFloat(transaction.value) / Math.pow(10, 18)} ETH
+                  </td>
+                  <td>{checkStatus(transaction.executed.toString())}</td>
+                  <td>{parseInt(transaction.noOfvotes)}/2</td>
+                  <td>
+                    <div className="btn-group" role="group">
+                      <button
+                        className="btn btn-success btn-sm"
+                        onClick={() => handleExecute(index)}
+                      >
+                        Execute
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleCancel(index)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </td>
+                  <td>{transaction.message.toString()}</td>{" "}
+                  {/* Placeholder for the message */}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

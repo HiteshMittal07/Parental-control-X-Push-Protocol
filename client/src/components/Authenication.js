@@ -20,7 +20,7 @@ export const Authenication = (props) => {
 
   return (
     <div>
-      <h2 className="text-light">
+      <h2 className="text-light" style={{ cursor: "pointer" }}>
         <span onClick={showLoginComponent}>Login</span>/
         <span onClick={showSignupComponent}>Signup</span>
       </h2>

@@ -37,7 +37,7 @@ export const Setowners = (props) => {
         className="form-control"
         autoComplete="off"
       />
-      <button className="btn btn-light" onClick={SetOwner}>
+      <button className="btn btn-dark" onClick={SetOwner}>
         Submit
       </button>
     </div>

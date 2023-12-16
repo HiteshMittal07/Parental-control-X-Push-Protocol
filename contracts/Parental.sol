@@ -21,6 +21,7 @@ contract Parental{
         uint value;
         bool executed;
         uint noOfvotes;
+        string message;
     }
     mapping(address=>Transaction[]) Txs;
     mapping(address=>bool) private users;
@@ -87,13 +88,14 @@ contract Parental{
         emit ConfirmTrans(msg.sender, _txIndex);
     }
 
-    function SubmitTransaction(address a,address _to,uint _value) public{
+    function SubmitTransaction(address a,address _to,uint _value,string memory msg1) public{
         uint txIndex=Txs[a].length;
         Txs[a].push(Transaction({
             to:_to,
             value:_value,
             executed:false,
-            noOfvotes:0
+            noOfvotes:0,
+            message: msg1
         })
         );
         emit SubmitTrans(msg.sender, txIndex, _to, _value);

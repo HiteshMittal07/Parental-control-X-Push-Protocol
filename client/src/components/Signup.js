@@ -61,7 +61,7 @@ export const Signup = (props) => {
           {passwordVisible ? "Hide" : "Show"}
         </button>
       </div>
-      <button className="btn btn-light" onClick={Signup}>
+      <button className="btn btn-dark" onClick={Signup}>
         Next
       </button>
     </div>

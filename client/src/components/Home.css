@@ -1,66 +1,130 @@
 /* Home.css */
 /* Home.css */
 .home-container {
-    background-color: #f5f5f5;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  background-color: #f5f5f5;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 body {
-    margin: 0;
-    background-image: url('../images/atm5.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100%;
-    width: 100%;
-    padding: 0;
+  margin: 0;
+  background-image: url("../images/atm5.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  padding: 0;
 }
 
 .home-container .section-title {
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 .transaction-count {
-    font-size: 18px;
-    font-weight: bold;
-    /* You can choose your desired color */
-    margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  /* You can choose your desired color */
+  margin-top: 10px;
 }
 
 .balance-text {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .input-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .form-control {
-    flex: 1;
-    margin-right: 10px;
+  flex: 1;
+  margin-right: 10px;
 }
 
 .btn {
-    min-width: 120px;
+  min-width: 120px;
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
-    .input-group {
-        flex-direction: column;
-    }
+  .input-group {
+    flex-direction: column;
+  }
 
-    .form-control {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
+  .form-control {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 
-    .btn {
-        min-width: 100%;
-    }
+  .btn {
+    min-width: 100%;
+  }
+}
+
+/* Styles for the Balance Checker section */
+.balance-section {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: rgba(196, 164, 162, 0.5);
+}
+
+.balance-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Styles for the Transaction Management section */
+.transaction-section {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: rgba(196, 164, 162, 0.5);
+}
+
+.transaction-section .input-group {
+  margin-bottom: 10px;
+}
+/* This CSS can be placed in your stylesheet */
+
+.balance-box {
+  position: relative;
+  background-color: rgba(196, 164, 162, 0.5);
+  padding: 20px;
+  margin-bottom: 20px;
+  height: 400px;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.balance-info {
+  margin-bottom: 20px;
+}
+
+.balance-text {
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: 80%;
+}
+
+.tagline p {
+  font-family: Arial, sans-serif;
+  font-size: 19px;
+  font-style: italic;
+  color: #333;
 }

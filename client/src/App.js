@@ -18,7 +18,7 @@ function App() {
   const [user, SetUser] = useState(null);
   const [sign, setSign] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0x7503384FA2731D34A5170ab5b12d674f74D54EDf";
+    const contractAddress = "0xFb3a95139FF9fB892d18Bbe88ccaFCd640E850B0";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -72,6 +72,7 @@ function App() {
         connectWallet={connectWallet}
         login={login}
         handleLogout={handleLogout}
+        {...state}
       />
       {login ? (
         <Router {...state} user={user} handleUser={handleUser} />
