@@ -2,6 +2,7 @@ import React from "react";
 import { Signup } from "./Signup";
 import Login from "./Login";
 import { useState } from "react";
+import { Setowners } from "./Setowners";
 export const Authenication = (props) => {
   const [showLogin, setShowLogin] = useState(true);
 
@@ -25,8 +26,15 @@ export const Authenication = (props) => {
       </h2>
       {showLogin ? (
         <Login {...props} user={props.user} handleUser={props.handleUser} />
+      ) : props.sign ? (
+        <Setowners {...props} />
       ) : (
-        <Signup {...props} user={props.user} handleUser={props.handleUser} />
+        <Signup
+          {...props}
+          user={props.user}
+          handleUser={props.handleUser}
+          handleSign={props.handleSign}
+        />
       )}
     </div>
   );

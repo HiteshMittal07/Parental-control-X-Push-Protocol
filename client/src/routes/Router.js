@@ -6,9 +6,17 @@ const Router = (props) => {
   return (
     <Routes>
       {/*<Route path="/" element={<Home/>}/>*/}
-      <Route path="/" element={<Home {...props} user={props.user} handleUser={props.handleUser} />} />
-      <Route path="/transaction" element={<Transaction {...props} />} />
-      <Route path="/owners" element={<Owners {...props} />} />
+      <Route
+        path="/"
+        element={
+          <Home {...props} user={props.user} handleUser={props.handleUser} />
+        }
+      />
+      <Route
+        path="/transaction"
+        element={<Transaction {...props} user={props.user} />}
+      />
+      <Route path="/owners" element={<Owners {...props} user={props.user} />} />
     </Routes>
   );
 };

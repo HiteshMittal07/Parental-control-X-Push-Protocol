@@ -12,6 +12,7 @@ export const Signup = (props) => {
         const tx = await contract.SignUp(address, Setpass.toString());
         await tx.wait();
         props.handleUser(address);
+        props.handleSign(true);
         console.log(tx);
       } else {
         alert("Password Mismatch");
@@ -20,6 +21,14 @@ export const Signup = (props) => {
       alert(error);
     }
   }
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [inputType, setInputType] = useState("password");
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+    setInputType(passwordVisible ? "password" : "text");
+  };
   return (
     <div className="form-box">
       <input
@@ -28,20 +37,32 @@ export const Signup = (props) => {
         placeholder="Enter the Family address"
         className="form-control"
       />
-      <input
-        type="text"
-        id="SetPass"
-        placeholder="Enter the Password"
-        className="form-control"
-      />
-      <input
-        type="text"
-        id="ReEnter"
-        placeholder="Re-Enter the Password"
-        className="form-control"
-      />
+      <div className="password-input-container">
+        <input
+          type={inputType}
+          id="SetPass"
+          placeholder="Enter the Password"
+          className="form-control"
+          autoComplete="off"
+        />
+        <button onClick={togglePasswordVisibility} className="eye-button">
+          {passwordVisible ? "Hide" : "Show"}
+        </button>
+      </div>
+      <div className="password-input-container">
+        <input
+          type={inputType}
+          id="ReEnter"
+          placeholder="Re-Enter the Password"
+          className="form-control"
+          autoComplete="off"
+        />
+        <button onClick={togglePasswordVisibility} className="eye-button">
+          {passwordVisible ? "Hide" : "Show"}
+        </button>
+      </div>
       <button className="btn btn-light" onClick={Signup}>
-        Submit
+        Next
       </button>
     </div>
   );

@@ -16,8 +16,9 @@ function App() {
   const [login, setLogin] = useState(false);
   const [account, setAccount] = useState("not connected");
   const [user, SetUser] = useState(null);
+  const [sign, setSign] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0xdD01CF5E3EAc02312F03A90a2C7519Ebf7c451d5";
+    const contractAddress = "0x7503384FA2731D34A5170ab5b12d674f74D54EDf";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -45,7 +46,7 @@ function App() {
         console.log("hi");
         alert("Login Successful");
       });
-      contractRead.on("Signup", (status) => {
+      contractRead.on("SetOwner", (status) => {
         setLogin(true);
         console.log("hello");
         alert("Login Successful");
@@ -62,6 +63,9 @@ function App() {
   const handleUser = (add) => {
     SetUser(add);
   };
+  const handleSign = () => {
+    setSign(true);
+  };
   return (
     <div className="App">
       <Header
@@ -72,7 +76,13 @@ function App() {
       {login ? (
         <Router {...state} user={user} handleUser={handleUser} />
       ) : (
-        <Authenication {...state} user={user} handleUser={handleUser} />
+        <Authenication
+          {...state}
+          user={user}
+          handleUser={handleUser}
+          sign={sign}
+          handleSign={handleSign}
+        />
       )}
     </div>
   );

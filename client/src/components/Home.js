@@ -124,7 +124,7 @@ export const Home = (props) => {
     const address = document.querySelector("#subAddress").value;
     const value = document.querySelector("#subValue").value;
     const amount = ethers.parseEther(value);
-    const tx2 = await contract.SubmitTransaction(address, amount);
+    const tx2 = await contract.SubmitTransaction(props.user, address, amount);
     await tx2.wait();
   };
 
@@ -142,7 +142,7 @@ export const Home = (props) => {
   const { contractRead } = props;
   useEffect(() => {
     const fetchTransactionCount = async () => {
-      const count = await contractRead.getTransactionCount();
+      const count = await contractRead.getTransactionCount(props.user);
       setTransactionCount(parseInt(count));
     };
     contractRead && fetchTransactionCount();
