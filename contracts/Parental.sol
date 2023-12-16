@@ -2,6 +2,8 @@
 pragma solidity ^0.8.6;
 
 contract Parental{
+
+    // events for every function invocations
     event Deposit(address indexed sender,uint amount,uint balance);
     event SubmitTrans(
         address indexed owner,
@@ -23,16 +25,33 @@ contract Parental{
         uint noOfvotes;
         string message;
     }
+    // for every user address it store dynamic number of transactions.
     mapping(address=>Transaction[]) Txs;
-    mapping(address=>bool) private users;
-    mapping(address=>string) private data;
-    mapping(address=>bool) private Ownersetted;
-    mapping(address=>address[2]) private OwnerOfUsers;
-    mapping (address=>mapping (address=>bool)) public isOwner;
-    mapping(address=>uint) private votes;
-    mapping(address=>mapping (uint=>mapping(address=>bool))) public isConfirmed;
-    // Transaction[] transactions;
 
+    // kind of save the address of user who log in.
+    mapping(address=>bool) private users;
+
+    // stores password with user address as key
+    mapping(address=>string) private data;
+
+    // checks it for particular user , owners are selected or not.
+    mapping(address=>bool) private Ownersetted;
+
+    // contain info owners of particular user.
+    mapping(address=>address[2]) private OwnerOfUsers;
+
+    // contain if a particular address for user address is owner or not.
+    mapping (address=>mapping (address=>bool)) public isOwner;
+
+    // contain info about number of votes choosen for particular user.
+    mapping(address=>uint) private votes;
+
+    // for particular user -> particular transaction -> by particular owner -> confirmed or not
+    mapping(address=>mapping (uint=>mapping(address=>bool))) public isConfirmed;
+
+    // ensures contract balances and user balance is differ.
+    mapping(address=>uint) balances;
+    
     modifier onlyOwner(address a){
         require(isOwner[a][msg.sender],"You don't have acesss");
         _;
@@ -57,11 +76,13 @@ contract Parental{
         require(users[a]==true,"User not exist");
         _;
     }
-    mapping(address=>uint) balances;
     modifier ownerSetted(address a){
         require(Ownersetted[a]!=true,"Owners already exists for this user");
         _;
     }
+
+    
+   
     function SignUp(address a,string memory SetPassword) public userExist(a) {
         users[a]=true;
         data[a]=SetPassword;
