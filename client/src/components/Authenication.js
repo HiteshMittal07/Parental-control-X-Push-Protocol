@@ -23,7 +23,11 @@ export const Authenication = (props) => {
         <span onClick={showLoginComponent}>Login</span>/
         <span onClick={showSignupComponent}>Signup</span>
       </h2>
-      {showLogin ? <Login {...props} /> : <Signup {...props} />}
+      {showLogin ? (
+        <Login {...props} user={props.user} handleUser={props.handleUser} />
+      ) : (
+        <Signup {...props} user={props.user} handleUser={props.handleUser} />
+      )}
     </div>
   );
 };

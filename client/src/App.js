@@ -15,8 +15,9 @@ function App() {
   });
   const [login, setLogin] = useState(false);
   const [account, setAccount] = useState("not connected");
+  const [user, SetUser] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0xf4c8CDFFa21c2064A0740054965d00Ee9395d6B4";
+    const contractAddress = "0xdD01CF5E3EAc02312F03A90a2C7519Ebf7c451d5";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -58,6 +59,9 @@ function App() {
   const handleLogout = () => {
     setLogin(false); // Update login state to false
   };
+  const handleUser = (add) => {
+    SetUser(add);
+  };
   return (
     <div className="App">
       <Header
@@ -65,7 +69,11 @@ function App() {
         login={login}
         handleLogout={handleLogout}
       />
-      {login ? <Router {...state} /> : <Authenication {...state} />}
+      {login ? (
+        <Router {...state} user={user} handleUser={handleUser} />
+      ) : (
+        <Authenication {...state} user={user} handleUser={handleUser} />
+      )}
     </div>
   );
 }

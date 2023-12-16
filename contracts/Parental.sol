@@ -60,24 +60,11 @@ contract Parental{
         require(users[a]==true,"User not exist");
         _;
     }
+    mapping(address=>uint) balances;
     modifier ownerSetted(address a){
         require(Ownersetted[a]!=true,"Owners already exists for this user");
         _;
     }
-    // constructor(){
-    //     require(_owner.length>0,"at least one owner is required");
-    //     require(_votes>0 && _votes<=_owner.length,"invalid number of required confirmations");
-    //     for(uint i=0;i<_owner.length;i++)
-    //     {
-    //         address owner=_owner[i];
-    //         require(owner!=address(0),"Invalid Owner");
-    //         require(!isOwner[owner],"owner not unique");
-    //         isOwner[owner]=true;
-    //         owners.push(owner);
-
-    //     }
-    //     votes=_votes;
-    // }
     function SignUp(address a,string memory SetPassword) public userExist(a) {
         users[a]=true;
         data[a]=SetPassword;
@@ -114,10 +101,9 @@ contract Parental{
         emit SubmitTrans(msg.sender, txIndex, _to, _value);
     }
 
-    function DepositEth() public payable {
-        (bool success,)=address(this).call{value:msg.value}("");
-        require(success, "Invalid");
-        emit Deposit(msg.sender, msg.value, address(this).balance);
+    function DepositEth(address a) public payable {
+        balances[a]+=msg.value;
+        emit Deposit(msg.sender, msg.value, balances[a]);
     }
     receive() external payable {}
     function ExecuteTransaction(address a,uint _txIndex)public onlyOwner(a) txExist(_txIndex) notExecuted(_txIndex){
@@ -138,16 +124,16 @@ contract Parental{
         transactions.pop();
     }
 
-    // function getowners() public view returns(address[] memory){
-    //     return owners;
-    // }
+    function getowners(address a) public view returns(address[2]memory){
+        return OwnerOfUsers[a];
+    }
     function getTransactionCount() public view returns(uint){
         return transactions.length;
     }
     function getTransaction()public view returns(Transaction[] memory) {
         return transactions;
     }
-    function getBalance()public view returns(uint) {
-        return address(this).balance;
+    function getBalance(address a)public view returns(uint) {
+        return balances[a];
     }
 }

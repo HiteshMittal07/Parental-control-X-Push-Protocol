@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 export const Signup = (props) => {
   async function Signup() {
@@ -11,6 +11,7 @@ export const Signup = (props) => {
       if (Setpass === Repass) {
         const tx = await contract.SignUp(address, Setpass.toString());
         await tx.wait();
+        props.handleUser(address);
         console.log(tx);
       } else {
         alert("Password Mismatch");
