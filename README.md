@@ -58,8 +58,8 @@ To use the Parental Control system, follow these steps:
 1. **Access the Parental Control Web Application**:
    Open a web browser and navigate to the provided URL, which is typically `http://localhost:3000`.
 
-2. **Sign In as a Parent or Guardian**:
-   - Sign in using your parent or guardian account credentials.
+2. **Connect the wallet and set up the users and owners of the particular funds initially**:
+   - If you already set the owners and users then on connecting the wallet you can directly be routed to home page.
    - If you don't have an account, you may need to register or create one through the application.
 
 3. **Set Up Permissions for Your Child's Account**:
