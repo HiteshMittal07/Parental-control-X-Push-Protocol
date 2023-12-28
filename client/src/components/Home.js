@@ -2,6 +2,8 @@ import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./Home.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Home = (props) => {
   const [balance, setBalance] = useState(null);
