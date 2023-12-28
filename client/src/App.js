@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Header from "./components/Header";
 import Router from "./routes/Router";
-import abi from "./contractJson/Parental.json";
+import abi from "./contractJson/CreateWallet.json";
+import abi2 from "./contractJson/Parental.json";
 import "./App.css";
-import { Authenication } from "./components/Authenication";
+import { ParentalContext } from "./ParentalContext";
 function App() {
   const [state, setState] = useState({
     provider: null,
@@ -13,79 +14,49 @@ function App() {
     contract: null,
     contractRead: null,
   });
-  const [login, setLogin] = useState(false);
   const [account, setAccount] = useState("not connected");
-  const [user, SetUser] = useState(null);
-  const [sign, setSign] = useState(null);
+  const [contractAddress, setContractAddress] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0xFb3a95139FF9fB892d18Bbe88ccaFCd640E850B0";
+    const contractAddress = "0x8C05cf4cF1ED1f3bC9a12E74D3e5BF336e69e5A1";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-      window.ethereum.on("accountsChanged", () => {
-        window.location.reload();
-      });
-      setAccount(accounts);
-      const provider = new ethers.BrowserProvider(ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        signer
-      );
-      const contractRead = new ethers.Contract(
+      let provider = new ethers.BrowserProvider(ethereum);
+      let signer = await provider.getSigner();
+      let contract = new ethers.Contract(contractAddress, contractABI, signer);
+      let contractRead = new ethers.Contract(
         contractAddress,
         contractABI,
         provider
       );
-      contractRead.on("login", (status) => {
-        setLogin(true);
-        console.log("hi");
-        alert("Login Successful");
+      window.ethereum.on("accountsChanged", async () => {
+        provider = new ethers.BrowserProvider(ethereum);
+        signer = await provider.getSigner();
+        contract = new ethers.Contract(contractAddress, contractABI, signer);
+        contractRead = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          provider
+        );
+        setState({ provider, signer, contract, contractRead });
       });
-      contractRead.on("SetOwner", (status) => {
-        setLogin(true);
-        console.log("hello");
-        alert("Login Successful");
-      });
+      setAccount(accounts);
       setState({ provider, signer, contract, contractRead });
     } catch (error) {
       alert(error);
     }
   };
-
-  const handleLogout = () => {
-    setLogin(false); // Update login state to false
-  };
-  const handleUser = (add) => {
-    SetUser(add);
-  };
-  const handleSign = () => {
-    setSign(true);
-  };
   return (
-    <div className="App">
-      <Header
-        connectWallet={connectWallet}
-        login={login}
-        handleLogout={handleLogout}
-        {...state}
-      />
-      {login ? (
-        <Router {...state} user={user} handleUser={handleUser} />
-      ) : (
-        <Authenication
-          {...state}
-          user={user}
-          handleUser={handleUser}
-          sign={sign}
-          handleSign={handleSign}
-        />
-      )}
-    </div>
+    <ParentalContext.Provider
+      value={{ state, connectWallet, contractAddress, setContractAddress }}
+    >
+      <div className="App">
+        <Header />
+      </div>
+    </ParentalContext.Provider>
   );
 }
 export default App;

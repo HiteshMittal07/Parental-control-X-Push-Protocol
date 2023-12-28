@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { ParentalContext } from "../ParentalContext";
 
-const Header = (props) => {
-  const { contract } = props;
+const Header = () => {
+  const {state,connectWallet}=useContext(ParentalContext);
+  const {contract}=state;
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark">
       <div className="container">
@@ -34,7 +37,7 @@ const Header = (props) => {
               <li className="nav-item">
                 <button
                   className="btn btn-light ms-2"
-                  onClick={props.connectWallet}
+                  onClick={connectWallet}
                 >
                   Connect wallet
                 </button>
@@ -43,23 +46,11 @@ const Header = (props) => {
               <li className="nav-item">
                 <button
                   className="btn btn-light ms-2"
-                  onClick={props.connectWallet}
+                  onClick={connectWallet}
                 >
                   Connected
                 </button>
               </li>
-            )}
-            {props.login ? (
-              <li className="nav-item">
-                <button
-                  className="btn btn-light ms-2"
-                  onClick={props.handleLogout}
-                >
-                  Logout
-                </button>
-              </li>
-            ) : (
-              ""
             )}
           </ul>
         </div>
