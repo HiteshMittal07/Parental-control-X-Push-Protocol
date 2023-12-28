@@ -23,7 +23,7 @@ Key features of this project include:
 - **Web Application**: A user-friendly React.js front-end interface allows parents and guardians to manage permissions, review transaction logs, and gain control over their children's spending.
 - **Ethereum Integration**: Integrates with the Ethereum blockchain for secure and transparent transaction handling.
 - **Bootstrap Styling**: Implements Bootstrap for a responsive and visually appealing user interface.
-- **Sepolia Testnet**: Utilizes the Sepolia testnet for Ethereum contract testing and development.
+- **PolyZkEVM Testnet**: Utilizes the zkEVM testnet for Ethereum contract testing, development and for Less Gas cost and faster Transaction speeds.
 
 With Parental Control, you can maintain oversight of your child's financial activities, ensuring responsible spending and enhancing financial management within your family.
 
@@ -38,7 +38,7 @@ The following technologies and tools were used in the development of this projec
 - **React.js**: The front-end is built using React.js for a dynamic and user-friendly interface.
 - **Ether.js**: A JavaScript library for interacting with the Ethereum blockchain.
 - **Bootstrap**: Used for styling and responsive design of the web application.
-- **Sepolia Testnet**: The Sepolia testnet is used for Ethereum contract testing and development.
+- **PolyZkEVM Testnet**: The zkEVM testnet is used for Ethereum contract testing and development.
 
 ---
 
@@ -58,8 +58,8 @@ To use the Parental Control system, follow these steps:
 1. **Access the Parental Control Web Application**:
    Open a web browser and navigate to the provided URL, which is typically `http://localhost:3000`.
 
-2. **Sign In as a Parent or Guardian**:
-   - Sign in using your parent or guardian account credentials.
+2. **Connect the wallet and set up the users and owners of the particular funds initially**:
+   - If you already set the owners and users then on connecting the wallet you can directly be routed to home page.
    - If you don't have an account, you may need to register or create one through the application.
 
 3. **Set Up Permissions for Your Child's Account**:
