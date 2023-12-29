@@ -1,39 +1,40 @@
 import { ethers } from "ethers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./Home.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ParentalContext } from "../ParentalContext";
 
-export const Home = (props) => {
+export const Home = () => {
   const [balance, setBalance] = useState(null);
   const [transactionCount, setTransactionCount] = useState(0);
+  const {state2}=useContext(ParentalContext);
 
   const Deposit = async (event) => {
     event.preventDefault();
-    const { contract } = props;
+    const { contract2 } = state2;
     const amount = document.querySelector("#amount").value;
     const option = { value: ethers.parseEther(amount) };
-    const tx = await contract.DepositEth(props.user, option);
+    const tx = await contract2.DepositEth(option);
     await tx.wait();
   };
 
   const getBalance = async () => {
-    const { contractRead } = props;
-    const tx1 = await contractRead.getBalance(props.user);
+    const { contractRead2 } = state2;
+    const tx1 = await contractRead2.getBalance();
     const num = parseInt(tx1) / Math.pow(10, 18);
     setBalance(num);
   };
 
   const submitTx = async (event) => {
     event.preventDefault();
-    const { contract } = props;
+    const { contract2 } = state2;
     const address = document.querySelector("#subAddress").value;
     const value = document.querySelector("#subValue").value;
     const amount = ethers.parseEther(value);
     const message = document.querySelector("#message").value;
-    const tx2 = await contract.SubmitTransaction(
-      props.user,
+    const tx2 = await contract2.SubmitTransaction(
       address,
       amount,
       message
@@ -42,24 +43,24 @@ export const Home = (props) => {
   };
 
   const confirmTx = async () => {
-    const { contract } = props;
+    const { contract2 } = state2;
     const txIndex = document.querySelector("#index").value;
     try {
-      const tx3 = await contract.ConfirmTransactions(props.user, txIndex);
+      const tx3 = await contract2.ConfirmTransactions(txIndex);
       await tx3.wait();
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const { contractRead } = props;
+  const { contractRead2 } = state2;
   useEffect(() => {
     const fetchTransactionCount = async () => {
-      const count = await contractRead.getTransactionCount(props.user);
+      const count = await contractRead2.getTransactionCount();
       setTransactionCount(parseInt(count));
     };
-    contractRead && fetchTransactionCount();
-  }, [contractRead]);
+    contractRead2 && fetchTransactionCount();
+  }, [contractRead2]);
 
   return (
     <div

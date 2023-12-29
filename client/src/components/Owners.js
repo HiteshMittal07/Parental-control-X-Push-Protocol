@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Axios from "axios";
+import { ParentalContext } from "../ParentalContext";
 
-const Owners = (props) => {
+const Owners = () => {
+  const { state2 } = useContext(ParentalContext);
+  const { contractRead2 } = state2;
   const [owners, setOwners] = useState([]);
-  const { contractRead } = props;
 
   useEffect(() => {
     const fetchOwnersDetails = async () => {
-      const tx = await contractRead.getowners(props.user);
+      const tx = await contractRead2.getOwners();
       const ownersWithDetails = await Promise.all(
         tx.map(async (ownerAddress) => {
           const { data } = await Axios.get("https://randomuser.me/api/");
@@ -19,8 +21,8 @@ const Owners = (props) => {
       setOwners(ownersWithDetails);
     };
 
-    contractRead && fetchOwnersDetails();
-  }, [contractRead]);
+    contractRead2 && fetchOwnersDetails();
+  }, [contractRead2]);
 
   return (
     <div className="container mt-4">

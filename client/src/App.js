@@ -4,11 +4,20 @@ import "bootstrap/dist/css/bootstrap.css";
 import Header from "./components/Header";
 import Router from "./routes/Router";
 import abi from "./contractJson/CreateWallet.json";
-import abi2 from "./contractJson/Parental.json";
 import "./App.css";
 import { ParentalContext } from "./ParentalContext";
+import { toast } from "react-toastify";
+import CreateWallet from "./components/CreateWallet";
+import JoinWallet from "./components/JoinWallet";
+
 function App() {
   const [state, setState] = useState({
+    provider: null,
+    signer: null,
+    contract: null,
+    contractRead: null,
+  });
+  const [state2, setState2] = useState({
     provider: null,
     signer: null,
     contract: null,
@@ -17,7 +26,7 @@ function App() {
   const [account, setAccount] = useState("not connected");
   const [contractAddress, setContractAddress] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0x8C05cf4cF1ED1f3bC9a12E74D3e5BF336e69e5A1";
+    const contractAddress = "0x47bddd760827Dd351968A3c03aAdb7A747776FF3";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -45,16 +54,26 @@ function App() {
       });
       setAccount(accounts);
       setState({ provider, signer, contract, contractRead });
+      toast.success("Connected successfully");
     } catch (error) {
       alert(error);
     }
   };
   return (
     <ParentalContext.Provider
-      value={{ state, connectWallet, contractAddress, setContractAddress }}
+      value={{
+        state,
+        connectWallet,
+        contractAddress,
+        setContractAddress,
+        state2,
+        setState2,
+      }}
     >
       <div className="App">
         <Header />
+        <CreateWallet />
+        <JoinWallet />
       </div>
     </ParentalContext.Provider>
   );

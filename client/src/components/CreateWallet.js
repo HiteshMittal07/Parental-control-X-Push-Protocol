@@ -2,14 +2,27 @@ import React, { useContext } from "react";
 import { ParentalContext } from "../ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ethers } from "ethers";
+import abi2 from "../contractJson/Parental.json";
 export default function CreateWallet() {
-  const { state, setContractAddress, contractAddress } =
-    useContext(ParentalContext);
+  const { state, setContractAddress, setState2 } = useContext(ParentalContext);
   async function Create() {
+    const contractABI = abi2.abi;
     const { contract, contractRead } = state;
-    contractRead.on("created", (contractAddress) => {
+    console.log(contract);
+    contractRead.on("created", async (contractAddress, event) => {
       console.log(`Created at ${contractAddress}`);
       setContractAddress(contractAddress);
+      let provider = new ethers.BrowserProvider(window.ethereum);
+      let signer = await provider.getSigner();
+      let contract2 = new ethers.Contract(contractAddress, contractABI, signer);
+      let contractRead2 = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+      );
+      setState2(provider, signer, contract2, contractRead2);
+      event.removeListener();
     });
     const address = document.querySelector("#address").value;
     const tx = await contract.CreateParentalWallet(address);

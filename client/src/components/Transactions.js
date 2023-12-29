@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import { ParentalContext } from "../ParentalContext";
 
-const Transactions = (props) => {
+const Transactions = () => {
+  const { state2 } = useContext(ParentalContext);
+  const { contractRead2, contract2 } = state2;
   const [transactions, setTransactions] = useState([]);
-  const { contractRead } = props;
-  const { contract } = props;
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const tx = await contractRead.getTransaction(props.user);
+      const tx = await contractRead2.getTransaction();
       setTransactions(tx);
     };
-    contractRead && fetchTransactions();
-  }, [contractRead]);
+    contractRead2 && fetchTransactions();
+  }, [contractRead2]);
 
   const checkStatus = (stat) => {
     if (stat === "true") {
@@ -25,7 +26,7 @@ const Transactions = (props) => {
   const handleCancel = async (transactionIndex) => {
     // Implement the cancel logic here, for example:
     try {
-      const tx4 = await contract.removeTx(props.user, transactionIndex);
+      const tx4 = await contract2.removeTx(transactionIndex);
       await tx4.wait();
     } catch (error) {
       alert(error.message);
@@ -35,10 +36,7 @@ const Transactions = (props) => {
   const handleExecute = async (transactionIndex) => {
     // Implement the execute logic here, for example:
     try {
-      const tx5 = await contract.ExecuteTransaction(
-        props.user,
-        transactionIndex
-      );
+      const tx5 = await contract2.ExecuteTransaction(transactionIndex);
       await tx5.wait();
     } catch (error) {
       alert(error.message);

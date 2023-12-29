@@ -1,20 +1,18 @@
 import React, { useContext } from "react";
 import { ParentalContext } from "../ParentalContext";
-import abi from "../contractJson/Parental.json";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ethers } from "ethers";
 export default function AddUser() {
-  const { state } = useContext(ParentalContext);
+  const { state2 } = useContext(ParentalContext);
   async function Adduser() {
-    const { contractAddress } = state;
-    const contractABI = abi.abi;
-    let provider = new ethers.BrowserProvider(window.ethereum);
-    let signer = await provider.getSigner();
-    let contract = new ethers.Contract(contractAddress, contractABI, signer);
+    const { contract2 } = state2;
     const address = document.querySelector("#address").value;
-    const tx = await contract.addUser(address);
-    await tx.wait();
+    try {
+      const tx = await contract2.addUser(address);
+      await tx.wait();
+    } catch (error) {
+      toast.error(error.reason);
+    }
     toast.success("User added Successfully");
   }
   return (
@@ -31,7 +29,7 @@ export default function AddUser() {
         />
         <br />
         <button onClick={Adduser} className="btn btn-primary col-4 mt-3">
-          Set Owner
+          Add User
         </button>
       </form>
     </div>
