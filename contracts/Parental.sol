@@ -12,12 +12,14 @@ contract Parental{
     event ConfirmTrans(address indexed owner,uint indexed txIndex);
     event RevokeTrans(address indexed owner,uint indexed txIndex);
     event ExecuteTrans(address indexed owner,uint indexed txIndex);
+    event RemoveTrans(bool status);
     address[2] owners;
     address[] users;
     mapping(address=>bool) isUser;
     uint public votes;
 
     struct Transaction{
+        address from;
         address to;
         uint value;
         bool executed;
@@ -72,6 +74,7 @@ contract Parental{
     function SubmitTransaction(address _to,uint _value,string memory msg1) onlyUser() public{
         uint txIndex=transactions.length;
         transactions.push(Transaction({
+            from: msg.sender,
             to:_to,
             value:_value,
             executed:false,

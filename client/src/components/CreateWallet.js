@@ -5,7 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abi2 from "../contractJson/Parental.json";
 export default function CreateWallet() {
-  const { state, setContractAddress, setState2 } = useContext(ParentalContext);
+  const { state, setContractAddress, setState2, SetCreated } =
+    useContext(ParentalContext);
   async function Create() {
     const contractABI = abi2.abi;
     const { contract, contractRead } = state;
@@ -21,7 +22,8 @@ export default function CreateWallet() {
         contractABI,
         provider
       );
-      setState2(provider, signer, contract2, contractRead2);
+      setState2({ provider, signer, contract2, contractRead2 });
+      SetCreated(true);
       event.removeListener();
     });
     const address = document.querySelector("#address").value;

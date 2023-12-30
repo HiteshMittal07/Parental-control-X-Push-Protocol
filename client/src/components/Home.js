@@ -9,11 +9,15 @@ import { ParentalContext } from "../ParentalContext";
 export const Home = () => {
   const [balance, setBalance] = useState(null);
   const [transactionCount, setTransactionCount] = useState(0);
-  const {state2}=useContext(ParentalContext);
+  const { state2 } = useContext(ParentalContext);
 
   const Deposit = async (event) => {
     event.preventDefault();
-    const { contract2 } = state2;
+    const { contract2, contractRead2 } = state2;
+    contractRead2.on("Deposit", (sender, amount, event) => {
+      toast.success("Deposit successfully");
+      event.removeListener();
+    });
     const amount = document.querySelector("#amount").value;
     const option = { value: ethers.parseEther(amount) };
     const tx = await contract2.DepositEth(option);
@@ -22,6 +26,7 @@ export const Home = () => {
 
   const getBalance = async () => {
     const { contractRead2 } = state2;
+    console.log(contractRead2);
     const tx1 = await contractRead2.getBalance();
     const num = parseInt(tx1) / Math.pow(10, 18);
     setBalance(num);
@@ -29,21 +34,25 @@ export const Home = () => {
 
   const submitTx = async (event) => {
     event.preventDefault();
-    const { contract2 } = state2;
+    const { contract2, contractRead2 } = state2;
+    contractRead2.on("SubmitTrans", (owner, txIndex, to, value, event) => {
+      toast.success("Transaction submitted successfully");
+      event.removeListener();
+    });
     const address = document.querySelector("#subAddress").value;
     const value = document.querySelector("#subValue").value;
     const amount = ethers.parseEther(value);
     const message = document.querySelector("#message").value;
-    const tx2 = await contract2.SubmitTransaction(
-      address,
-      amount,
-      message
-    );
+    const tx2 = await contract2.SubmitTransaction(address, amount, message);
     await tx2.wait();
   };
 
   const confirmTx = async () => {
-    const { contract2 } = state2;
+    const { contract2, contractRead2 } = state2;
+    contractRead2.on("ConfirmTrans", (owner, txIndex, event) => {
+      toast.success("Transaction confirmed successfully");
+      event.removeListener();
+    });
     const txIndex = document.querySelector("#index").value;
     try {
       const tx3 = await contract2.ConfirmTransactions(txIndex);

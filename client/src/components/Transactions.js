@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import { ParentalContext } from "../ParentalContext";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Transactions = () => {
   const { state2 } = useContext(ParentalContext);
   const { contractRead2, contract2 } = state2;
@@ -51,6 +52,7 @@ const Transactions = () => {
           <table className="table">
             <thead>
               <tr>
+                <th>Sender</th>
                 <th>Receiver</th>
                 <th>Value</th>
                 <th>Executed</th>
@@ -62,6 +64,7 @@ const Transactions = () => {
             <tbody>
               {transactions.map((transaction, index) => (
                 <tr key={index}>
+                  <td>{transaction.from}</td>
                   <td>{transaction.to}</td>
                   <td>
                     {parseFloat(transaction.value) / Math.pow(10, 18)} ETH

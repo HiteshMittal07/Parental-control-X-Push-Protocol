@@ -9,6 +9,7 @@ import { ParentalContext } from "./ParentalContext";
 import { toast } from "react-toastify";
 import CreateWallet from "./components/CreateWallet";
 import JoinWallet from "./components/JoinWallet";
+import Initial from "./components/Initial";
 
 function App() {
   const [state, setState] = useState({
@@ -20,13 +21,15 @@ function App() {
   const [state2, setState2] = useState({
     provider: null,
     signer: null,
-    contract: null,
-    contractRead: null,
+    contract2: null,
+    contractRead2: null,
   });
+  const [created, SetCreated] = useState(null);
+  const [joined, SetJoined] = useState(null);
   const [account, setAccount] = useState("not connected");
   const [contractAddress, setContractAddress] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0x47bddd760827Dd351968A3c03aAdb7A747776FF3";
+    const contractAddress = "0xf105C8fA8302e1661fA9c20916f834f13D2252EA";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -59,6 +62,28 @@ function App() {
       alert(error);
     }
   };
+
+  // async function Subscribe() {
+  //   let provider = new ethers.BrowserProvider(window.ethereum);
+  //   let signer = await provider.getSigner();
+  //   const userAlice = await PushAPI.initialize(signer, {
+  //     env: CONSTANTS.ENV.STAGING,
+  //   });
+
+  //   // List inbox notifications
+  //   const inboxNotifications = await userAlice.notification.list("INBOX");
+
+  //   // List spam notifications
+  //   const spamNotifications = await userAlice.notification.list("SPAM");
+
+  //   // Push channel address
+  //   const pushChannelAdress = "0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa";
+
+  //   // Subscribe to push channel
+  //   await userAlice.notification.subscribe(
+  //     `eip155:11155111:${pushChannelAdress}` // channel address in CAIP format
+  //   );
+  // }
   return (
     <ParentalContext.Provider
       value={{
@@ -68,12 +93,16 @@ function App() {
         setContractAddress,
         state2,
         setState2,
+        SetCreated,
+        SetJoined,
+        joined,
+        created,
       }}
     >
       <div className="App">
         <Header />
-        <CreateWallet />
-        <JoinWallet />
+        {/* <button onClick={Subscribe}>subscribe</button> */}
+        {created || joined ? <Router /> : <Initial />}
       </div>
     </ParentalContext.Provider>
   );

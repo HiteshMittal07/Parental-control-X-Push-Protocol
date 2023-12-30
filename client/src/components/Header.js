@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import { ParentalContext } from "../ParentalContext";
 
 const Header = () => {
-  const {state,connectWallet}=useContext(ParentalContext);
-  const {contract}=state;
+  const { state, connectWallet, SetJoined, SetCreated, joined, created } =
+    useContext(ParentalContext);
+  const { contract } = state;
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark">
       <div className="container">
@@ -35,22 +36,31 @@ const Header = () => {
             </li>
             {contract == null ? (
               <li className="nav-item">
-                <button
-                  className="btn btn-light ms-2"
-                  onClick={connectWallet}
-                >
+                <button className="btn btn-light ms-2" onClick={connectWallet}>
                   Connect wallet
                 </button>
               </li>
             ) : (
               <li className="nav-item">
-                <button
-                  className="btn btn-light ms-2"
-                  onClick={connectWallet}
-                >
+                <button className="btn btn-light ms-2" onClick={connectWallet}>
                   Connected
                 </button>
               </li>
+            )}
+            {joined || created == true ? (
+              <li className="nav-item">
+                <button
+                  className="btn btn-light ms-2"
+                  onClick={() => {
+                    SetJoined(false);
+                    SetCreated(false);
+                  }}
+                >
+                  Exit
+                </button>
+              </li>
+            ) : (
+              ""
             )}
           </ul>
         </div>
