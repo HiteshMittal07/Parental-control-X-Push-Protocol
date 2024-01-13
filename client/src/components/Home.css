@@ -8,15 +8,6 @@
 }
 body {
   margin: 0;
-<<<<<<< HEAD
-  background-image: url("../images/atm5.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 100%;
-  width: 100%;
-  padding: 0;
-=======
   /* background-image: url("../images/atm5.jpg"); */
   /* background-size: cover; */
   /* background-position: center; */
@@ -31,7 +22,6 @@ body {
     width: 100%;
     height: 100vh;
     background-repeat: no-repeat;
->>>>>>> 09d64b6 (adding push notifications)
 }
 
 .home-container .section-title {
