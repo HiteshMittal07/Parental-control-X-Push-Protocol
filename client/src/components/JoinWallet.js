@@ -1,22 +1,9 @@
-<<<<<<< HEAD
-import React, { useContext } from "react";
-=======
 import React, { useContext, useState } from "react";
->>>>>>> 09d64b6 (adding push notifications)
 import { ParentalContext } from "../ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abi from "../contractJson/Parental.json";
-<<<<<<< HEAD
-export default function JoinWallet() {
-  const { state, setContractAddress, setState2, SetJoined } =
-    useContext(ParentalContext);
-  async function join() {
-    const { contractRead, contract } = state;
-    // console.log(contractRead);
-    const contractABI = abi.abi;
-=======
 import abi2 from "../contractJson/CreateWallet.json";
 import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
@@ -43,54 +30,22 @@ export default function JoinWallet(props) {
       contractAbi,
       provider
     );
->>>>>>> 09d64b6 (adding push notifications)
     try {
       contractRead.on("joined", (contractAddress, event) => {
         setContractAddress(contractAddress);
         toast.success("Joined Successfully");
-<<<<<<< HEAD
-        let contract2 = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-        let contractRead2 = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          provider
-        );
-
-        contractRead2.on("", () => {});
-        contractRead2.on("", () => {});
-        contractRead2.on("", () => {});
-        // console.log(contractRead2);
-        setState2({ provider, signer, contract2, contractRead2 });
-        SetJoined(true);
-        event.removeListener();
-      });
-      let provider = new ethers.BrowserProvider(window.ethereum);
-      let signer = await provider.getSigner();
-      const add = document.querySelector("#addr").value;
-=======
         SetJoined(true);
         setLoading(false);
         navigate("/home");
         event.removeListener();
       });
       const contract = contractRead.connect(signer);
->>>>>>> 09d64b6 (adding push notifications)
       const tx = await contract.joinWallet(add);
       await tx.wait();
     } catch (error) {
       toast.error(error.reason);
     }
   }
-<<<<<<< HEAD
-  return (
-    <div>
-      <input type="text" placeholder="enter owner address" id="addr" />
-      <button onClick={join}>Join</button>
-=======
   const openModal = () => {
     if (!connected) {
       toast.error("First connect the wallet");
@@ -167,7 +122,6 @@ export default function JoinWallet(props) {
           </>
         )}
       </div>
->>>>>>> 09d64b6 (adding push notifications)
     </div>
   );
 }

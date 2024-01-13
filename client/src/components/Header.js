@@ -1,9 +1,4 @@
 import { useContext } from "react";
-<<<<<<< HEAD
-import { Link } from "react-router-dom";
-import { ParentalContext } from "../ParentalContext";
-
-=======
 import { Link, useNavigate } from "react-router-dom";
 import { ParentalContext } from "../ParentalContext";
 import { toast } from "react-toastify";
@@ -11,19 +6,10 @@ import "react-toastify/dist/ReactToastify.css";
 import logo from "../images/logo.png";
 import { FaBell } from "react-icons/fa";
 import AddUser from "./AddUser";
->>>>>>> 09d64b6 (adding push notifications)
 const Header = () => {
   const { state, connectWallet, SetJoined, SetCreated, joined, created } =
     useContext(ParentalContext);
   const { contract } = state;
-<<<<<<< HEAD
-  return (
-    <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark">
-      <div className="container">
-        <Link to="/" className="navbar-brand">
-          <h5 className="brand-name">Parental Control</h5>
-        </Link>
-=======
   const navigate = useNavigate();
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark bg-transparent">
@@ -49,7 +35,6 @@ const Header = () => {
             />
           </Link>
         )}
->>>>>>> 09d64b6 (adding push notifications)
         <button
           className="navbar-toggler"
           data-bs-target="#navDrop"
@@ -62,18 +47,6 @@ const Header = () => {
         </button>
         <div className="collapse navbar-collapse" id="navDrop">
           <ul className="navbar-nav ms-auto">
-<<<<<<< HEAD
-            <li className="nav-item">
-              <Link to="/transaction" className="nav-link">
-                Transaction Logs
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/owners" className="nav-link">
-                Owners
-              </Link>
-            </li>
-=======
             {joined || created == true ? (
               <li className="nav-item">
                 <Link to="/home" className="nav-link">
@@ -110,7 +83,6 @@ const Header = () => {
             ) : (
               ""
             )}
->>>>>>> 09d64b6 (adding push notifications)
             {contract == null ? (
               <li className="nav-item">
                 <button className="btn btn-light ms-2" onClick={connectWallet}>
@@ -124,10 +96,7 @@ const Header = () => {
                 </button>
               </li>
             )}
-<<<<<<< HEAD
-=======
             {joined || created == true ? <AddUser /> : ""}
->>>>>>> 09d64b6 (adding push notifications)
             {joined || created == true ? (
               <li className="nav-item">
                 <button
@@ -135,11 +104,8 @@ const Header = () => {
                   onClick={() => {
                     SetJoined(false);
                     SetCreated(false);
-<<<<<<< HEAD
-=======
                     navigate("/");
                     toast.success("Exited successfully");
->>>>>>> 09d64b6 (adding push notifications)
                   }}
                 >
                   Exit

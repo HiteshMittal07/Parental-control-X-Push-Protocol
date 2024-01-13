@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import CreateWallet from "./CreateWallet";
-import JoinWallet from "./JoinWallet";
-
-export default function Initial() {
-  return <div>
-    <CreateWallet/>
-    <JoinWallet/>
-  </div>;
-=======
 import React, { useState } from "react";
 import CreateWallet from "./CreateWallet";
 import JoinWallet from "./JoinWallet";
@@ -58,5 +47,4 @@ export default function Initial() {
       </div>
     </LoadingContext.Provider>
   );
->>>>>>> 09d64b6 (adding push notifications)
 }
