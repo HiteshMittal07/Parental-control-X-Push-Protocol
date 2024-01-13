@@ -10,8 +10,14 @@ contract CreateWallet{
     }
     mapping(address => Wallet) users;
     function CreateParentalWallet(address user2)public{
+<<<<<<< HEAD
         Parental instance=new Parental(msg.sender,user2);
         
+=======
+        Wallet memory wallet = users[msg.sender];
+        require(!wallet.exists,"user already exist in system!!");
+        Parental instance=new Parental(msg.sender,user2);
+>>>>>>> 09d64b6 (adding push notifications)
         users[msg.sender]=Wallet({
             instance: instance,
             exists: true

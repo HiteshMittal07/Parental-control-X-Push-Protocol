@@ -10,6 +10,11 @@
     "chai": "^4.3.7",
     "create-react-app": "^5.0.1",
     "dotenv": "^16.3.1",
+<<<<<<< HEAD
     "mocha": "^10.2.0"
+=======
+    "mocha": "^10.2.0",
+    "react-spinners": "^0.13.8"
+>>>>>>> 09d64b6 (adding push notifications)
   }
 }
