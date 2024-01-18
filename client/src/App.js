@@ -28,9 +28,9 @@ function App() {
   const [joined, SetJoined] = useState(null);
   const [account, setAccount] = useState("not connected");
   const [contractAddress, setContractAddress] = useState(null);
-
+  const [owner, setOwner] = useState(null);
   const connectWallet = async () => {
-    const contractAddress = "0x35895eCD2Cf81F0f9ccc5B621d465484149D026D";
+    const contractAddress = "0xc09553f2F9Be1db261d4E3CEA10d1Dd3807C4177";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -94,7 +94,9 @@ function App() {
     //   toast.success("send successfully")
     // );
     // console.log(userAlice.channel);
-    const info = await userAlice.channel.info();
+    // const info = await userAlice.channel.info();
+    const aliceSubscriptions = await userAlice.notification.subscriptions();
+    console.log(aliceSubscriptions);
   }
   const sendNotificationWithDelegate = async () => {
     // const delegateAddress = 'eip155:11155111:0xA1897451FC8A83aaF66d5303729C6220cf415a2c';
@@ -138,10 +140,13 @@ function App() {
         joined,
         created,
         connected,
+        owner,
+        setOwner,
       }}
     >
       <div className="App">
         <Header />
+        {/* <button onClick={send}>send</button> */}
         <Router />
       </div>
     </ParentalContext.Provider>

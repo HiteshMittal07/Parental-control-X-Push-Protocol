@@ -12,7 +12,7 @@ contract Parental{
     event ConfirmTrans(address indexed owner,uint indexed txIndex);
     event RevokeTrans(address indexed owner,uint indexed txIndex);
     event ExecuteTrans(address indexed owner,uint indexed txIndex);
-    event RemoveTrans(bool status);
+    event RemoveTrans(address indexed owner, uint indexed txIndex);
     address[2] owners;
     address[] users;
     mapping(address=>bool) isUser;
@@ -105,6 +105,9 @@ contract Parental{
             transactions[i] = transactions[i+1];
         }
         transactions.pop();
+        isConfirmed[index][owners[0]]=false;
+        isConfirmed[index][owners[1]]=false;
+        emit RemoveTrans(msg.sender, index);
     }
     function deleteFunds()public onlyOwner(){
         selfdestruct(payable(owners[0]));

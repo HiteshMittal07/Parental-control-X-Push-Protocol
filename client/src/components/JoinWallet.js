@@ -8,34 +8,46 @@ import abi2 from "../contractJson/CreateWallet.json";
 import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
 export default function JoinWallet(props) {
-  const { state, setContractAddress, SetJoined, connected } =
+  const { state, setContractAddress, SetJoined, connected, setOwner } =
     useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const switchChain = async () => {
+    window.ethereum.on("chainChanged", join);
+
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    const selectedValue = 1442;
+    // Send the chain switch request
+    provider.send("wallet_switchEthereumChain", [
+      { chainId: `0x${Number(selectedValue).toString(16)}` },
+    ]);
+    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+      await join();
+    }
+    console.log(window.ethereum.chainId);
+  };
   async function join() {
     const contractABI = abi.abi;
     const contractAbi = abi2.abi;
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    const selectedValue = 1442;
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: `0x${Number(selectedValue).toString(16)}` },
-    ]);
     let signer = provider.getSigner();
     const add = document.querySelector("#addr").value;
     setShowModal(false);
     setLoading(true);
     let contractRead = new ethers.Contract(
-      "0x35895eCD2Cf81F0f9ccc5B621d465484149D026D",
+      "0xc09553f2F9Be1db261d4E3CEA10d1Dd3807C4177",
       contractAbi,
       provider
     );
     try {
       contractRead.on("joined", (contractAddress, event) => {
+        window.ethereum.removeListener("chainChanged", join);
         setContractAddress(contractAddress);
         toast.success("Joined Successfully");
         SetJoined(true);
         setLoading(false);
+        setOwner(add);
         navigate("/home");
         event.removeListener();
       });
@@ -109,7 +121,7 @@ export default function JoinWallet(props) {
                     />
                   </div>
                   <div className="modal-footer">
-                    <button className="btn btn-primary" onClick={join}>
+                    <button className="btn btn-primary" onClick={switchChain}>
                       Join
                     </button>
                     <button className="btn btn-secondary" onClick={closeModal}>

@@ -7,10 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { ParentalContext } from "../ParentalContext";
 import abi from "../contractJson/Parental.json";
 import BeatLoader from "react-spinners/BeatLoader";
+import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 export const Home = () => {
   const [balance, setBalance] = useState(null);
   const [transactionCount, setTransactionCount] = useState(0);
-  const { contractAddress } = useContext(ParentalContext);
+  const { contractAddress, owner } = useContext(ParentalContext);
   const contractABI = abi.abi;
   const [loading, setLoading] = useState(false);
   const override = {
@@ -20,10 +21,10 @@ export const Home = () => {
   const Deposit = async (event) => {
     event.preventDefault();
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const selectedValue = 1442;
-    // await provider.send("wallet_switchEthereumChain", [
-    //   { chainId: `0x${Number(selectedValue).toString(16)}` },
-    // ]);
+    const selectedValue = 1442;
+    await provider.send("wallet_switchEthereumChain", [
+      { chainId: `0x${Number(selectedValue).toString(16)}` },
+    ]);
     let signer = provider.getSigner();
     let contractRead2 = new ethers.Contract(
       contractAddress,
@@ -31,7 +32,24 @@ export const Home = () => {
       provider
     );
     let contract = contractRead2.connect(signer);
-    contractRead2.on("Deposit", (sender, amount, event) => {
+    contractRead2.on("Deposit", async (sender, amount, event) => {
+      await provider.send("wallet_switchEthereumChain", [
+        { chainId: "0xAA36A7" },
+      ]);
+      const userAlice = await PushAPI.initialize(signer, {
+        env: CONSTANTS.ENV.STAGING,
+        filter: {
+          channels: [`${owner}`],
+        },
+        account: `${owner}`,
+      });
+      const a = parseInt(amount) / Math.pow(10, 18);
+      await userAlice.channel.send(["*"], {
+        notification: {
+          title: `Deposited by ${sender}`,
+          body: `${a} ETH`,
+        },
+      });
       toast.success("Deposit successfully");
       event.removeListener();
     });
@@ -88,10 +106,30 @@ export const Home = () => {
       provider
     );
     let contract = contractRead2.connect(signer);
-    contractRead2.on("SubmitTrans", (owner, txIndex, to, value, event) => {
-      toast.success("Transaction submitted successfully");
-      event.removeListener();
-    });
+    contractRead2.on(
+      "SubmitTrans",
+      async (owner, txIndex, to, value, event) => {
+        await provider.send("wallet_switchEthereumChain", [
+          { chainId: "0xAA36A7" },
+        ]);
+        const userAlice = await PushAPI.initialize(signer, {
+          env: CONSTANTS.ENV.STAGING,
+          filter: {
+            channels: [`${owner}`],
+          },
+          account: `${owner}`,
+        });
+        const a = parseInt(value) / Math.pow(10, 18);
+        await userAlice.channel.send(["*"], {
+          notification: {
+            title: `Submitted by ${owner}`,
+            body: `To:${to} Value:${a}`,
+          },
+        });
+        toast.success("Submitted successfully");
+        event.removeListener();
+      }
+    );
     const address = document.querySelector("#subAddress").value;
     const value = document.querySelector("#subValue").value;
     const amount = ethers.utils.parseEther(value);
@@ -113,7 +151,23 @@ export const Home = () => {
       provider
     );
     let contract = contractRead2.connect(signer);
-    contractRead2.on("ConfirmTrans", (owner, txIndex, event) => {
+    contractRead2.on("ConfirmTrans", async (owner, txIndex, event) => {
+      await provider.send("wallet_switchEthereumChain", [
+        { chainId: "0xAA36A7" },
+      ]);
+      const userAlice = await PushAPI.initialize(signer, {
+        env: CONSTANTS.ENV.STAGING,
+        filter: {
+          channels: [`${owner}`],
+        },
+        account: `${owner}`,
+      });
+      await userAlice.channel.send(["*"], {
+        notification: {
+          title: `Confirmed`,
+          body: `By:${owner} Transaction Index:${txIndex}`,
+        },
+      });
       toast.success("Transaction confirmed successfully");
       event.removeListener();
     });

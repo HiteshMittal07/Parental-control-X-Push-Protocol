@@ -33,9 +33,7 @@ const NotificationInterface = () => {
     marginTop: "20px",
   };
 
-  const [wallet, setWallet] = useState(
-    "0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa"
-  );
+  const [wallet, setWallet] = useState("");
   const [notifItems, setNotifItems] = useState([]);
 
   useEffect(() => {
@@ -59,9 +57,12 @@ const NotificationInterface = () => {
           env: CONSTANTS.ENV.STAGING,
         });
 
+        const address = await signer.getAddress();
+        setWallet(address);
+        // console.log(address);
         // retrieve notifications for users
         const inboxNotifications = await userAlice.notification.list("INBOX", {
-          account: `eip155:11155111:${wallet}`,
+          account: `eip155:11155111:${address}`,
           limit: 5,
         });
 

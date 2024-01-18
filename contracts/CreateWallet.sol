@@ -7,6 +7,7 @@ contract CreateWallet{
     struct Wallet {
         Parental instance;
         bool exists;
+        bool notify;
     }
     mapping(address => Wallet) users;
     function CreateParentalWallet(address user2)public{
@@ -15,7 +16,8 @@ contract CreateWallet{
         Parental instance=new Parental(msg.sender,user2);
         users[msg.sender]=Wallet({
             instance: instance,
-            exists: true
+            exists: true,
+            notify: false
         });
         emit created(address(instance));
     }
@@ -32,5 +34,17 @@ contract CreateWallet{
             }
         }
         revert("You are not User for this address");
+    }
+
+    function onNotification()public{
+        Wallet storage wallet = users[msg.sender];
+        require(wallet.exists,"You are not a Wallet owner!!");
+        wallet.notify=true;
+    }
+
+    function getNotifyStatus(address a)public view returns(bool){
+         Wallet storage wallet = users[a];
+        require(wallet.exists,"user dont exist in system!!");
+        return (wallet.notify);
     }
 }

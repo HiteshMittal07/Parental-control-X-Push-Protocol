@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import abi from "../contractJson/Parental.json";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 export default function AddUser() {
-  const { contractAddress } = useContext(ParentalContext);
+  const { contractAddress, owner } = useContext(ParentalContext);
   const contractABI = abi.abi;
   async function Adduser() {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -30,7 +30,14 @@ export default function AddUser() {
       ]);
       const userAlice = await PushAPI.initialize(signer, {
         env: CONSTANTS.ENV.STAGING,
+        filter: {
+          channels: [`${owner}`],
+        },
+        account: `${owner}`,
       });
+      const addedDelegate = await userAlice.channel.delegate.add(
+        `eip155:11155111:${address}`
+      );
       await userAlice.channel.send(
         [`${address}`],
         {
