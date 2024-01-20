@@ -5,10 +5,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import abi from "../contractJson/Parental.json";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
-export default function AddUser() {
+export default function AddOwner() {
   const { contractAddress, owner } = useContext(ParentalContext);
   const contractABI = abi.abi;
-  async function Adduser() {
+  async function addOwner() {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
     const selectedValue = 1442;
     await provider.send("wallet_switchEthereumChain", [
@@ -23,7 +23,7 @@ export default function AddUser() {
     let contract = contractRead2.connect(signer);
     const address = document.querySelector("#address").value;
     try {
-      const tx = await contract.addUser(address);
+      const tx = await contract.addOwner(address);
       await tx.wait();
       await provider.send("wallet_switchEthereumChain", [
         { chainId: "0xAA36A7" },
@@ -39,11 +39,11 @@ export default function AddUser() {
         `eip155:11155111:${address}`
       );
       await userAlice.channel.send(
-        ["*"],
+        [`${address}`],
         {
           notification: {
-            title: "Added Successfully",
-            body: `${address} successfully added to Wallet!`,
+            title: "Hey User",
+            body: "You have been successfully added to Wallet!",
           },
         },
         toast.success("send successfully")
@@ -51,7 +51,7 @@ export default function AddUser() {
     } catch (error) {
       toast.error(error.reason);
     }
-    toast.success("User added Successfully");
+    toast.success("Owner added Successfully");
   }
 
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +66,7 @@ export default function AddUser() {
   return (
     <div>
       <button className="btn btn-light ms-2" onClick={openModal}>
-        Add User
+        Add Owner
       </button>
       {showModal && (
         <>
@@ -96,7 +96,7 @@ export default function AddUser() {
             <div className="modal-dialog modal-dialog-centered">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title text-dark">Add User</h5>
+                  <h5 className="modal-title text-dark">Add Owner</h5>
                   <button
                     type="button"
                     className="btn-close"
@@ -108,12 +108,12 @@ export default function AddUser() {
                   <input
                     type="text"
                     className="form-control mb-3"
-                    placeholder="Enter User address"
+                    placeholder="Enter Owner address"
                     id="address"
                   />
                 </div>
                 <div className="modal-footer">
-                  <button className="btn btn-primary" onClick={Adduser}>
+                  <button className="btn btn-primary" onClick={addOwner}>
                     Add
                   </button>
                   <button className="btn btn-secondary" onClick={closeModal}>

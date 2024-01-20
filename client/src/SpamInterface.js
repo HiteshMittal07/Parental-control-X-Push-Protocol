@@ -4,7 +4,7 @@ import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
 import BeatLoader from "react-spinners/BeatLoader";
 import { toast } from "react-toastify";
-const NotificationInterface = () => {
+const SpamInterface = () => {
   const [loading, setLoading] = useState(false);
   const inputStyle = {
     padding: "10px",
@@ -61,7 +61,7 @@ const NotificationInterface = () => {
         setWallet(address);
         // console.log(address);
         // retrieve notifications for users
-        const inboxNotifications = await userAlice.notification.list("INBOX", {
+        const inboxNotifications = await userAlice.notification.list("SPAM", {
           account: `eip155:11155111:${address}`,
           limit: 5,
         });
@@ -87,7 +87,7 @@ const NotificationInterface = () => {
       ) : (
         <div style={{ width: "50%", margin: "20px auto" }}>
           {notifItems.length > 0 ? (
-            <h3 className="text-light">{`Notification Items for ${wallet}`}</h3>
+            <h3 className="text-light">{`Spam Notification Items for ${wallet}`}</h3>
           ) : (
             <></>
           )}
@@ -115,7 +115,7 @@ const NotificationInterface = () => {
                 icon={icon}
                 image={image}
                 url={url}
-                theme={"dark"} // or can be dark
+                theme={"light"} // or can be dark
                 chainName={blockchain}
                 // chainName={blockchain as chainNameType} // if using Typescript
               />
@@ -126,4 +126,4 @@ const NotificationInterface = () => {
     </div>
   );
 };
-export default NotificationInterface;
+export default SpamInterface;

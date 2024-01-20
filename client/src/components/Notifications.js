@@ -7,6 +7,7 @@ import CreateChannel from "./CreateChannel";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import Subscribe from "./Subscribe";
 import BeatLoader from "react-spinners/BeatLoader";
+import NotificationController from "../NotificationController";
 export default function Notifications() {
   const { owner } = useContext(ParentalContext);
   const [status, setStatus] = useState(false);
@@ -20,7 +21,7 @@ export default function Notifications() {
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const contractRead = new ethers.Contract(
-      "0xc09553f2F9Be1db261d4E3CEA10d1Dd3807C4177",
+      "0x9e9Ac5404C479b10d28C2d43E278B7f679b9C271",
       contractABI,
       provider
     );
@@ -31,12 +32,15 @@ export default function Notifications() {
         { chainId: `0x${Number(selectedValue).toString(16)}` },
       ]);
       const address = owner;
+      console.log(address);
       try {
         const tx = await contractRead.getNotifyStatus(address);
         if (tx) {
           setStatus(true);
           setLoading(false);
           console.log("set");
+        } else {
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -70,7 +74,7 @@ export default function Notifications() {
     if (status == false) {
       check();
     }
-    if (status == true) {
+    if (status == true && subscribed == false) {
       setLoading(true);
       check2();
     }
@@ -86,7 +90,7 @@ export default function Notifications() {
         <>
           {status ? (
             subscribed ? (
-              <NotificationInterface />
+              <NotificationController />
             ) : (
               <Subscribe />
             )

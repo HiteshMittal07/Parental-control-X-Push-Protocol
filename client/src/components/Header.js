@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import logo from "../images/logo.png";
 import { FaBell } from "react-icons/fa";
 import AddUser from "./AddUser";
+import AddOwner from "./AddOwner";
 const Header = () => {
   const { state, connectWallet, SetJoined, SetCreated, joined, created } =
     useContext(ParentalContext);
@@ -97,6 +98,7 @@ const Header = () => {
               </li>
             )}
             {joined || created == true ? <AddUser /> : ""}
+            {joined || created == true ? <AddOwner /> : ""}
             {joined || created == true ? (
               <li className="nav-item">
                 <button

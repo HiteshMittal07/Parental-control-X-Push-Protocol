@@ -18,13 +18,22 @@ export const Home = () => {
     display: "block",
     marginTop: "200px",
   };
-  const Deposit = async (event) => {
-    event.preventDefault();
+  const switchChain3 = async () => {
+    window.ethereum.on("chainChanged", Deposit);
+
     let provider = new ethers.providers.Web3Provider(window.ethereum);
     const selectedValue = 1442;
-    await provider.send("wallet_switchEthereumChain", [
+    // Send the chain switch request
+    provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
     ]);
+    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+      await Deposit();
+    }
+    // console.log(window.ethereum.chainId);
+  };
+  const Deposit = async () => {
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
     let signer = provider.getSigner();
     let contractRead2 = new ethers.Contract(
       contractAddress,
@@ -33,6 +42,7 @@ export const Home = () => {
     );
     let contract = contractRead2.connect(signer);
     contractRead2.on("Deposit", async (sender, amount, event) => {
+      window.ethereum.removeListener("chainChanged", Deposit);
       await provider.send("wallet_switchEthereumChain", [
         { chainId: "0xAA36A7" },
       ]);
@@ -75,12 +85,23 @@ export const Home = () => {
     };
     switchChain();
   }, []);
+
+  const switchChain = async () => {
+    window.ethereum.on("chainChanged", getBalance);
+
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    const selectedValue = 1442;
+    // Send the chain switch request
+    provider.send("wallet_switchEthereumChain", [
+      { chainId: `0x${Number(selectedValue).toString(16)}` },
+    ]);
+    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+      await getBalance();
+    }
+    console.log(window.ethereum.chainId);
+  };
   const getBalance = async () => {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const selectedValue = 1442;
-    // await provider.send("wallet_switchEthereumChain", [
-    //   { chainId: `0x${Number(selectedValue).toString(16)}` },
-    // ]);
     let contractRead2 = new ethers.Contract(
       contractAddress,
       contractABI,
@@ -88,17 +109,33 @@ export const Home = () => {
     );
     console.log(contractRead2);
     const tx1 = await contractRead2.getBalance();
+    window.ethereum.removeListener("chainChanged", getBalance);
     const num = parseInt(tx1) / Math.pow(10, 18);
     setBalance(num);
   };
 
-  const submitTx = async (event) => {
-    event.preventDefault();
+  const owner2 = owner;
+  const switchChain2 = async () => {
+    window.ethereum.on("chainChanged", submitTx);
+
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const selectedValue = 1442;
-    // await provider.send("wallet_switchEthereumChain", [
-    //   { chainId: `0x${Number(selectedValue).toString(16)}` },
-    // ]);
+    const selectedValue = 1442;
+    // Send the chain switch request
+    provider.send("wallet_switchEthereumChain", [
+      { chainId: `0x${Number(selectedValue).toString(16)}` },
+    ]);
+    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+      await submitTx();
+    }
+    console.log(window.ethereum.chainId);
+  };
+  const submitTx = async () => {
+    // event.preventDefault();
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    const selectedValue = 1442;
+    await provider.send("wallet_switchEthereumChain", [
+      { chainId: `0x${Number(selectedValue).toString(16)}` },
+    ]);
     let signer = provider.getSigner();
     let contractRead2 = new ethers.Contract(
       contractAddress,
@@ -109,15 +146,16 @@ export const Home = () => {
     contractRead2.on(
       "SubmitTrans",
       async (owner, txIndex, to, value, event) => {
+        window.ethereum.removeListener("chainChanged", submitTx);
         await provider.send("wallet_switchEthereumChain", [
           { chainId: "0xAA36A7" },
         ]);
         const userAlice = await PushAPI.initialize(signer, {
           env: CONSTANTS.ENV.STAGING,
           filter: {
-            channels: [`${owner}`],
+            channels: [`${owner2}`],
           },
-          account: `${owner}`,
+          account: `${owner2}`,
         });
         const a = parseInt(value) / Math.pow(10, 18);
         await userAlice.channel.send(["*"], {
@@ -134,16 +172,31 @@ export const Home = () => {
     const value = document.querySelector("#subValue").value;
     const amount = ethers.utils.parseEther(value);
     const message = document.querySelector("#message").value;
-    const tx2 = await contract.SubmitTransaction(address, amount, message);
-    await tx2.wait();
+    try {
+      const tx2 = await contract.SubmitTransaction(address, amount, message);
+      await tx2.wait();
+    } catch (error) {
+      toast.error(error.reason);
+      // console.log(error);
+    }
   };
 
+  const switchChain4 = async () => {
+    window.ethereum.on("chainChanged", confirmTx);
+
+    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    const selectedValue = 1442;
+    // Send the chain switch request
+    provider.send("wallet_switchEthereumChain", [
+      { chainId: `0x${Number(selectedValue).toString(16)}` },
+    ]);
+    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+      await confirmTx();
+    }
+    // console.log(window.ethereum.chainId);
+  };
   const confirmTx = async () => {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const selectedValue = 1442;
-    // await provider.send("wallet_switchEthereumChain", [
-    //   { chainId: `0x${Number(selectedValue).toString(16)}` },
-    // ]);
     let signer = provider.getSigner();
     let contractRead2 = new ethers.Contract(
       contractAddress,
@@ -152,15 +205,16 @@ export const Home = () => {
     );
     let contract = contractRead2.connect(signer);
     contractRead2.on("ConfirmTrans", async (owner, txIndex, event) => {
+      window.ethereum.removeListener("chainChanged", confirmTx);
       await provider.send("wallet_switchEthereumChain", [
         { chainId: "0xAA36A7" },
       ]);
       const userAlice = await PushAPI.initialize(signer, {
         env: CONSTANTS.ENV.STAGING,
         filter: {
-          channels: [`${owner}`],
+          channels: [`${owner2}`],
         },
-        account: `${owner}`,
+        account: `${owner2}`,
       });
       await userAlice.channel.send(["*"], {
         notification: {
@@ -176,7 +230,7 @@ export const Home = () => {
       const tx3 = await contract.ConfirmTransactions(txIndex);
       await tx3.wait();
     } catch (error) {
-      alert(error.message);
+      toast.error(error.reason);
     }
   };
 
@@ -217,7 +271,7 @@ export const Home = () => {
                 <h2 className="section-title">Balance Checker</h2>
                 <div className="balance-info">
                   <h3 className="balance-text">Balance: {balance} ETH</h3>
-                  <button onClick={getBalance} className="btn btn-primary">
+                  <button onClick={switchChain} className="btn btn-primary">
                     Get Balance
                   </button>
                 </div>
@@ -273,7 +327,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="input-group mb-3">
-                  <button className="btn btn-danger" onClick={Deposit}>
+                  <button className="btn btn-danger" onClick={switchChain3}>
                     Deposit
                   </button>
                 </div>
@@ -318,7 +372,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="input-group mb-3">
-                  <button className="btn btn-danger" onClick={submitTx}>
+                  <button className="btn btn-danger" onClick={switchChain2}>
                     Submit
                   </button>
                 </div>
@@ -346,7 +400,7 @@ export const Home = () => {
                   />
                 </div>
                 <div className="input-group mb-3">
-                  <button className="btn btn-primary" onClick={confirmTx}>
+                  <button className="btn btn-primary" onClick={switchChain4}>
                     Confirm
                   </button>
                 </div>

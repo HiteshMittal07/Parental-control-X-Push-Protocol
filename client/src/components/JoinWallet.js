@@ -36,7 +36,7 @@ export default function JoinWallet(props) {
     setShowModal(false);
     setLoading(true);
     let contractRead = new ethers.Contract(
-      "0xc09553f2F9Be1db261d4E3CEA10d1Dd3807C4177",
+      "0x9e9Ac5404C479b10d28C2d43E278B7f679b9C271",
       contractAbi,
       provider
     );
@@ -55,6 +55,7 @@ export default function JoinWallet(props) {
       const tx = await contract.joinWallet(add);
       await tx.wait();
     } catch (error) {
+      setLoading(false);
       toast.error(error.reason);
     }
   }
