@@ -21,11 +21,7 @@ export default function Notifications() {
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const contractRead = new ethers.Contract(
-<<<<<<< HEAD
-      "0x384cc0998C42FAb018Bf622171902261A7633937",
-=======
       "0x9e9Ac5404C479b10d28C2d43E278B7f679b9C271",
->>>>>>> origin/main
       contractABI,
       provider
     );

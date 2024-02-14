@@ -30,11 +30,7 @@ function App() {
   const [contractAddress, setContractAddress] = useState(null);
   const [owner, setOwner] = useState(null);
   const connectWallet = async () => {
-<<<<<<< HEAD
     const contractAddress = "0x384cc0998C42FAb018Bf622171902261A7633937";
-=======
-    const contractAddress = "0x9e9Ac5404C479b10d28C2d43E278B7f679b9C271";
->>>>>>> origin/main
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
@@ -80,56 +76,56 @@ function App() {
     }
   };
 
-  async function send() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const userAlice = await PushAPI.initialize(signer, {
-      env: CONSTANTS.ENV.STAGING,
-    });
-    // const pushChannelAddress = "0x031476AA8fca4F61f9383D14a631AAdb5f530982";
-    // await userAlice.channel.send(
-    //   ["*"],
-    //   {
-    //     notification: {
-    //       title: "Hey there",
-    //       body: "Web3 native notification!",
-    //     },
-    //   },
-    //   toast.success("send successfully")
-    // );
-    // console.log(userAlice.channel);
-    // const info = await userAlice.channel.info();
-    const aliceSubscriptions = await userAlice.notification.subscriptions();
-    console.log(aliceSubscriptions);
-  }
-  const sendNotificationWithDelegate = async () => {
-    // const delegateAddress = 'eip155:11155111:0xA1897451FC8A83aaF66d5303729C6220cf415a2c';
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const delegateSigner = provider.getSigner();
-    console.log(delegateSigner);
-    const userAlice = await PushAPI.initialize(delegateSigner, {
-      env: CONSTANTS.ENV.STAGING,
-      filter: {
-        channels: ["0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa"],
-      },
-      account: "0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa",
-    });
-    // console.log(userAlice.channel);
-    //   const info=await userAlice.channel.info();
-    // console.log(info);
-    const sendNotificationResponse = await userAlice.channel.send(
-      ["0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa"],
-      {
-        notification: {
-          title: "Hey there",
-          body: "Web3 native notification!",
-        },
-      }
-    );
-    const inboxNotifications = await userAlice.notification.list("INBOX");
-    console.log(inboxNotifications);
-    // console.log('Notification sent successfully:', sendNotificationResponse);
-  };
+  // async function send() {
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const signer = provider.getSigner();
+  //   const userAlice = await PushAPI.initialize(signer, {
+  //     env: CONSTANTS.ENV.STAGING,
+  //   });
+  //   // const pushChannelAddress = "0x031476AA8fca4F61f9383D14a631AAdb5f530982";
+  //   // await userAlice.channel.send(
+  //   //   ["*"],
+  //   //   {
+  //   //     notification: {
+  //   //       title: "Hey there",
+  //   //       body: "Web3 native notification!",
+  //   //     },
+  //   //   },
+  //   //   toast.success("send successfully")
+  //   // );
+  //   // console.log(userAlice.channel);
+  //   // const info = await userAlice.channel.info();
+  //   const aliceSubscriptions = await userAlice.notification.subscriptions();
+  //   console.log(aliceSubscriptions);
+  // }
+  // const sendNotificationWithDelegate = async () => {
+  //   // const delegateAddress = 'eip155:11155111:0xA1897451FC8A83aaF66d5303729C6220cf415a2c';
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const delegateSigner = provider.getSigner();
+  //   console.log(delegateSigner);
+  //   const userAlice = await PushAPI.initialize(delegateSigner, {
+  //     env: CONSTANTS.ENV.STAGING,
+  //     filter: {
+  //       channels: ["0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa"],
+  //     },
+  //     account: "0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa",
+  //   });
+  //   // console.log(userAlice.channel);
+  //   //   const info=await userAlice.channel.info();
+  //   // console.log(info);
+  //   const sendNotificationResponse = await userAlice.channel.send(
+  //     ["0x11ae45Ab10039D1EA50A54edd2638200fa3aFaEa"],
+  //     {
+  //       notification: {
+  //         title: "Hey there",
+  //         body: "Web3 native notification!",
+  //       },
+  //     }
+  //   );
+  //   const inboxNotifications = await userAlice.notification.list("INBOX");
+  //   console.log(inboxNotifications);
+  //   // console.log('Notification sent successfully:', sendNotificationResponse);
+  // };
 
   return (
     <ParentalContext.Provider
