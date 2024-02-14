@@ -40,6 +40,7 @@ export default function CreateWallet() {
       const tx = await contract.CreateParentalWallet();
       await tx.wait();
     } catch (error) {
+      setLoading(false);
       toast.error(error.reason);
     }
   }

@@ -41,16 +41,6 @@ export default function JoinWallet(props) {
       provider
     );
     try {
-      // contractRead.on("joined", (contractAddress, event) => {
-      //   window.ethereum.removeListener("chainChanged", join);
-      //   setContractAddress(contractAddress);
-      //   toast.success("Joined Successfully");
-      //   SetJoined(true);
-      //   setLoading(false);
-      //   setOwner(add);
-      //   navigate("/home");
-      //   event.removeListener();
-      // });
       const contract = contractRead.connect(signer);
       const tx = await contract.joinWallet(add);
       console.log(tx);
