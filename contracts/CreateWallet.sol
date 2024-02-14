@@ -28,15 +28,24 @@ contract CreateWallet{
 
     // Here while joining the wallet user have to give the owner address,
     // this will check whether this user is assosiated with the wallet of given owner address.
+<<<<<<< HEAD
     function joinWallet(address a)public view returns(address){
+=======
+    function joinWallet(address a)public{
+>>>>>>> origin/main
         Wallet memory wallet = users[a];
         require(wallet.exists,"user dont exist in system!!");
         Parental instance=wallet.instance;
         address[] memory user=instance.getUsers();
         for(uint i=0;i<user.length;i++){
             if(user[i]==msg.sender){
+<<<<<<< HEAD
                 // emit joined(address(instance));
                 return address(instance);
+=======
+                emit joined(address(instance));
+                return;
+>>>>>>> origin/main
             }
         }
         revert("You are not User for this address");

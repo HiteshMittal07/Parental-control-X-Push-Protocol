@@ -30,7 +30,11 @@ function App() {
   const [contractAddress, setContractAddress] = useState(null);
   const [owner, setOwner] = useState(null);
   const connectWallet = async () => {
+<<<<<<< HEAD
     const contractAddress = "0x384cc0998C42FAb018Bf622171902261A7633937";
+=======
+    const contractAddress = "0x9e9Ac5404C479b10d28C2d43E278B7f679b9C271";
+>>>>>>> origin/main
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;
