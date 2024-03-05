@@ -10,23 +10,27 @@ const Router = () => {
   const { joined, created } = useContext(ParentalContext);
   return (
     <Routes>
-      {!joined || !created ? (
+      {!localStorage.getItem("enter") ? (
         <Route path="/" element={<Initial />} />
       ) : (
         <Route path="/home" element={<Home />} />
       )}
-      {joined || created ? (
+      {localStorage.getItem("enter") ? (
         <Route path="/home" element={<Home />} />
       ) : (
         <Route path="/" element={<Initial />} />
       )}
-      {created || joined ? (
+      {localStorage.getItem("enter") ? (
         <Route path="/transaction" element={<Transaction />} />
       ) : (
         ""
       )}
-      {created || joined ? <Route path="/owners" element={<Owners />} /> : ""}
-      {created || joined ? (
+      {localStorage.getItem("enter") ? (
+        <Route path="/owners" element={<Owners />} />
+      ) : (
+        ""
+      )}
+      {localStorage.getItem("enter") ? (
         <Route path="/notifications" element={<Notifications />} />
       ) : (
         ""

@@ -7,20 +7,20 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
 export default function CreateWallet() {
-  const { state, setContractAddress, SetCreated, connected , setOwner} =
+  const { state, setContractAddress, SetCreated, setOwner } =
     useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
   async function Create() {
-    if(!connected){
+    if (!window.ethereum.isConnected()) {
       toast.error("Connect Wallet!!");
       return;
     }
     const { contract, contractRead } = state;
     console.log(contract);
     let provider = new ethers.providers.Web3Provider(window.ethereum);
-    let signer=provider.getSigner();
-    let address=await signer.getAddress();
+    let signer = provider.getSigner();
+    let address = await signer.getAddress();
     const selectedValue = 1442;
     await provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
@@ -32,6 +32,7 @@ export default function CreateWallet() {
       setOwner(address);
       SetCreated(true);
       setLoading(false);
+      localStorage.setItem("enter", "true");
       navigate("/home");
       event.removeListener();
     });

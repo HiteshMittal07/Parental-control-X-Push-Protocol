@@ -78,7 +78,7 @@ export default function CreateChannel() {
   return (
     <div className="mt-5 justify-content-center align-content-center align-items-center">
       <h1 className="text-light">Create Channel for Notifications</h1>
-      <button className="btn btn-light" onClick={create}>
+      <button className="btn btn-light" onClick={switchChain}>
         Create
       </button>
     </div>

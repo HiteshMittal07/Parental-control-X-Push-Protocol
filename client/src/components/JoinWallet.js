@@ -8,7 +8,7 @@ import abi2 from "../contractJson/CreateWallet.json";
 import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
 export default function JoinWallet(props) {
-  const { state, setContractAddress, SetJoined, connected, setOwner } =
+  const { state, setContractAddress, SetJoined, setOwner } =
     useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const [showModal, setShowModal] = useState(false);
@@ -51,6 +51,9 @@ export default function JoinWallet(props) {
       SetJoined(true);
       setLoading(false);
       setOwner(add);
+      localStorage.setItem("enter", "true");
+      localStorage.setItem("owner", add);
+      localStorage.setItem("contractAddr", tx);
       navigate("/home");
     } catch (error) {
       setLoading(false);
@@ -58,7 +61,7 @@ export default function JoinWallet(props) {
     }
   }
   const openModal = () => {
-    if (!connected) {
+    if (!window.ethereum.isConnected()) {
       toast.error("First connect the wallet");
       return;
     }

@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import abi from "../contractJson/Parental.json";
 import BeatLoader from "react-spinners/BeatLoader";
 const Owners = () => {
-  const { contractAddress } = useContext(ParentalContext);
+  const contractAddress = localStorage.getItem("contractAddr");
   const contractABI = abi.abi;
   const [owners, setOwners] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark bg-transparent">
       <div className="container">
-        {joined || created ? (
+        {localStorage.getItem("enter") ? (
           <Link className="navbar-brand" to="/home">
             <img
               src={logo}
@@ -48,7 +48,7 @@ const Header = () => {
         </button>
         <div className="collapse navbar-collapse" id="navDrop">
           <ul className="navbar-nav ms-auto">
-            {joined || created == true ? (
+            {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <Link to="/home" className="nav-link">
                   Home
@@ -57,7 +57,7 @@ const Header = () => {
             ) : (
               ""
             )}
-            {joined || created == true ? (
+            {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <Link to="/transaction" className="nav-link">
                   Transaction Logs
@@ -66,7 +66,7 @@ const Header = () => {
             ) : (
               ""
             )}
-            {joined || created == true ? (
+            {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <Link to="/owners" className="nav-link">
                   Owners
@@ -75,7 +75,7 @@ const Header = () => {
             ) : (
               ""
             )}
-            {joined || created == true ? (
+            {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <Link to="/notifications" className="nav-link">
                   <FaBell style={{ cursor: "pointer" }} />
@@ -84,7 +84,7 @@ const Header = () => {
             ) : (
               ""
             )}
-            {contract == null ? (
+            {!window.ethereum.isConnected() ? (
               <li className="nav-item">
                 <button className="btn btn-light ms-2" onClick={connectWallet}>
                   Connect wallet
@@ -97,15 +97,18 @@ const Header = () => {
                 </button>
               </li>
             )}
-            {joined || created == true ? <AddUser /> : ""}
-            {joined || created == true ? <AddOwner /> : ""}
-            {joined || created == true ? (
+            {localStorage.getItem("enter") ? <AddUser /> : ""}
+            {localStorage.getItem("enter") ? <AddOwner /> : ""}
+            {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <button
                   className="btn btn-light ms-2"
                   onClick={() => {
                     SetJoined(false);
                     SetCreated(false);
+                    localStorage.removeItem("enter");
+                    localStorage.removeItem("owner");
+                    localStorage.removeItem("contractAddr");
                     navigate("/");
                     toast.success("Exited successfully");
                   }}

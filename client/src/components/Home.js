@@ -11,8 +11,9 @@ import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 export const Home = () => {
   const [balance, setBalance] = useState(null);
   const [transactionCount, setTransactionCount] = useState(0);
-  const { contractAddress, owner } = useContext(ParentalContext);
   const contractABI = abi.abi;
+  let contractAddress = localStorage.getItem("contractAddr");
+  let owner = localStorage.getItem("owner");
   const [loading, setLoading] = useState(false);
   const override = {
     display: "block",

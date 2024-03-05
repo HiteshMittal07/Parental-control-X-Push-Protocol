@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import abi from "../contractJson/Parental.json";
 import BeatLoader from "react-spinners/BeatLoader";
 const Transactions = () => {
-  const { contractAddress } = useContext(ParentalContext);
+  const contractAddress = localStorage.getItem("contractAddr");
   const contractABI = abi.abi;
   const [transactions, setTransactions] = useState([]);
   const [check, setCheck] = useState(0);
