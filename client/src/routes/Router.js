@@ -3,11 +3,8 @@ import Home from "../components/Home";
 import Owners from "../components/Owners";
 import { Routes, Route } from "react-router-dom";
 import Initial from "../components/Initial";
-import { useContext } from "react";
-import { ParentalContext } from "../ParentalContext";
 import Notifications from "../components/Notifications";
 const Router = () => {
-  const { joined, created } = useContext(ParentalContext);
   return (
     <Routes>
       {!localStorage.getItem("enter") ? (

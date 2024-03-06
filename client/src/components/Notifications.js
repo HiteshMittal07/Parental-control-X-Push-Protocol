@@ -9,7 +9,7 @@ import Subscribe from "./Subscribe";
 import BeatLoader from "react-spinners/BeatLoader";
 import NotificationController from "../NotificationController";
 export default function Notifications() {
-  const { owner } = useContext(ParentalContext);
+  const owner = localStorage.getItem("owner");
   const [status, setStatus] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
   const contractABI = abi.abi;

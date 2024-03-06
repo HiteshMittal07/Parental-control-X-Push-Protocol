@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 export default function CreateChannel() {
   const { contractAddress } = useContext(ParentalContext);
   const contractABI = abi3.abi;
+
   const switchChain = async () => {
     window.ethereum.on("chainChanged", create);
 

@@ -6,7 +6,8 @@ import { ethers } from "ethers";
 import abi from "../contractJson/Parental.json";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 export default function AddUser() {
-  const { contractAddress, owner } = useContext(ParentalContext);
+  const contractAddress = localStorage.getItem("contractAddr");
+  const owner = localStorage.getItem("owner");
   const contractABI = abi.abi;
   async function Adduser() {
     let provider = new ethers.providers.Web3Provider(window.ethereum);

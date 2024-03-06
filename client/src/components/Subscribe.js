@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { ParentalContext } from "../ParentalContext";
 
 export default function Subscribe() {
-  const { owner } = useContext(ParentalContext);
+  const owner = localStorage.getItem("owner");
   async function subscribe() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("wallet_switchEthereumChain", [

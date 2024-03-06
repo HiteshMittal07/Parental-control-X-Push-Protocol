@@ -32,6 +32,14 @@ export default function JoinWallet(props) {
     const contractAbi = abi2.abi;
     let provider = new ethers.providers.Web3Provider(window.ethereum);
     let signer = provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = await provider.getBalance(address);
+    const etherBalance = ethers.utils.formatEther(balance);
+    console.log(etherBalance);
+    if (etherBalance == 0) {
+      toast.error("Please Go get some testnet faucet");
+      return;
+    }
     const add = document.querySelector("#addr").value;
     setShowModal(false);
     setLoading(true);

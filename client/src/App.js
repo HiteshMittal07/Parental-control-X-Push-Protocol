@@ -1,21 +1,14 @@
-// import * as PushSDK from "@pushprotocol/restapi";
 import { BigNumber, ethers } from "ethers";
 import { useState } from "react";
-import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
-
 import "bootstrap/dist/css/bootstrap.css";
 import Header from "./components/Header";
 import Router from "./routes/Router";
 import abi from "./contractJson/CreateWallet.json";
-import abi2 from "./contractJson/push.json";
 import "./App.css";
 import { ParentalContext } from "./ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import NotificationInterface from "./NotificationInterface";
-import CreateWallet from "./components/CreateWallet";
-import JoinWallet from "./components/JoinWallet";
-import Initial from "./components/Initial";
+import { sign } from "@pushprotocol/restapi/src/lib/chat/helpers";
 function App() {
   const [state, setState] = useState({
     provider: null,
@@ -45,6 +38,11 @@ function App() {
     blockExplorerUrls: ["https://explorer.public.zkevm-test.net/"], // Block explorer URL
   };
   const connectWallet = async () => {
+    if (!window.ethereum) {
+      toast.error("first install the metamask");
+      window.location.href = "https://metamask.io/download/";
+      return;
+    }
     const contractAddress = "0x384cc0998C42FAb018Bf622171902261A7633937";
     const contractABI = abi.abi;
     try {
@@ -61,6 +59,7 @@ function App() {
           console.error("Failed to add custom network to MetaMask:", error);
         });
       let provider = new ethers.providers.Web3Provider(ethereum);
+      // console.log(window.ethereum.isConnected());
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -116,7 +115,6 @@ function App() {
     >
       <div className="App">
         <Header />
-        {/* <button onClick={send}>send</button> */}
         <Router />
       </div>
     </ParentalContext.Provider>

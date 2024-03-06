@@ -7,6 +7,7 @@ import logo from "../images/logo.png";
 import { FaBell } from "react-icons/fa";
 import AddUser from "./AddUser";
 import AddOwner from "./AddOwner";
+import { connected } from "process";
 const Header = () => {
   const { state, connectWallet, SetJoined, SetCreated, joined, created } =
     useContext(ParentalContext);
@@ -84,16 +85,36 @@ const Header = () => {
             ) : (
               ""
             )}
-            {!window.ethereum.isConnected() ? (
+            {window.ethereum ? (
+              !window.ethereum.isConnected() ? (
+                <li className="nav-item">
+                  <button
+                    className="btn btn-light ms-2"
+                    onClick={connectWallet}
+                  >
+                    Connect wallet
+                  </button>
+                </li>
+              ) : (
+                <li className="nav-item">
+                  <button
+                    className="btn btn-light ms-2"
+                    onClick={connectWallet}
+                  >
+                    Connected
+                  </button>
+                </li>
+              )
+            ) : joined || created == true ? (
               <li className="nav-item">
                 <button className="btn btn-light ms-2" onClick={connectWallet}>
-                  Connect wallet
+                  Connected
                 </button>
               </li>
             ) : (
               <li className="nav-item">
                 <button className="btn btn-light ms-2" onClick={connectWallet}>
-                  Connected
+                  Connect Wallet
                 </button>
               </li>
             )}
