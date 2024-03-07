@@ -9,8 +9,15 @@ import AddUser from "./AddUser";
 import AddOwner from "./AddOwner";
 import { connected } from "process";
 const Header = () => {
-  const { state, connectWallet, SetJoined, SetCreated, joined, created } =
-    useContext(ParentalContext);
+  const {
+    state,
+    connectWallet,
+    SetJoined,
+    SetCreated,
+    joined,
+    created,
+    connected,
+  } = useContext(ParentalContext);
   const { contract } = state;
   const navigate = useNavigate();
   return (
@@ -85,36 +92,16 @@ const Header = () => {
             ) : (
               ""
             )}
-            {window.ethereum ? (
-              !window.ethereum.isConnected() ? (
-                <li className="nav-item">
-                  <button
-                    className="btn btn-light ms-2"
-                    onClick={connectWallet}
-                  >
-                    Connect wallet
-                  </button>
-                </li>
-              ) : (
-                <li className="nav-item">
-                  <button
-                    className="btn btn-light ms-2"
-                    onClick={connectWallet}
-                  >
-                    Connected
-                  </button>
-                </li>
-              )
-            ) : joined || created == true ? (
+            {!connected ? (
               <li className="nav-item">
                 <button className="btn btn-light ms-2" onClick={connectWallet}>
-                  Connected
+                  Connect wallet
                 </button>
               </li>
             ) : (
               <li className="nav-item">
                 <button className="btn btn-light ms-2" onClick={connectWallet}>
-                  Connect Wallet
+                  Connected
                 </button>
               </li>
             )}

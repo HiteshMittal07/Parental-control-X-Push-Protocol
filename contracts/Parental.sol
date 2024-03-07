@@ -23,6 +23,7 @@ contract Parental{
     mapping(address=>bool) isOwner;
     uint public votes;
 
+
     struct Transaction{
         address from;
         address to;
@@ -33,9 +34,11 @@ contract Parental{
         uint totalVotes;
     }
     mapping (uint=>mapping(address=>bool)) public isConfirmed;
+
+    // all transactions stored in this.
     Transaction[] public transactions;
 
-    // here first owner is msg.sender and second address is given by the msg.sender in the client side.
+    // here owner is who creates the wallet.
     constructor(address owner) {
         owners.push(owner);
         users.push(owner);

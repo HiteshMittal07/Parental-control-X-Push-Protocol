@@ -16,7 +16,6 @@ function App() {
     contract: null,
     contractRead: null,
   });
-
   const [created, SetCreated] = useState(null);
   const [connected, setConnected] = useState(false);
   const [joined, SetJoined] = useState(null);
@@ -59,7 +58,6 @@ function App() {
           console.error("Failed to add custom network to MetaMask:", error);
         });
       let provider = new ethers.providers.Web3Provider(ethereum);
-      // console.log(window.ethereum.isConnected());
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -88,6 +86,10 @@ function App() {
         setState({ provider, signer, contract, contractRead });
       });
 
+      window.ethereum.on("disconnect", (error) => {
+        console.error("Disconnected from the wallet:", error);
+        setConnected(false);
+      });
       setAccount(accounts);
       setState({ provider, signer, contract, contractRead });
       setConnected(true);
