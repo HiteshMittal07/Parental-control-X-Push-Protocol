@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
 import abi from "../contractJson/CreateWallet.json";
 export default function CreateWallet() {
-  const { state, setContractAddress, SetCreated, setOwner } =
+  const { state, setContractAddress, SetCreated, setOwner, connected } =
     useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
   const contractAbi = abi.abi;
   async function Create() {
-    if (!window.ethereum.isConnected()) {
+    if (!connected) {
       toast.error("Connect Wallet!!");
       return;
     }
@@ -25,7 +25,7 @@ export default function CreateWallet() {
     const etherBalance = ethers.utils.formatEther(balance);
     console.log(etherBalance);
     if (etherBalance == 0) {
-      toast.error("Please go get some testnet faucet");
+      toast.error("Insufficient Funds!! Check Info Page");
       return;
     }
     let contractRead = new ethers.Contract(

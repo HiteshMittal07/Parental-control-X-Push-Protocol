@@ -83,6 +83,11 @@ const Header = () => {
             ) : (
               ""
             )}
+            <li className="nav-item">
+              <Link to="/info" className="nav-link">
+                Info
+              </Link>
+            </li>
             {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <Link to="/notifications" className="nav-link">
@@ -105,6 +110,7 @@ const Header = () => {
                 </button>
               </li>
             )}
+
             {localStorage.getItem("enter") ? <AddUser /> : ""}
             {localStorage.getItem("enter") ? <AddOwner /> : ""}
             {localStorage.getItem("enter") ? (

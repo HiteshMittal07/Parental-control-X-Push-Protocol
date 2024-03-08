@@ -4,6 +4,7 @@ import Owners from "../components/Owners";
 import { Routes, Route } from "react-router-dom";
 import Initial from "../components/Initial";
 import Notifications from "../components/Notifications";
+import Info from "../components/Info"
 const Router = () => {
   return (
     <Routes>
@@ -32,6 +33,7 @@ const Router = () => {
       ) : (
         ""
       )}
+      <Route path="/info" element={<Info/>}/>
     </Routes>
   );
 };

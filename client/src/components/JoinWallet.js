@@ -8,7 +8,7 @@ import abi2 from "../contractJson/CreateWallet.json";
 import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
 export default function JoinWallet(props) {
-  const { state, setContractAddress, SetJoined, setOwner } =
+  const { state, setContractAddress, SetJoined, setOwner, connected } =
     useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const [showModal, setShowModal] = useState(false);
@@ -30,17 +30,9 @@ export default function JoinWallet(props) {
   async function join() {
     const contractABI = abi.abi;
     const contractAbi = abi2.abi;
+    const add = document.querySelector("#addr").value;
     let provider = new ethers.providers.Web3Provider(window.ethereum);
     let signer = provider.getSigner();
-    const address = await signer.getAddress();
-    const balance = await provider.getBalance(address);
-    const etherBalance = ethers.utils.formatEther(balance);
-    console.log(etherBalance);
-    if (etherBalance == 0) {
-      toast.error("Please Go get some testnet faucet");
-      return;
-    }
-    const add = document.querySelector("#addr").value;
     setShowModal(false);
     setLoading(true);
     let contractRead = new ethers.Contract(
@@ -69,7 +61,7 @@ export default function JoinWallet(props) {
     }
   }
   const openModal = () => {
-    if (!window.ethereum.isConnected()) {
+    if (!connected) {
       toast.error("First connect the wallet");
       return;
     }
@@ -114,7 +106,7 @@ export default function JoinWallet(props) {
               <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                   <div className="modal-header">
-                    <h5 className="modal-title">Create the Game</h5>
+                    <h5 className="modal-title">Join Wallet</h5>
                     <button
                       type="button"
                       className="btn-close"

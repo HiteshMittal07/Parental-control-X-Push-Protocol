@@ -3,7 +3,6 @@ import CreateWallet from "./CreateWallet";
 import JoinWallet from "./JoinWallet";
 import BeatLoader from "react-spinners/BeatLoader";
 import { LoadingContext } from "./LoadingContext";
-
 export default function Initial() {
   const [loading, setLoading] = useState(false);
   const override = {
