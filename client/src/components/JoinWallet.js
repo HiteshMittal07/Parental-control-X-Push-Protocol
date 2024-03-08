@@ -22,10 +22,14 @@ export default function JoinWallet(props) {
     provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
     ]);
-    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+    const chainId = await window.ethereum.request({
+      method: "eth_chainId",
+      params: [],
+    });
+    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await join();
     }
-    console.log(window.ethereum.chainId);
+    console.log(chainId);
   };
   async function join() {
     const contractABI = abi.abi;

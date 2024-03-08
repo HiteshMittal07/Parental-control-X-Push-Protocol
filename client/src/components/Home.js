@@ -28,7 +28,11 @@ export const Home = () => {
     provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
     ]);
-    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+    const chainId = await window.ethereum.request({
+      method: "eth_chainId",
+      params: [],
+    });
+    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await Deposit();
     }
     // console.log(window.ethereum.chainId);
@@ -96,10 +100,13 @@ export const Home = () => {
     provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
     ]);
-    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+    const chainId = await window.ethereum.request({
+      method: "eth_chainId",
+      params: [],
+    });
+    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await getBalance();
     }
-    console.log(window.ethereum.chainId);
   };
   const getBalance = async () => {
     let provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -125,10 +132,13 @@ export const Home = () => {
     provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
     ]);
-    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+    const chainId = await window.ethereum.request({
+      method: "eth_chainId",
+      params: [],
+    });
+    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await submitTx();
     }
-    console.log(window.ethereum.chainId);
   };
   const submitTx = async () => {
     // event.preventDefault();
@@ -191,7 +201,11 @@ export const Home = () => {
     provider.send("wallet_switchEthereumChain", [
       { chainId: `0x${Number(selectedValue).toString(16)}` },
     ]);
-    if (window.ethereum.chainId == `0x${Number(selectedValue).toString(16)}`) {
+    const chainId = await window.ethereum.request({
+      method: "eth_chainId",
+      params: [],
+    });
+    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await confirmTx();
     }
     // console.log(window.ethereum.chainId);

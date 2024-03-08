@@ -17,10 +17,14 @@ export default function CreateChannel() {
     const selectedValue = 1442;
     // Send the chain switch request
     provider.send("wallet_switchEthereumChain", [{ chainId: "0xAA36A7" }]);
-    if (window.ethereum.chainId == `0xAA36A7`) {
+    const chainId = await window.ethereum.request({
+      method: "eth_chainId",
+      params: [],
+    });
+    if (chainId == `0xAA36A7`) {
       await create();
     }
-    console.log(window.ethereum.chainId);
+    console.log(chainId);
   };
   async function create() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
