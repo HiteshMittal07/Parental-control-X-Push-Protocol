@@ -42,7 +42,8 @@ function App() {
       window.location.href = "https://metamask.io/download/";
       return;
     }
-    const contractAddress = "0x384cc0998C42FAb018Bf622171902261A7633937";
+    // const contractAddress = "0x384cc0998C42FAb018Bf622171902261A7633937";
+    const contractAddress = "0xb65f926c6c420671892561334C289485faC9309E";
     const contractABI = abi.abi;
     try {
       const { ethereum } = window;

@@ -29,7 +29,7 @@ export default function CreateWallet() {
       return;
     }
     let contractRead = new ethers.Contract(
-      "0x384cc0998C42FAb018Bf622171902261A7633937",
+      "0xb65f926c6c420671892561334C289485faC9309E",
       contractAbi,
       provider
     );
@@ -47,6 +47,7 @@ export default function CreateWallet() {
       SetCreated(true);
       setLoading(false);
       localStorage.setItem("enter", "true");
+      localStorage.setItem("contractAddr", contractAddress);
       navigate("/home");
       event.removeListener();
     });

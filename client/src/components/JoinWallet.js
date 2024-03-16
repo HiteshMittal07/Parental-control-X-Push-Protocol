@@ -40,7 +40,7 @@ export default function JoinWallet(props) {
     setShowModal(false);
     setLoading(true);
     let contractRead = new ethers.Contract(
-      "0x384cc0998C42FAb018Bf622171902261A7633937",
+      "0xb65f926c6c420671892561334C289485faC9309E",
       contractAbi,
       provider
     );

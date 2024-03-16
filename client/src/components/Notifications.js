@@ -20,17 +20,20 @@ export default function Notifications() {
   };
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contractABI = abi.abi;
     const contractRead = new ethers.Contract(
-      "0x384cc0998C42FAb018Bf622171902261A7633937",
+      "0xb65f926c6c420671892561334C289485faC9309E",
       contractABI,
       provider
     );
-    const check = async () => {
-      setLoading(true);
-      const selectedValue = 1442;
+    const switchChain = async (selectedValue) => {
       await provider.send("wallet_switchEthereumChain", [
         { chainId: `0x${Number(selectedValue).toString(16)}` },
       ]);
+    };
+    const check = async () => {
+      setLoading(true);
+      switchChain(1442);
       const address = owner;
       console.log(address);
       try {
@@ -50,8 +53,9 @@ export default function Notifications() {
     const check2 = async () => {
       if (status == true) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const selectedValue = 11155111;
         await provider.send("wallet_switchEthereumChain", [
-          { chainId: "0xAA36A7" },
+          { chainId: `0x${Number(selectedValue).toString(16)}` },
         ]);
         const signer = provider.getSigner();
         const userAlice = await PushAPI.initialize(signer, {

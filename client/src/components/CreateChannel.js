@@ -38,18 +38,25 @@ export default function CreateChannel() {
       abi,
       provider
     );
-    const contract = contractRead.connect(signer);
-    console.log(contract);
-    const amount = ethers.utils.parseEther("100");
-    const tx = await contract.mint(amount);
-    await tx.wait();
-
-    const response = await userAlice.channel.create({
-      name: "Parental Test Channel",
-      description: "Your local channel to communicates among you",
-      icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAz0lEQVR4AcXBsU0EQQyG0e+saWJ7oACiKYDMEZVs6GgSpC2BIhzRwAS0sgk9HKn3gpFOAv3v3V4/3+4U4Z1q5KTy42Ql940qvFONnFSGmCFmiN2+fj7uCBlihpgh1ngwcvKfwjuVIWaIGWKNB+GdauSk8uNkJfeNKryzYogZYoZY40m5b/wlQ8wQM8TayMlKeKcaOVkJ71QjJyuGmCFmiDUe+HFy4VyEd57hx0mV+0ZliBlihlgL71w4FyMnVXhnZeSkiu93qheuDDFDzBD7BcCyMAOfy204AAAAAElFTkSuQmCC",
-      url: "https://parental-control07.netlify.app/",
-    });
+    try {
+      const contract = contractRead.connect(signer);
+      console.log(contract);
+      const amount = ethers.utils.parseEther("100");
+      const tx = await contract.mint(amount);
+      await tx.wait();
+    } catch (error) {
+      return;
+    }
+    try {
+      const response = await userAlice.channel.create({
+        name: "Parental Test Channel",
+        description: "Your local channel to communicates among you",
+        icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAz0lEQVR4AcXBsU0EQQyG0e+saWJ7oACiKYDMEZVs6GgSpC2BIhzRwAS0sgk9HKn3gpFOAv3v3V4/3+4U4Z1q5KTy42Ql940qvFONnFSGmCFmiN2+fj7uCBlihpgh1ngwcvKfwjuVIWaIGWKNB+GdauSk8uNkJfeNKryzYogZYoZY40m5b/wlQ8wQM8TayMlKeKcaOVkJ71QjJyuGmCFmiDUe+HFy4VyEd57hx0mV+0ZliBlihlgL71w4FyMnVXhnZeSkiu93qheuDDFDzBD7BcCyMAOfy204AAAAAElFTkSuQmCC",
+        url: "https://parental-control07.netlify.app/",
+      });
+    } catch (error) {
+      return;
+    }
     window.ethereum.removeListener("chainChanged", create);
     window.ethereum.on("chainChanged", create2);
     const selectedValue = 1442;
@@ -69,7 +76,7 @@ export default function CreateChannel() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const contractRead2 = new ethers.Contract(
-      "0x384cc0998C42FAb018Bf622171902261A7633937",
+      "0xb65f926c6c420671892561334C289485faC9309E",
       contractABI,
       provider
     );

@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { ParentalContext } from "../ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo from "../images/logo.png";
+import logo from "../images/download1.png";
 import { FaBell } from "react-icons/fa";
-import AddUser from "./AddUser";
-import AddOwner from "./AddOwner";
+import AddUser from "./AddChild";
+import AddOwner from "./AddParent";
 import { connected } from "process";
 const Header = () => {
   const {
@@ -28,8 +28,8 @@ const Header = () => {
             <img
               src={logo}
               alt="Logo"
-              height="80"
-              width="110"
+              height="100"
+              width="210"
               className="d-inline-block align-top"
             />
           </Link>
@@ -38,8 +38,8 @@ const Header = () => {
             <img
               src={logo}
               alt="Logo"
-              height="80"
-              width="110"
+              height="100"
+              width="210"
               className="d-inline-block align-top"
             />
           </Link>
@@ -77,7 +77,7 @@ const Header = () => {
             {localStorage.getItem("enter") ? (
               <li className="nav-item">
                 <Link to="/owners" className="nav-link">
-                  Owners
+                  Parents
                 </Link>
               </li>
             ) : (

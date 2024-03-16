@@ -91,7 +91,7 @@ export const Home = () => {
     switchChain();
   }, []);
 
-  const switchChain = async () => {
+  const switchChain1 = async () => {
     window.ethereum.on("chainChanged", getBalance);
 
     let provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -286,7 +286,7 @@ export const Home = () => {
                 <h2 className="section-title">Balance Checker</h2>
                 <div className="balance-info">
                   <h3 className="balance-text">Balance: {balance} ETH</h3>
-                  <button onClick={switchChain} className="btn btn-primary">
+                  <button onClick={switchChain1} className="btn btn-primary">
                     Get Balance
                   </button>
                 </div>

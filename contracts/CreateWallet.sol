@@ -3,17 +3,17 @@ pragma solidity ^0.8.6;
 import "./Parental.sol";
 contract CreateWallet{
     event created(address contractAddress);
-    event joined(address contractAddress);
-    // stores a wallet exist for particular user.
+    // stores wallet information.
     struct Wallet {
         Parental instance;
         bool exists;
         bool notify;
     }
-    mapping(address => Wallet) users;
+    
+    mapping(address => Wallet) users; // stores the user address mapping with thier parental wallet info.
 
-    // Here you can create Parental Wallet,
-    // you have to provide address of other owner of your wallet
+    /** @dev : Creates new Parental wallet and owner of wallet is creator of wallet. 
+     */
     function CreateParentalWallet()public{
         Wallet memory wallet = users[msg.sender];
         require(!wallet.exists,"user already exist in system!!");
@@ -26,30 +26,33 @@ contract CreateWallet{
         emit created(address(instance));
     }
 
-    // Here while joining the wallet user have to give the owner address,
-    // this will check whether this user is assosiated with the wallet of given owner address.
+    /**
+     * @dev : returns contract address of parental wallet which creator created while creating wallet.
+     * @param : it's the owner address who created the wallet , user of wallet can join by providing the address of wallet of owner.
+     */
     function joinWallet(address a)public view returns(address){
         Wallet memory wallet = users[a];
         require(wallet.exists,"user dont exist in system!!");
         Parental instance=wallet.instance;
-        address[] memory user=instance.getUsers();
-        for(uint i=0;i<user.length;i++){
-            if(user[i]==msg.sender){
-                // emit joined(address(instance));
-                return address(instance);
-            }
+        if(instance.isUser(msg.sender)){
+            return address(instance);
         }
         revert("You are not User for this address");
     }
+    /**
+     * @dev : here wallet owner can turn on the service for notification.
+     */
 
-    // use to store whether a local channel for push notification is created by owner or not.
     function onNotification()public{
         Wallet storage wallet = users[msg.sender];
         require(wallet.exists,"You are not a Wallet owner!!");
         wallet.notify=true;
     }
 
-    // return the status of notification , whether they are on or off.
+    /**
+     * @dev : it returns whether notification service are turned on by the wallet owner or not. 
+     * @param : "a" is owner address here
+     */
     function getNotifyStatus(address a)public view returns(bool){
          Wallet storage wallet = users[a];
         require(wallet.exists,"user dont exist in system!!");

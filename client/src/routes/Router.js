@@ -1,10 +1,10 @@
 import Transaction from "../components/Transactions";
 import Home from "../components/Home";
-import Owners from "../components/Owners";
+import Owners from "../components/Parents";
 import { Routes, Route } from "react-router-dom";
 import Initial from "../components/Initial";
 import Notifications from "../components/Notifications";
-import Info from "../components/Info"
+import Info from "../components/Info";
 const Router = () => {
   return (
     <Routes>
@@ -33,7 +33,7 @@ const Router = () => {
       ) : (
         ""
       )}
-      <Route path="/info" element={<Info/>}/>
+      <Route path="/info" element={<Info />} />
     </Routes>
   );
 };
