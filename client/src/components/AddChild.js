@@ -66,66 +66,19 @@ export default function AddUser() {
   };
   return (
     <div>
-      <button className="btn btn-light ms-2" onClick={openModal}>
-        Add Child
-      </button>
-      {showModal && (
-        <>
-          <div
-            className="modal-backdrop"
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-              backdropFilter: "blur(5px)",
-            }}
-            onClick={closeModal}
-          ></div>
-
-          {/* Modal */}
-          <div
-            className="modal"
-            tabIndex="-1"
-            style={{
-              display: "block",
-              zIndex: 1050,
-            }}
-          >
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title text-dark">Add Child</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={closeModal}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  {/* Input fields for the modal */}
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    placeholder="Enter User address"
-                    id="address"
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button className="btn btn-primary" onClick={Adduser}>
-                    Add
-                  </button>
-                  <button className="btn btn-secondary" onClick={closeModal}>
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      <div className="input-group mb-1">
+        <input
+          type="text"
+          id="address"
+          placeholder="Enter the Child Address here"
+          className="form-control custom-input"
+        />
+      </div>
+      <div className="input-group mb-1">
+        <button className="btn btn-danger add-btn" onClick={Adduser}>
+          Add
+        </button>
+      </div>
     </div>
   );
 }

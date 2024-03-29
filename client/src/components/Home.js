@@ -8,6 +8,8 @@ import { ParentalContext } from "../ParentalContext";
 import abi from "../contractJson/Parental.json";
 import BeatLoader from "react-spinners/BeatLoader";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
+import AddOwner from "./AddParent";
+import AddUser from "./AddChild";
 export const Home = () => {
   const [balance, setBalance] = useState(null);
   const [transactionCount, setTransactionCount] = useState(0);
@@ -259,6 +261,173 @@ export const Home = () => {
   //   contractRead2 && fetchTransactionCount();
   // }, []);
 
+  // return (
+  //   <div>
+  //     {loading ? (
+  //       <>
+  //         <BeatLoader color="#ffffff" cssOverride={override} />
+  //         <p className="text-light">Wait Switching Network...</p>
+  //       </>
+  //     ) : (
+  //       <div
+  //         className="home-container container mt-5"
+  //         style={{ backgroundColor: "rgba(196, 164, 162, 0.5)" }}
+  //       >
+  //         <div className="row">
+  //           {/* Balance Checker */}
+  //           <div className="col-md-6">
+  //             <div
+  //               className="balance-box"
+  //               style={{
+  //                 //   backgroundColor: "rgba(196, 164, 162)",
+  //                 padding: "20px",
+  //                 marginBottom: "20px",
+  //                 height: "400px",
+  //               }}
+  //             >
+  //               <h2 className="section-title">Balance Checker</h2>
+  //               <div className="balance-info">
+  //                 <h3 className="balance-text">Balance: {balance} ETH</h3>
+  //                 <button onClick={switchChain1} className="btn btn-primary">
+  //                   Get Balance
+  //                 </button>
+  //               </div>
+  //               {/* Tagline */}
+  //               <div
+  //                 className="tagline"
+  //                 style={{
+  //                   position: "absolute",
+  //                   bottom: "20px",
+  //                   left: "50%",
+  //                   transform: "translateX(-50%)",
+  //                   textAlign: "center",
+  //                   width: "80%",
+  //                 }}
+  //               >
+  //                 <p
+  //                   style={{
+  //                     fontFamily: "Arial, sans-serif",
+  //                     fontSize: "19px",
+  //                     fontStyle: "italic",
+  //                     color: "#333",
+  //                   }}
+  //                 >
+  //                   "Parental Control is a smart contract-driven system that
+  //                   monitors and logs financial transactions initiated by
+  //                   children. It mandates explicit parental or guardian approval
+  //                   for any payment execution, enhancing control over minors'
+  //                   spending. This solution offers comprehensive oversight for
+  //                   effective management of children's financial activities."
+  //                 </p>
+  //               </div>
+  //             </div>
+  //           </div>
+
+  //           {/* Deposit Amount */}
+  //           <div className="col-md-6">
+  //             <div
+  //               className="deposit-box"
+  //               style={{
+  //                 //   backgroundColor: "rgba(196, 164, 162)",
+  //                 padding: "20px",
+  //                 marginBottom: "20px",
+  //                 height: "400px",
+  //               }}
+  //             >
+  //               <h2 className="section-title">Deposit Amount</h2>
+  //               <div className="input-group mb-3">
+  //                 <input
+  //                   type="text"
+  //                   id="amount"
+  //                   placeholder="Enter the Deposit Amount"
+  //                   className="form-control"
+  //                 />
+  //               </div>
+  //               <div className="input-group mb-3">
+  //                 <button className="btn btn-danger" onClick={switchChain3}>
+  //                   Deposit
+  //                 </button>
+  //               </div>
+  //             </div>
+  //           </div>
+
+  //           {/* Submit a Transaction */}
+  //           <div className="col-md-6">
+  //             <div
+  //               className="submit-box"
+  //               style={{
+  //                 //   backgroundColor: "rgba(196, 164, 162)",
+  //                 padding: "20px",
+  //                 marginBottom: "10px",
+  //                 height: "400px",
+  //               }}
+  //             >
+  //               <h2 className="section-title">Submit a Transaction</h2>
+  //               <div className="input-group mb-2">
+  //                 <input
+  //                   type="text"
+  //                   id="subAddress"
+  //                   placeholder="Enter the Address"
+  //                   className="form-control"
+  //                 />
+  //               </div>
+  //               <div className="input-group mb-2">
+  //                 <input
+  //                   type="text"
+  //                   id="subValue"
+  //                   placeholder="Enter the Amount"
+  //                   className="form-control"
+  //                 />
+  //               </div>
+  //               <div className="input-group mb-2">
+  //                 <textarea
+  //                   id="message"
+  //                   placeholder="Enter the Message"
+  //                   className="form-control"
+  //                   rows={3}
+  //                   cols={50}
+  //                 />
+  //               </div>
+  //               <div className="input-group mb-3">
+  //                 <button className="btn btn-danger" onClick={switchChain2}>
+  //                   Submit
+  //                 </button>
+  //               </div>
+  //             </div>
+  //           </div>
+
+  //           {/* Confirm a Transaction */}
+  //           <div className="col-md-6">
+  //             <div
+  //               className="confirm-box"
+  //               style={{
+  //                 //   backgroundColor: "rgba(196, 164, 162)",
+  //                 padding: "20px",
+  //                 marginBottom: "20px",
+  //                 height: "400px",
+  //               }}
+  //             >
+  //               <h2 className="section-title">Confirm a Transaction</h2>
+  //               <div className="input-group mb-3">
+  //                 <input
+  //                   type="text"
+  //                   id="index"
+  //                   placeholder="Enter the Transaction no."
+  //                   className="form-control"
+  //                 />
+  //               </div>
+  //               <div className="input-group mb-3">
+  //                 <button className="btn btn-primary" onClick={switchChain4}>
+  //                   Confirm
+  //                 </button>
+  //               </div>
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     )}
+  //   </div>
+  // );
   return (
     <div>
       {loading ? (
@@ -269,98 +438,57 @@ export const Home = () => {
       ) : (
         <div
           className="home-container container mt-5"
-          style={{ backgroundColor: "rgba(196, 164, 162, 0.5)" }}
+          style={{ backgroundColor: "rgba(196, 164, 162, 0.2)" }}
         >
-          <div className="row">
-            {/* Balance Checker */}
-            <div className="col-md-6">
-              <div
-                className="balance-box"
-                style={{
-                  //   backgroundColor: "rgba(196, 164, 162)",
-                  padding: "20px",
-                  marginBottom: "20px",
-                  height: "400px",
-                }}
-              >
-                <h2 className="section-title">Balance Checker</h2>
+          {/* <div className="balance-container">
+                <h2>Balance Checker</h2>
                 <div className="balance-info">
-                  <h3 className="balance-text">Balance: {balance} ETH</h3>
-                  <button onClick={switchChain1} className="btn btn-primary">
+                  <h3 className="balance-title">Balance: {balance} ETH</h3>
+                  <button onClick={switchChain} className="btn btn-primary balance-btn">
                     Get Balance
                   </button>
                 </div>
-                {/* Tagline */}
-                <div
-                  className="tagline"
-                  style={{
-                    position: "absolute",
-                    bottom: "20px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    textAlign: "center",
-                    width: "80%",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "Arial, sans-serif",
-                      fontSize: "19px",
-                      fontStyle: "italic",
-                      color: "#333",
-                    }}
-                  >
-                    "Parental Control is a smart contract-driven system that
-                    monitors and logs financial transactions initiated by
-                    children. It mandates explicit parental or guardian approval
-                    for any payment execution, enhancing control over minors'
-                    spending. This solution offers comprehensive oversight for
-                    effective management of children's financial activities."
-                  </p>
-                </div>
-              </div>
-            </div>
+              </div> */}
 
-            {/* Deposit Amount */}
-            <div className="col-md-6">
-              <div
-                className="deposit-box"
-                style={{
-                  //   backgroundColor: "rgba(196, 164, 162)",
-                  padding: "20px",
-                  marginBottom: "20px",
-                  height: "400px",
-                }}
-              >
-                <h2 className="section-title">Deposit Amount</h2>
-                <div className="input-group mb-3">
+          <section className="balance-checker card">
+            <div className="card-body">
+              <h2>Balance Checker</h2>
+              <div className="balance-info">
+                <h3 className="balance-title">Balance: {balance} ETH</h3>
+                <button
+                  onClick={switchChain1}
+                  className="btn btn-primary balance-btn"
+                >
+                  Get Balance
+                </button>
+              </div>
+
+              <h2>Deposit Amount</h2>
+              <div className="deposit-box">
+                <div className="input-group mb-1">
                   <input
                     type="text"
                     id="amount"
                     placeholder="Enter the Deposit Amount"
-                    className="form-control"
+                    className="form-control custom-input"
                   />
                 </div>
-                <div className="input-group mb-3">
-                  <button className="btn btn-danger" onClick={switchChain3}>
-                    Deposit
-                  </button>
-                </div>
+              </div>
+              <div className="input-group mb-1">
+                <button
+                  className="btn btn-danger deposit-btn"
+                  onClick={switchChain3}
+                >
+                  Deposit
+                </button>
               </div>
             </div>
+          </section>
 
-            {/* Submit a Transaction */}
-            <div className="col-md-6">
-              <div
-                className="submit-box"
-                style={{
-                  //   backgroundColor: "rgba(196, 164, 162)",
-                  padding: "20px",
-                  marginBottom: "10px",
-                  height: "400px",
-                }}
-              >
-                <h2 className="section-title">Submit a Transaction</h2>
+          <section className="deposit-submit card">
+            <div className="card-body">
+              <h2>Submit Transaction</h2>
+              <div className="submit-box">
                 <div className="input-group mb-2">
                   <input
                     type="text"
@@ -387,25 +515,17 @@ export const Home = () => {
                   />
                 </div>
                 <div className="input-group mb-3">
-                  <button className="btn btn-danger" onClick={switchChain2}>
+                  <button
+                    className="btn btn-danger submit-btn"
+                    onClick={switchChain2}
+                  >
                     Submit
                   </button>
                 </div>
               </div>
-            </div>
 
-            {/* Confirm a Transaction */}
-            <div className="col-md-6">
-              <div
-                className="confirm-box"
-                style={{
-                  //   backgroundColor: "rgba(196, 164, 162)",
-                  padding: "20px",
-                  marginBottom: "20px",
-                  height: "400px",
-                }}
-              >
-                <h2 className="section-title">Confirm a Transaction</h2>
+              <h2>Confirm Transaction</h2>
+              <div className="confirm-box">
                 <div className="input-group mb-3">
                   <input
                     type="text"
@@ -415,13 +535,59 @@ export const Home = () => {
                   />
                 </div>
                 <div className="input-group mb-3">
-                  <button className="btn btn-primary" onClick={switchChain4}>
+                  <button
+                    className="btn btn-primary confirm-btn"
+                    onClick={switchChain4}
+                  >
                     Confirm
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
+          <section className="add card">
+            <div className="card-body">
+              <div className="add-owner">
+                <h2>Add Owner</h2>
+
+                {localStorage.getItem("enter") ? <AddOwner /> : ""}
+              </div>
+
+              <div className="add-user">
+                <h2>Add User</h2>
+
+                {localStorage.getItem("enter") ? <AddUser /> : ""}
+              </div>
+            </div>
+          </section>
+
+          {/* <section className="deposit-amount">
+            <div className="deposit-box">
+
+            <div className="input-box">
+                <div className="input-group mb-1">
+                  <input
+                    type="text"
+                    id="amount"
+                    placeholder="Enter the Deposit Amount"
+                    className="form-control"
+                  />
+                </div>
+                <div className="input-group mb-1">
+                  <button className="btn btn-danger" onClick={switchChain3}>
+                    Deposit
+                  </button>
+                </div>
+               </div>
+               <h2>Deposit Amount</h2>
+            </div>
+          </section> */}
+
+          {/* <section className="submit-transaction">
+            <div className="submit-box">
+
+            </div>
+          </section> */}
         </div>
       )}
     </div>

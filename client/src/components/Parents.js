@@ -52,6 +52,46 @@ const Owners = () => {
     fetchOwnersDetails();
   }, [switched]);
 
+  // return (
+  //   <div>
+  //     {loading ? (
+  //       <>
+  //         <BeatLoader color="#ffffff" cssOverride={override} />
+  //         <p className="text-light">Fetching Parents...</p>
+  //       </>
+  //     ) : (
+  //       <div className="container mt-4">
+  //         <h2 className="text-uppercase mb-3 text-light">Parents</h2>
+  //         <div className="row">
+  //           {owners.map(({ ownerAddress, details }) => (
+  //             <div className="col-md-6 mb-4" key={ownerAddress}>
+  //               <div className="card">
+  //                 <img
+  //                   src={details.picture?.large} // Use larger images
+  //                   className="card-img-top img-fluid rounded"
+  //                   alt="Owner"
+  //                   style={{ objectFit: "cover", height: "400px" }} // Adjust height
+  //                 />
+  //                 <div className="card-body">
+  //                   <h5 className="card-title">
+  //                     {details.name?.first} {details.name?.last}
+  //                   </h5>
+  //                   <p className="card-text">
+  //                     <span className="fw-bold text-primary">Address:</span>{" "}
+  //                     {ownerAddress}
+  //                   </p>
+  //                   <a href="#" className="btn btn-primary">
+  //                     Know More
+  //                   </a>
+  //                 </div>
+  //               </div>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       </div>
+  //     )}
+  //   </div>
+  // );
   return (
     <div>
       {loading ? (
@@ -65,20 +105,23 @@ const Owners = () => {
           <div className="row">
             {owners.map(({ ownerAddress, details }) => (
               <div className="col-md-6 mb-4" key={ownerAddress}>
-                <div className="card">
+                <div
+                  className="card"
+                  style={{ width: "28rem", borderRadius: "15px" }}
+                >
                   <img
                     src={details.picture?.large} // Use larger images
                     className="card-img-top img-fluid rounded"
                     alt="Owner"
-                    style={{ objectFit: "cover", height: "400px" }} // Adjust height
+                    style={{ objectFit: "cover", height: "350px" }} // Adjust height
                   />
-                  <div className="card-body">
-                    <h5 className="card-title">
+                  <div className="card-body ">
+                    <h5 className="card-title text-white">
                       {details.name?.first} {details.name?.last}
                     </h5>
                     <p className="card-text">
                       <span className="fw-bold text-primary">Address:</span>{" "}
-                      {ownerAddress}
+                      <span className="text-white">{ownerAddress}</span>
                     </p>
                     <a href="#" className="btn btn-primary">
                       Know More

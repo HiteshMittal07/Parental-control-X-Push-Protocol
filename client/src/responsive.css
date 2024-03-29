@@ -1,0 +1,7 @@
+.notification-item {
+  overflow-y: auto;
+  height: 600px;
+}
+.notification-item::-webkit-scrollbar {
+  display: none;
+}

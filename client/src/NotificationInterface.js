@@ -4,6 +4,7 @@ import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
 import BeatLoader from "react-spinners/BeatLoader";
 import { toast } from "react-toastify";
+import "./responsive.css";
 const NotificationInterface = () => {
   const [loading, setLoading] = useState(false);
   const inputStyle = {
@@ -63,7 +64,7 @@ const NotificationInterface = () => {
         // retrieve notifications for users
         const inboxNotifications = await userAlice.notification.list("INBOX", {
           account: `eip155:11155111:${address}`,
-          limit: 5,
+          limit: 10,
         });
 
         // set notifItems state so that react can render
@@ -85,42 +86,47 @@ const NotificationInterface = () => {
           <p className="text-light">Loading Notifications...</p>
         </>
       ) : (
-        <div style={{ width: "50%", margin: "20px auto" }}>
+        <div style={{ width: "50%", margin: "5px auto", marginTop: "10px" }}>
           {notifItems.length > 0 ? (
-            <h3 className="text-light">{`Notification Items for ${wallet}`}</h3>
+            <h3
+              className="text-light"
+              style={{ marginTop: "10px" }}
+            >{`Notification Items for ${wallet}`}</h3>
           ) : (
             <></>
           )}
 
-          {notifItems.map((notifItemSingular, idx) => {
-            const {
-              cta,
-              title,
-              message,
-              app,
-              icon,
-              image,
-              url,
-              blockchain,
-              notification,
-            } = notifItemSingular;
+          <div className="notification-item">
+            {notifItems.map((notifItemSingular, idx) => {
+              const {
+                cta,
+                title,
+                message,
+                app,
+                icon,
+                image,
+                url,
+                blockchain,
+                notification,
+              } = notifItemSingular;
 
-            return (
-              <NotificationItem
-                key={idx} // any unique id
-                notificationTitle={title}
-                notificationBody={message}
-                cta={cta}
-                app={app}
-                icon={icon}
-                image={image}
-                url={url}
-                theme={"dark"} // or can be dark
-                chainName={blockchain}
-                // chainName={blockchain as chainNameType} // if using Typescript
-              />
-            );
-          })}
+              return (
+                <NotificationItem
+                  key={idx} // any unique id
+                  notificationTitle={title}
+                  notificationBody={message}
+                  cta={cta}
+                  app={app}
+                  icon={icon}
+                  image={image}
+                  url={url}
+                  theme={"dark"} // or can be dark
+                  chainName={blockchain}
+                  // chainName={blockchain as chainNameType} // if using Typescript
+                />
+              );
+            })}
+          </div>
         </div>
       )}
     </div>

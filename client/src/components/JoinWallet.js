@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import abi from "../contractJson/Parental.json";
 import abi2 from "../contractJson/CreateWallet.json";
 import { useNavigate } from "react-router-dom";
+import "./initial.css";
 import { LoadingContext } from "./LoadingContext";
 export default function JoinWallet(props) {
   const { state, setContractAddress, SetJoined, setOwner, connected } =
@@ -79,7 +80,10 @@ export default function JoinWallet(props) {
   return (
     <div>
       <div>
-        <button className="btn btn-light" onClick={openModal}>
+        <button
+          className="btn btn-outline-secondary custom-btn"
+          onClick={openModal}
+        >
           Join Wallet
         </button>
         {showModal && (

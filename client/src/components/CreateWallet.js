@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
 import { LoadingContext } from "./LoadingContext";
 import abi from "../contractJson/CreateWallet.json";
+import "./initial.css";
 export default function CreateWallet() {
   const { state, setContractAddress, SetCreated, setOwner, connected } =
     useContext(ParentalContext);
@@ -61,8 +62,8 @@ export default function CreateWallet() {
     }
   }
   return (
-    <div>
-      <button className="btn btn-light" onClick={Create}>
+    <div className="col-6">
+      <button className="btn btn-outline-secondary custom-btn" onClick={Create}>
         Create Wallet
       </button>
     </div>

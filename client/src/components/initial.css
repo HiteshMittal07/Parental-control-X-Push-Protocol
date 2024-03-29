@@ -1,0 +1,85 @@
+
+  
+  .Iam {
+    padding: 3em 5em;
+    font: normal 40px/50px "Times New Roman", serif;
+  }
+
+  
+  .Iam p {
+    height: 70px;
+    float: left;
+    margin-right: 0.5em;
+    font-size: 70px;
+    text-transform:capitalize;
+    color: white; 
+  }
+  
+  .Iam .heading {
+    text-shadow: -1px -1px 1px black,  
+                 1px -1px 1px black,
+                -1px 1px 1px black,
+                 1px 1px 1px black;
+  }
+
+  
+  .Iam b {
+    float: left;
+    overflow: hidden;
+    position: relative;
+    height: 50px;
+    top: 40px;
+    font-size: 42px;
+  }
+
+
+  
+  .Iam .innerIam {
+    display: inline-block;
+    color: white;
+    position: relative;
+    white-space: nowrap;
+    top: 0;
+    left: 0;
+    /*animation*/
+    animation: move 7s infinite;
+    animation-iteration-count: infinite;
+    animation-delay: 1s;
+  }
+  
+  @keyframes move {
+    0% { top: 0px; }
+    20% { top: -50px; }
+    40% { top: -100px; }
+    60% { top: -150px; }
+    80% { top: -200px; }
+  }
+  .button-container {
+    text-align: center;
+  }
+  .button-wrapper {
+
+    display: flex;
+    justify-content: center;
+  }
+  
+  .button-item {
+    margin: 50px 10px; 
+  }
+  .custom-btn {
+    font-size: 25px; 
+    padding: 2px 20px; 
+    width: 200px; 
+    height: 50px; 
+    border-radius: 10px;
+    color: white;
+    transition: color 0.3s, background-color 0.3s;
+    background-color: rgba(255, 255, 255, 0.1); ;
+  }
+  .custom-btn:hover {
+    color: whitesmoke;
+    background-color: rgba(255, 255, 255, 0.2); 
+  }
+ 
+
+  

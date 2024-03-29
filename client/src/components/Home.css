@@ -1,10 +1,12 @@
 /* Home.css */
 /* Home.css */
 .home-container {
-  background-color: #f5f5f5;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 body {
   margin: 0;
@@ -17,29 +19,128 @@ body {
   width: 100%;
   padding: 0; */
   background-color: #0f0e13;
-    background-image: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
-    background-size: cover;
-    width: 100%;
-    height: 100vh;
-    background-repeat: no-repeat;
+  /* background-image: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%); */
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  background-repeat: no-repeat;
 }
 
-.home-container .section-title {
-  font-size: 28px;
-  font-weight: bold;
+/* Individual card styles */
+.card {
+  width: 30%; /* Adjust as needed */
   margin-bottom: 20px;
+  border: 3px solid black;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  transition: all 0.5s ease;
 }
-.transaction-count {
-  font-size: 18px;
-  font-weight: bold;
-  /* You can choose your desired color */
-  margin-top: 10px;
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.card:hover {
+  /* Add styles for hover effect */
+  box-shadow: 0 10px 10px rgba(226, 225, 225, 0.164); /* Example shadow effect */
+  transform: translateY(-7px); /* Example translation effect */
+  border: 2px solid white;
 }
 
-.balance-text {
-  margin-top: 10px;
+.deposit-box {
+  margin-top: 25px;
 }
 
+.submit-box {
+  margin-top: 20px;
+}
+.balance-checker h2 {
+  font-size: 35px;
+  margin-top: 10px;
+  color: aliceblue;
+  white-space: nowrap;
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* margin-left: 4%; */
+}
+.deposit-submit h2 {
+  font-size: 35px;
+  margin-top: 10px;
+  color: aliceblue;
+  white-space: nowrap;
+  font-family: Arial, Helvetica, sans-serif;
+  /* margin-left: 4%; */
+}
+.add h2 {
+  font-size: 35px;
+  margin-top: 10px;
+  color: aliceblue;
+  white-space: nowrap;
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* margin-left: 4%; */
+}
+.deposit-box h2 {
+  font-size: 40px;
+  margin-top: 10px;
+  color: aliceblue;
+  white-space: nowrap;
+  /* margin-left: 4%; */
+}
+.balance-title {
+  width: 90%;
+  margin-top: 10px;
+  white-space: nowrap;
+  background-color: rgba(255, 255, 255, 0.6);
+  font-size: 25px;
+  color: black;
+  /* margin-right: 9%; */
+}
+
+.balance-btn {
+  /* width: 90%; */
+  margin-left: 3%;
+  background-color: #31363f;
+  border: 0px solid white;
+}
+
+.deposit-btn {
+  /* width: 100%; */
+  margin-top: 1%;
+  margin-left: 30%;
+  background-color: #31363f;
+  border: 0px solid white;
+}
+
+.submit-btn {
+  margin-left: 25%;
+  background-color: #31363f;
+  border: 0px solid white;
+}
+
+.confirm-btn {
+  margin-left: 25%;
+  background-color: #31363f;
+  border: 0px solid white;
+}
+
+.add-btn {
+  margin-left: 25%;
+  background-color: #31363f;
+  border: 0px solid white;
+  margin-top: 2%;
+}
+
+.confirm-btn:hover,
+.submit-btn:hover,
+.deposit-btn:hover,
+.balance-btn:hover,
+.add-btn:hover {
+  background-color: #31363f;
+}
 .input-group {
   display: flex;
   justify-content: space-between;
@@ -49,54 +150,39 @@ body {
 
 .form-control {
   flex: 1;
-  margin-right: 10px;
+  /* margin-right: 10px; */
+  background-color: rgba(255, 255, 255, 0.6);
+  font-weight: bold;
+  font-size: 15px;
+  color: #0f0e13;
+}
+.custom-input {
+  color: white;
 }
 
 .btn {
-  min-width: 120px;
+  min-width: 150px;
+  /* margin-left: 2%; */
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .input-group {
-    flex-direction: column;
-  }
-
-  .form-control {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  .btn {
-    min-width: 100%;
-  }
+.add-user {
+  margin-top: 25%;
 }
-
-/* Styles for the Balance Checker section */
-.balance-section {
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: rgba(196, 164, 162, 0.5);
+.add-user h2,
+.add-owner h2 {
+  margin-bottom: 7%;
 }
 
 .balance-info {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
+  margin-top: 20px;
+  /* margin-left: 0%; */
+  /* gap: 1em; */
 }
-
-/* Styles for the Transaction Management section */
-.transaction-section {
-  margin-bottom: 20px;
-  padding: 20px;
-  background-color: rgba(196, 164, 162, 0.5);
-}
-
-.transaction-section .input-group {
-  margin-bottom: 10px;
-}
-/* This CSS can be placed in your stylesheet */
 
 .balance-box {
   position: relative;
@@ -104,34 +190,4 @@ body {
   padding: 20px;
   margin-bottom: 20px;
   height: 400px;
-}
-
-.section-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.balance-info {
-  margin-bottom: 20px;
-}
-
-.balance-text {
-  font-size: 23px;
-  margin-bottom: 10px;
-}
-
-.tagline {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  width: 80%;
-}
-
-.tagline p {
-  font-family: Arial, sans-serif;
-  font-size: 19px;
-  font-style: italic;
-  color: #333;
 }
