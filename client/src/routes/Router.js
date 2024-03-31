@@ -8,15 +8,11 @@ import Info from "../components/Info";
 const Router = () => {
   return (
     <Routes>
-      {!localStorage.getItem("enter") ? (
+      {localStorage.getItem("enter") !== true && (
         <Route path="/" element={<Initial />} />
-      ) : (
-        <Route path="/home" element={<Home />} />
       )}
-      {localStorage.getItem("enter") ? (
+      {localStorage.getItem("enter") && (
         <Route path="/home" element={<Home />} />
-      ) : (
-        <Route path="/" element={<Initial />} />
       )}
       {localStorage.getItem("enter") ? (
         <Route path="/transaction" element={<Transaction />} />

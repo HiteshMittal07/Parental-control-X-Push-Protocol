@@ -1,149 +1,50 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ParentalContext } from "../ParentalContext";
+import { ParentalContext } from "../useContext/ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../images/download1.png";
 import { FaBell } from "react-icons/fa";
-import AddUser from "./AddChild";
-import AddOwner from "./AddParent";
-import { connected } from "process";
-import "./Header.css";
+import "../Styles/Header.css";
+import { getWeb3Provider, requestAccounts } from "../Web3/web3";
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
+  const [account, setAccount] = useState(null);
   const toggleDropDown = () => {
     setDropdownOpen(!dropdownOpen);
   };
-  const {
-    state,
-    connectWallet,
-    SetJoined,
-    SetCreated,
-    joined,
-    created,
-    connected,
-  } = useContext(ParentalContext);
-  const { contract } = state;
+  const { setConnected } = useContext(ParentalContext);
   const navigate = useNavigate();
-  // return (
-  //   <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark bg-transparent">
-  //     <div className="container">
-  //       {localStorage.getItem("enter") ? (
-  //         <Link className="navbar-brand" to="/home">
-  //           <img
-  //             src={logo}
-  //             alt="Logo"
-  //             height="100"
-  //             width="210"
-  //             className="d-inline-block align-top"
-  //           />
-  //         </Link>
-  //       ) : (
-  //         <Link className="navbar-brand" to="/">
-  //           <img
-  //             src={logo}
-  //             alt="Logo"
-  //             height="100"
-  //             width="210"
-  //             className="d-inline-block align-top"
-  //           />
-  //         </Link>
-  //       )}
-  //       <button
-  //         className="navbar-toggler"
-  //         data-bs-target="#navDrop"
-  //         data-bs-toggle="collapse"
-  //         aria-controls="navDrop"
-  //         aria-expanded="false"
-  //         aria-label="Toggle navigation"
-  //       >
-  //         <span className="navbar-toggler-icon"></span>
-  //       </button>
-  //       <div className="collapse navbar-collapse" id="navDrop">
-  //         <ul className="navbar-nav ms-auto">
-  //           {localStorage.getItem("enter") ? (
-  //             <li className="nav-item">
-  //               <Link to="/home" className="nav-link">
-  //                 Home
-  //               </Link>
-  //             </li>
-  //           ) : (
-  //             ""
-  //           )}
-  //           {localStorage.getItem("enter") ? (
-  //             <li className="nav-item">
-  //               <Link to="/transaction" className="nav-link">
-  //                 Transaction Logs
-  //               </Link>
-  //             </li>
-  //           ) : (
-  //             ""
-  //           )}
-  //           {localStorage.getItem("enter") ? (
-  //             <li className="nav-item">
-  //               <Link to="/owners" className="nav-link">
-  //                 Parents
-  //               </Link>
-  //             </li>
-  //           ) : (
-  //             ""
-  //           )}
-  //           <li className="nav-item">
-  //             <Link to="/info" className="nav-link">
-  //               Info
-  //             </Link>
-  //           </li>
-  //           {localStorage.getItem("enter") ? (
-  //             <li className="nav-item">
-  //               <Link to="/notifications" className="nav-link">
-  //                 <FaBell style={{ cursor: "pointer" }} />
-  //               </Link>
-  //             </li>
-  //           ) : (
-  //             ""
-  //           )}
-  //           {!connected ? (
-  //             <li className="nav-item">
-  //               <button className="btn btn-light ms-2" onClick={connectWallet}>
-  //                 Connect wallet
-  //               </button>
-  //             </li>
-  //           ) : (
-  //             <li className="nav-item">
-  //               <button className="btn btn-light ms-2" onClick={connectWallet}>
-  //                 Connected
-  //               </button>
-  //             </li>
-  //           )}
+  const truncateWalletAddress = async (address, length = 4) => {
+    if (!address) return "";
+    const start = address.substring(0, length);
+    const end = address.substring(address.length - length);
+    setAccount(`${start}...${end}`);
+    setConnected(true);
+  };
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const provider = getWeb3Provider();
+      const address = await requestAccounts(provider);
+      truncateWalletAddress(address);
+    } catch (error) {
+      alert(error);
+    }
+  };
 
-  //           {localStorage.getItem("enter") ? <AddUser /> : ""}
-  //           {localStorage.getItem("enter") ? <AddOwner /> : ""}
-  //           {localStorage.getItem("enter") ? (
-  //             <li className="nav-item">
-  //               <button
-  //                 className="btn btn-light ms-2"
-  //                 onClick={() => {
-  //                   SetJoined(false);
-  //                   SetCreated(false);
-  //                   localStorage.removeItem("enter");
-  //                   localStorage.removeItem("owner");
-  //                   localStorage.removeItem("contractAddr");
-  //                   navigate("/");
-  //                   toast.success("Exited successfully");
-  //                 }}
-  //               >
-  //                 Exit
-  //               </button>
-  //             </li>
-  //           ) : (
-  //             ""
-  //           )}
-  //         </ul>
-  //       </div>
-  //     </div>
-  //   </nav>
-  // );
+  useEffect(() => {
+    const connect = async () => {
+      const provider = getWeb3Provider();
+      const address = await requestAccounts(provider);
+      truncateWalletAddress(address);
+    };
+    connect();
+  }, []);
+
   return (
     <nav className="navbar navbar-expand-lg sticky-top navbar-dark text-bg-dark bg-transparent">
       <div className="container">
@@ -189,24 +90,7 @@ const Header = () => {
             ) : (
               ""
             )}
-            {/* {localStorage.getItem("enter") ? (
-              <li className="nav-item">
-                <Link to="/transaction" className="nav-link">
-                  Transaction Logs
-                </Link>
-              </li>
-            ) : (
-              ""
-            )} */}
-            {/* {localStorage.getItem("enter") ? (
-              <li className="nav-item">
-                <Link to="/owners" className="nav-link">
-                  Owners
-                </Link>
-              </li>
-            ) : (
-              ""
-            )} */}
+
             <li className="nav-item">
               <Link to="/info" className="nav-link">
                 Info
@@ -221,7 +105,7 @@ const Header = () => {
             ) : (
               ""
             )}
-            {!connected ? (
+            {!account ? (
               <button
                 className="btn btn-outline-secondary custom__button"
                 onClick={connectWallet}
@@ -235,7 +119,7 @@ const Header = () => {
                   type="button"
                   onClick={toggleDropDown}
                 >
-                  Connected
+                  {account}
                 </button>
                 <ul
                   className={`dropdown-menu ${
@@ -259,8 +143,6 @@ const Header = () => {
                     <button
                       className="dropdown-item"
                       onClick={() => {
-                        SetJoined(false);
-                        SetCreated(false);
                         localStorage.removeItem("enter");
                         localStorage.removeItem("owner");
                         localStorage.removeItem("contractAddr");
@@ -278,7 +160,7 @@ const Header = () => {
                 className="btn btn-outline-secondary custom__button"
                 onClick={connectWallet}
               >
-                Connected
+                {account}
               </button>
             )}
           </ul>

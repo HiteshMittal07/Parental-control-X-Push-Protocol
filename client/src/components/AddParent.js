@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ParentalContext } from "../ParentalContext";
+import { ParentalContext } from "../useContext/ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";

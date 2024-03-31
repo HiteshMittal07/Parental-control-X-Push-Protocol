@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
-import { ethers } from "ethers";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import { ParentalContext } from "../ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import abi from "../contractJson/Parental.json";
 import BeatLoader from "react-spinners/BeatLoader";
+import {
+  getParentalContractRead,
+  getWeb3Provider,
+  switchNetwork,
+} from "../Web3/web3";
 const Transactions = () => {
   const contractAddress = localStorage.getItem("contractAddr");
-  const contractABI = abi.abi;
   const [transactions, setTransactions] = useState([]);
   const [check, setCheck] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -19,19 +20,13 @@ const Transactions = () => {
   };
 
   useEffect(() => {
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
-    let contractRead2 = new ethers.Contract(
-      contractAddress,
-      contractABI,
-      provider
-    );
+    let provider = getWeb3Provider();
+    let contractRead = getParentalContractRead(provider, contractAddress);
     const switchChain = async () => {
       try {
         setLoading(true);
         const selectedValue = 1442;
-        await provider.send("wallet_switchEthereumChain", [
-          { chainId: `0x${Number(selectedValue).toString(16)}` },
-        ]);
+        await switchNetwork(selectedValue);
         setSwitched(true);
       } catch (error) {
         console.log(error);
@@ -40,7 +35,7 @@ const Transactions = () => {
     const fetchTransactions = async () => {
       try {
         if (switched) {
-          const tx = await contractRead2.getTransaction();
+          const tx = await contractRead.getTransaction();
           setTransactions(tx);
           setLoading(false);
         }
@@ -61,20 +56,13 @@ const Transactions = () => {
   };
 
   const handleCancel = async (transactionIndex) => {
-    // Implement the cancel logic here, for example:
     try {
-      let provider = new ethers.providers.Web3Provider(window.ethereum);
+      let provider = getWeb3Provider();
       const selectedValue = 1442;
-      await provider.send("wallet_switchEthereumChain", [
-        { chainId: `0x${Number(selectedValue).toString(16)}` },
-      ]);
+      await switchNetwork(selectedValue);
       let signer = provider.getSigner();
-      let contractRead2 = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      );
-      let contract = contractRead2.connect(signer);
+      let contractRead = getParentalContractRead(provider, contractAddress);
+      let contract = contractRead.connect(signer);
       const tx4 = await contract.removeTx(transactionIndex);
       await tx4.wait();
       setCheck(check + 1);
@@ -84,20 +72,13 @@ const Transactions = () => {
   };
 
   const handleExecute = async (transactionIndex) => {
-    // Implement the execute logic here, for example:
     try {
-      let provider = new ethers.providers.Web3Provider(window.ethereum);
+      let provider = getWeb3Provider();
       const selectedValue = 1442;
-      await provider.send("wallet_switchEthereumChain", [
-        { chainId: `0x${Number(selectedValue).toString(16)}` },
-      ]);
+      await switchNetwork(selectedValue);
       let signer = provider.getSigner();
-      let contractRead2 = new ethers.Contract(
-        contractAddress,
-        contractABI,
-        provider
-      );
-      let contract = contractRead2.connect(signer);
+      let contractRead = getParentalContractRead(provider, contractAddress);
+      let contract = contractRead.connect(signer);
       const tx5 = await contract.ExecuteTransaction(transactionIndex);
       await tx5.wait();
       setCheck(check + 1);

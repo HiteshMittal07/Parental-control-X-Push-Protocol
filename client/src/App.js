@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Router from "./routes/Router";
 import abi from "./contractJson/CreateWallet.json";
 import "./App.css";
-import { ParentalContext } from "./ParentalContext";
+import { ParentalContext } from "./useContext/ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { sign } from "@pushprotocol/restapi/src/lib/chat/helpers";
@@ -112,6 +112,7 @@ function App() {
         joined,
         created,
         connected,
+        setConnected,
         owner,
         setOwner,
       }}

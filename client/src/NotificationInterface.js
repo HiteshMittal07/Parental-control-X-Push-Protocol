@@ -4,7 +4,7 @@ import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { ethers } from "ethers";
 import BeatLoader from "react-spinners/BeatLoader";
 import { toast } from "react-toastify";
-import "./responsive.css";
+import "./Styles/responsive.css";
 const NotificationInterface = () => {
   const [loading, setLoading] = useState(false);
   const inputStyle = {

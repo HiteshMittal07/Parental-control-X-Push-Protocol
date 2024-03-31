@@ -1,43 +1,34 @@
 import { ethers } from "ethers";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
-import abi2 from "../contractJson/push.json";
-import abi3 from "../contractJson/CreateWallet.json";
-import React, { useContext } from "react";
-import { ParentalContext } from "../ParentalContext";
+import React from "react";
 import { toast } from "react-toastify";
+import {
+  getAddress,
+  getChainId,
+  getContractRead,
+  getPushContractRead,
+  getWeb3Provider,
+  switchNetwork,
+} from "../Web3/web3";
 
 export default function CreateChannel() {
-  const { contractAddress } = useContext(ParentalContext);
-  const contractABI = abi3.abi;
-
   const switchChain = async () => {
     window.ethereum.on("chainChanged", create);
-
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
-    const selectedValue = 1442;
-    // Send the chain switch request
-    provider.send("wallet_switchEthereumChain", [{ chainId: "0xAA36A7" }]);
-    const chainId = await window.ethereum.request({
-      method: "eth_chainId",
-      params: [],
-    });
+    await switchNetwork(11155111);
+    const chainId = getChainId();
     if (chainId == `0xAA36A7`) {
       await create();
     }
     console.log(chainId);
   };
   async function create() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = getWeb3Provider();
     const signer = provider.getSigner();
     const userAlice = await PushAPI.initialize(signer, {
       env: CONSTANTS.ENV.STAGING,
     });
-    const abi = abi2.result;
-    const contractRead = new ethers.Contract(
-      "0x37c779a1564DCc0e3914aB130e0e787d93e21804",
-      abi,
-      provider
-    );
+    const contractAddress = getAddress("11155111");
+    const contractRead = getPushContractRead(provider, contractAddress);
     try {
       const contract = contractRead.connect(signer);
       console.log(contract);
@@ -60,27 +51,15 @@ export default function CreateChannel() {
     window.ethereum.removeListener("chainChanged", create);
     window.ethereum.on("chainChanged", create2);
     const selectedValue = 1442;
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: `0x${Number(selectedValue).toString(16)}` },
-    ]);
-    // const addedDelegate = await userAlice.channel.delegate.add(
-    //   `eip155:11155111:${pushChannelAddress}`,
-    // );
-    // Subscribe to push channel
-    // await userAlice.notification.subscribe(
-    //   `eip155:11155111:${pushChannelAddress}`, // channel address in CAIP format
-    // );
+    await switchNetwork(selectedValue);
   }
   const create2 = async () => {
     window.ethereum.removeListener("chainChanged", create2);
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = getWeb3Provider();
     const signer = provider.getSigner();
-    const contractRead2 = new ethers.Contract(
-      "0xb65f926c6c420671892561334C289485faC9309E",
-      contractABI,
-      provider
-    );
-    const contract2 = contractRead2.connect(signer);
+    const contractAddress = getAddress("1442");
+    const contractRead = getContractRead(provider, contractAddress);
+    const contract2 = contractRead.connect(signer);
     const tx2 = await contract2.onNotification();
     await tx2.wait();
 

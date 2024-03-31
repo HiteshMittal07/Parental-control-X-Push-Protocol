@@ -2,15 +2,14 @@ import React, { useContext } from "react";
 import { ethers } from "ethers";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { toast } from "react-toastify";
-import { ParentalContext } from "../ParentalContext";
+import { ParentalContext } from "../useContext/ParentalContext";
+import { getWeb3Provider, switchNetwork } from "../Web3/web3";
 
 export default function Subscribe() {
   const owner = localStorage.getItem("owner");
   async function subscribe() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: "0xAA36A7" },
-    ]);
+    const provider = getWeb3Provider();
+    await switchNetwork(11155111);
     const signer = provider.getSigner();
     const userAlice = await PushAPI.initialize(signer, {
       env: CONSTANTS.ENV.STAGING,

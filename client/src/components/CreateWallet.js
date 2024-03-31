@@ -1,25 +1,28 @@
 import React, { useContext, useState } from "react";
-import { ParentalContext } from "../ParentalContext";
+import { ParentalContext } from "../useContext/ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ethers } from "ethers";
 import "bootstrap/dist/css/bootstrap.css";
 import { useNavigate } from "react-router-dom";
-import { LoadingContext } from "./LoadingContext";
-import abi from "../contractJson/CreateWallet.json";
-import "./initial.css";
+import { LoadingContext } from "../useContext/LoadingContext";
+import "../Styles/initial.css";
+import {
+  getAddress,
+  getContractRead,
+  getWeb3Provider,
+  switchNetwork,
+} from "../Web3/web3";
 export default function CreateWallet() {
-  const { state, setContractAddress, SetCreated, setOwner, connected } =
-    useContext(ParentalContext);
+  const { connected } = useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
-  const contractAbi = abi.abi;
   async function Create() {
     if (!connected) {
       toast.error("Connect Wallet!!");
       return;
     }
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    let provider = getWeb3Provider();
     let signer = provider.getSigner();
     let address = await signer.getAddress();
     const balance = await provider.getBalance(address);
@@ -29,24 +32,15 @@ export default function CreateWallet() {
       toast.error("Insufficient Funds!! Check Info Page");
       return;
     }
-    let contractRead = new ethers.Contract(
-      "0xb65f926c6c420671892561334C289485faC9309E",
-      contractAbi,
-      provider
-    );
+    const contractAddress = getAddress("1442");
+    let contractRead = getContractRead(provider, contractAddress);
     let contract = contractRead.connect(signer);
-    console.log(contract);
     const selectedValue = 1442;
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: `0x${Number(selectedValue).toString(16)}` },
-    ]);
+    await switchNetwork(selectedValue);
     contractRead.on("created", (contractAddress, event) => {
       console.log(`Created at ${contractAddress}`);
       toast.success("Your Parental Wallet is Created");
-      setContractAddress(contractAddress);
-      setOwner(address);
-      SetCreated(true);
-      setLoading(false);
+      localStorage.setItem("owner", address);
       localStorage.setItem("enter", "true");
       localStorage.setItem("contractAddr", contractAddress);
       navigate("/home");

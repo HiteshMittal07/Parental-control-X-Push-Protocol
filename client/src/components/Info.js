@@ -1,11 +1,11 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./Info.css";
+import "../Styles/Info.css";
 function Info() {
   return (
     <div className="container text-light">
       <h2 className="info-heading">How To Use My Project</h2>
-      <div className="item1">
+      <div className="item1 overflow-x-hidden">
         <div className="row">
           <div className="col-md-6">
             <h3>Create Wallet</h3>

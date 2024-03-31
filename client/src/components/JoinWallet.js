@@ -1,62 +1,51 @@
 import React, { useContext, useState } from "react";
-import { ParentalContext } from "../ParentalContext";
+import { ParentalContext } from "../useContext/ParentalContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ethers } from "ethers";
-import abi from "../contractJson/Parental.json";
-import abi2 from "../contractJson/CreateWallet.json";
 import { useNavigate } from "react-router-dom";
-import "./initial.css";
-import { LoadingContext } from "./LoadingContext";
+import "../Styles/initial.css";
+import { LoadingContext } from "../useContext/LoadingContext";
+import {
+  getAddress,
+  getChainId,
+  getContractRead,
+  getWeb3Provider,
+  switchNetwork,
+} from "../Web3/web3";
 export default function JoinWallet(props) {
-  const { state, setContractAddress, SetJoined, setOwner, connected } =
-    useContext(ParentalContext);
+  const { connected } = useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const switchChain = async () => {
     window.ethereum.on("chainChanged", join);
-
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
     const selectedValue = 1442;
-    // Send the chain switch request
-    provider.send("wallet_switchEthereumChain", [
-      { chainId: `0x${Number(selectedValue).toString(16)}` },
-    ]);
-    const chainId = await window.ethereum.request({
-      method: "eth_chainId",
-      params: [],
-    });
+    await switchNetwork(selectedValue);
+    const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await join();
     }
     console.log(chainId);
   };
   async function join() {
-    const contractABI = abi.abi;
-    const contractAbi = abi2.abi;
     const add = document.querySelector("#addr").value;
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    if (!add) {
+      toast.error("enter valid address");
+      return;
+    }
+    const contractAddress = getAddress("1442");
+    let provider = getWeb3Provider();
     let signer = provider.getSigner();
     setShowModal(false);
     setLoading(true);
-    let contractRead = new ethers.Contract(
-      "0xb65f926c6c420671892561334C289485faC9309E",
-      contractAbi,
-      provider
-    );
+    let contractRead = getContractRead(provider, contractAddress);
     try {
       const contract = contractRead.connect(signer);
       const tx = await contract.joinWallet(add);
-      console.log(tx);
-      // await tx.wait();
       window.ethereum.removeListener("chainChanged", join);
-      setContractAddress(tx);
       toast.success("Joined Successfully");
-      SetJoined(true);
       setLoading(false);
-      setOwner(add);
-      localStorage.setItem("enter", "true");
+      localStorage.setItem("enter", true);
       localStorage.setItem("owner", add);
       localStorage.setItem("contractAddr", tx);
       navigate("/home");

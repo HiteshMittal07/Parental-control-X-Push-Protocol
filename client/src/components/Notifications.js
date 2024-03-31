@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { ParentalContext } from "../ParentalContext";
+import { ParentalContext } from "../useContext/ParentalContext";
 import { ethers } from "ethers";
 import abi from "../contractJson/CreateWallet.json";
 import NotificationInterface from "../NotificationInterface";
@@ -84,7 +84,7 @@ export default function Notifications() {
     }
   }, [status]);
   return (
-    <div>
+    <div className="overflow-x-hidden">
       {loading ? (
         <>
           <BeatLoader color="#ffffff" cssOverride={override} />

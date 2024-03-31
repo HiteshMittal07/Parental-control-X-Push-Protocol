@@ -5,7 +5,7 @@ import SpamInterface from "./SpamInterface";
 export default function NotificationController() {
   const [selected, setSelected] = useState(true);
   return (
-    <div className="overflow-hidden">
+    <div className="over">
       <div className="row justify-content-center align-content-center">
         <div className="col-1">
           <button onClick={() => setSelected(true)} className="btn btn-light">
