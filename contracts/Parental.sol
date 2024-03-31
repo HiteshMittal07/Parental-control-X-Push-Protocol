@@ -47,7 +47,7 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction exists
     modifier txExist(uint _txIndex) {
-        require(_txIndex < transactions.length, "This transaction doesn't exist");
+        require(_txIndex < transactions.length, "This transaction do not exist");
         _;
     }
 
@@ -108,7 +108,7 @@ contract Parental is AccessControl {
      * @param msg1 Message for parents specifying the use of the transaction
      */
     function SubmitTransaction(address _to, uint _value, string memory msg1) public {
-        require(hasRole(PARENT_ROLE,msg.sender) || hasRole(CHILD_ROLE,msg.sender),"You don't have rights to submit transaction");
+        require(hasRole(PARENT_ROLE,msg.sender) || hasRole(CHILD_ROLE,msg.sender),"You do not have rights to submit transaction");
         uint txIndex = transactions.length;
         transactions.push(Transaction({
             from: msg.sender,
@@ -150,7 +150,7 @@ contract Parental is AccessControl {
      * @param index Index of the transaction to be removed
      */
     function removeTx(uint256 index) public onlyRole(PARENT_ROLE) txExist(index-1) notExecuted(index-1) {
-        require(index-1 < transactions.length, "Transaction doesn't exist");
+        require(index-1 < transactions.length, "Transaction do not exist");
 
         for (uint i = index-1; i < transactions.length - 1; i++) {
             transactions[i] = transactions[i + 1];
