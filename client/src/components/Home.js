@@ -286,14 +286,13 @@ export const Home = () => {
             <div className="card-body">
               <div className="add-owner">
                 <h2>Add Parent</h2>
-
-                {localStorage.getItem("enter") ? <AddOwner /> : ""}
+                <AddOwner />
               </div>
 
               <div className="add-user">
                 <h2>Add Child</h2>
 
-                {localStorage.getItem("enter") ? <AddUser /> : ""}
+                <AddUser />
               </div>
             </div>
           </section>

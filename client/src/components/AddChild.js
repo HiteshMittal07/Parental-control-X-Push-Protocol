@@ -1,69 +1,43 @@
-import React, { useContext, useState } from "react";
-import { ParentalContext } from "../useContext/ParentalContext";
+import React from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ethers } from "ethers";
-import abi from "../contractJson/Parental.json";
-import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
+import {
+  getParentalContractRead,
+  getUser,
+  getWeb3Provider,
+  sendNotification,
+  switchNetwork,
+} from "../Web3/web3";
+
 export default function AddUser() {
   const contractAddress = localStorage.getItem("contractAddr");
   const owner = localStorage.getItem("owner");
-  const contractABI = abi.abi;
   async function Adduser() {
-    let provider = new ethers.providers.Web3Provider(window.ethereum);
+    let provider = getWeb3Provider();
     const selectedValue = 1442;
-    await provider.send("wallet_switchEthereumChain", [
-      { chainId: `0x${Number(selectedValue).toString(16)}` },
-    ]);
+    await switchNetwork(selectedValue);
     let signer = provider.getSigner();
-    let contractRead2 = new ethers.Contract(
-      contractAddress,
-      contractABI,
-      provider
-    );
-    let contract = contractRead2.connect(signer);
+    let contractRead = getParentalContractRead(provider, contractAddress);
+    let contract = contractRead.connect(signer);
     const address = document.querySelector("#address").value;
     try {
       const tx = await contract.addChild(address);
       await tx.wait();
-      await provider.send("wallet_switchEthereumChain", [
-        { chainId: "0xAA36A7" },
-      ]);
-      const userAlice = await PushAPI.initialize(signer, {
-        env: CONSTANTS.ENV.STAGING,
-        filter: {
-          channels: [`${owner}`],
-        },
-        account: `${owner}`,
-      });
+      await switchNetwork(11155111);
+      const userAlice = await getUser(signer, owner);
       const addedDelegate = await userAlice.channel.delegate.add(
         `eip155:11155111:${address}`
       );
-      await userAlice.channel.send(
-        ["*"],
-        {
-          notification: {
-            title: "Added Successfully",
-            body: `${address} successfully added to Wallet!`,
-          },
-        },
-        toast.success("send successfully")
-      );
+      const title = "New Child Added";
+      const body = `${address} successfully added to Wallet!`;
+      await sendNotification(userAlice, title, body);
+      toast.success("send successfully");
     } catch (error) {
       toast.error(error.reason);
     }
     toast.success("User added Successfully");
   }
 
-  const [showModal, setShowModal] = useState(false);
-
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
   return (
     <div>
       <div className="input-group mb-1">

@@ -1,8 +1,6 @@
-import React, { useContext } from "react";
-import { ethers } from "ethers";
+import React from "react";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 import { toast } from "react-toastify";
-import { ParentalContext } from "../useContext/ParentalContext";
 import { getWeb3Provider, switchNetwork } from "../Web3/web3";
 
 export default function Subscribe() {

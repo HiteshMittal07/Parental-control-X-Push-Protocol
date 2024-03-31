@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Axios from "axios";
 import BeatLoader from "react-spinners/BeatLoader";

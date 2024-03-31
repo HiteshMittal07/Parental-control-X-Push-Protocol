@@ -24,6 +24,11 @@ const Header = () => {
     setConnected(true);
   };
   const connectWallet = async () => {
+    if (!window.ethereum) {
+      toast.error("first install the metamask");
+      window.location.href = "https://metamask.io/download/";
+      return;
+    }
     try {
       const { ethereum } = window;
       const accounts = await ethereum.request({
