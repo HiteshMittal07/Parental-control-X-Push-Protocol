@@ -9,6 +9,7 @@ import { LoadingContext } from "../useContext/LoadingContext";
 import "../Styles/initial.css";
 import {
   getAddress,
+  getChainId,
   getContractRead,
   getWeb3Provider,
   switchNetwork,
@@ -17,6 +18,16 @@ export default function CreateWallet() {
   const { connected } = useContext(ParentalContext);
   const { loading, setLoading } = useContext(LoadingContext);
   const navigate = useNavigate();
+  const switchChain = async () => {
+    window.ethereum.on("chainChanged", Create);
+    const selectedValue = 1442;
+    await switchNetwork(selectedValue);
+    const chainId = await getChainId();
+    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
+      await Create();
+    }
+    console.log(chainId);
+  };
   async function Create() {
     if (!connected) {
       toast.error("Connect Wallet!!");
@@ -35,8 +46,7 @@ export default function CreateWallet() {
     const contractAddress = getAddress("1442");
     let contractRead = getContractRead(provider, contractAddress);
     let contract = contractRead.connect(signer);
-    const selectedValue = 1442;
-    await switchNetwork(selectedValue);
+
     contractRead.on("created", (contractAddress, event) => {
       console.log(`Created at ${contractAddress}`);
       toast.success("Your Parental Wallet is Created");
@@ -57,7 +67,10 @@ export default function CreateWallet() {
   }
   return (
     <div className="col-6">
-      <button className="btn btn-outline-secondary custom-btn" onClick={Create}>
+      <button
+        className="btn btn-outline-secondary custom-btn"
+        onClick={switchChain}
+      >
         Create Wallet
       </button>
     </div>

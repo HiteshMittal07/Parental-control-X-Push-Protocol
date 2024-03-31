@@ -285,13 +285,13 @@ export const Home = () => {
           <section className="add card">
             <div className="card-body">
               <div className="add-owner">
-                <h2>Add Owner</h2>
+                <h2>Add Parent</h2>
 
                 {localStorage.getItem("enter") ? <AddOwner /> : ""}
               </div>
 
               <div className="add-user">
-                <h2>Add User</h2>
+                <h2>Add Child</h2>
 
                 {localStorage.getItem("enter") ? <AddUser /> : ""}
               </div>

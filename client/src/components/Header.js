@@ -7,6 +7,7 @@ import logo from "../images/download1.png";
 import { FaBell } from "react-icons/fa";
 import "../Styles/Header.css";
 import { getWeb3Provider, requestAccounts } from "../Web3/web3";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [account, setAccount] = useState(null);
@@ -118,8 +119,10 @@ const Header = () => {
                   className="btn btn-outline-secondary custom__button"
                   type="button"
                   onClick={toggleDropDown}
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 >
-                  {account}
+                  {account} <ArrowDropDownIcon />
                 </button>
                 <ul
                   className={`dropdown-menu ${
@@ -133,7 +136,7 @@ const Header = () => {
                   </li>
                   <li>
                     <Link to="/owners" className="dropdown-item">
-                      Owners
+                      Parents
                     </Link>
                   </li>
                   <li>
