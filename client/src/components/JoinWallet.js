@@ -19,7 +19,7 @@ export default function JoinWallet(props) {
   const navigate = useNavigate();
   const switchChain = async () => {
     window.ethereum.on("chainChanged", join);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {

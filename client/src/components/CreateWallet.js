@@ -20,7 +20,7 @@ export default function CreateWallet() {
   const navigate = useNavigate();
   const switchChain = async () => {
     window.ethereum.on("chainChanged", Create);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {

@@ -23,7 +23,7 @@ const Transactions = () => {
     const switchChain = async () => {
       try {
         setLoading(true);
-        const selectedValue = 1442;
+        const selectedValue = "1442";
         await switchNetwork(selectedValue);
         setSwitched(true);
       } catch (error) {
@@ -56,7 +56,7 @@ const Transactions = () => {
   const handleCancel = async (transactionIndex) => {
     try {
       let provider = getWeb3Provider();
-      const selectedValue = 1442;
+      const selectedValue = "1442";
       await switchNetwork(selectedValue);
       let signer = provider.getSigner();
       let contractRead = getParentalContractRead(provider, contractAddress);
@@ -72,7 +72,7 @@ const Transactions = () => {
   const handleExecute = async (transactionIndex) => {
     try {
       let provider = getWeb3Provider();
-      const selectedValue = 1442;
+      const selectedValue = "1442";
       await switchNetwork(selectedValue);
       let signer = provider.getSigner();
       let contractRead = getParentalContractRead(provider, contractAddress);

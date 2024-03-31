@@ -7,7 +7,7 @@ export default function Subscribe() {
   const owner = localStorage.getItem("owner");
   async function subscribe() {
     const provider = getWeb3Provider();
-    await switchNetwork(11155111);
+    await switchNetwork("11155111");
     const signer = provider.getSigner();
     const userAlice = await PushAPI.initialize(signer, {
       env: CONSTANTS.ENV.STAGING,

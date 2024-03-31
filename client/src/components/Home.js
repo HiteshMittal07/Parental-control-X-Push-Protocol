@@ -26,7 +26,7 @@ export const Home = () => {
   };
   const switchChain3 = async () => {
     window.ethereum.on("chainChanged", Deposit);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -40,7 +40,7 @@ export const Home = () => {
     let contract = contractRead.connect(signer);
     contractRead.on("Deposit", async (sender, amount, event) => {
       window.ethereum.removeListener("chainChanged", Deposit);
-      await switchNetwork(11155111);
+      await switchNetwork("11155111");
       const userAlice = await getUser(signer, owner);
       const a = parseInt(amount) / Math.pow(10, 18);
       const title = `Deposited by ${sender}`;
@@ -67,7 +67,7 @@ export const Home = () => {
     const switchChain = async () => {
       try {
         setLoading(true);
-        const selectedValue = 1442;
+        const selectedValue = "1442";
         await switchNetwork(selectedValue);
         setLoading(false);
       } catch (error) {
@@ -79,7 +79,7 @@ export const Home = () => {
 
   const switchChain1 = async () => {
     window.ethereum.on("chainChanged", getBalance);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -98,7 +98,7 @@ export const Home = () => {
   const owner2 = owner;
   const switchChain2 = async () => {
     window.ethereum.on("chainChanged", submitTx);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -107,14 +107,14 @@ export const Home = () => {
   };
   const submitTx = async () => {
     let provider = getWeb3Provider();
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     let signer = provider.getSigner();
     let contractRead = getParentalContractRead(provider, contractAddress);
     let contract = contractRead.connect(signer);
     contractRead.on("SubmitTrans", async (owner, txIndex, to, value, event) => {
       window.ethereum.removeListener("chainChanged", submitTx);
-      await switchNetwork(11155111);
+      await switchNetwork("11155111");
       const userAlice = await getUser(signer, owner2);
       const a = parseInt(value) / Math.pow(10, 18);
       const title = `Submitted by ${owner}`;
@@ -141,7 +141,7 @@ export const Home = () => {
 
   const switchChain4 = async () => {
     window.ethereum.on("chainChanged", confirmTx);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     const chainId = getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -155,7 +155,7 @@ export const Home = () => {
     let contract = contractRead.connect(signer);
     contractRead.on("ConfirmTrans", async (owner, txIndex, event) => {
       window.ethereum.removeListener("chainChanged", confirmTx);
-      await switchNetwork(11155111);
+      await switchNetwork("11155111");
       const userAlice = await getUser(signer, owner2);
       const title = `Confirmed`;
       const body = `By:${owner} Transaction Index:${txIndex}`;

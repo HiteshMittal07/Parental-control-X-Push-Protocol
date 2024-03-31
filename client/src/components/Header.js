@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import logo from "../images/download1.png";
 import { FaBell } from "react-icons/fa";
 import "../Styles/Header.css";
-import { getWeb3Provider, requestAccounts } from "../Web3/web3";
+import { getWeb3Provider, requestAccounts, switchNetwork } from "../Web3/web3";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -30,6 +30,7 @@ const Header = () => {
       return;
     }
     try {
+      await switchNetwork("1442");
       const { ethereum } = window;
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",

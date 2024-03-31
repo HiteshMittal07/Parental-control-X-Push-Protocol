@@ -29,7 +29,7 @@ export default function Notifications() {
     };
     const check = async () => {
       setLoading(true);
-      switchChain(1442);
+      switchChain("1442");
       const address = owner;
       console.log(address);
       try {
@@ -49,7 +49,7 @@ export default function Notifications() {
     const check2 = async () => {
       if (status == true) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const selectedValue = 11155111;
+        const selectedValue = "11155111";
         await switchNetwork(selectedValue);
         const signer = provider.getSigner();
         const userAlice = await PushAPI.initialize(signer, {

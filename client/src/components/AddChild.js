@@ -14,7 +14,7 @@ export default function AddUser() {
   const owner = localStorage.getItem("owner");
   async function Adduser() {
     let provider = getWeb3Provider();
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
     let signer = provider.getSigner();
     let contractRead = getParentalContractRead(provider, contractAddress);
@@ -23,7 +23,7 @@ export default function AddUser() {
     try {
       const tx = await contract.addChild(address);
       await tx.wait();
-      await switchNetwork(11155111);
+      await switchNetwork("11155111");
       const userAlice = await getUser(signer, owner);
       const addedDelegate = await userAlice.channel.delegate.add(
         `eip155:11155111:${address}`

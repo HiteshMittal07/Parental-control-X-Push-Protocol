@@ -14,7 +14,7 @@ import {
 export default function CreateChannel() {
   const switchChain = async () => {
     window.ethereum.on("chainChanged", create);
-    await switchNetwork(11155111);
+    await switchNetwork("11155111");
     const chainId = getChainId();
     if (chainId == `0xAA36A7`) {
       await create();
@@ -50,7 +50,7 @@ export default function CreateChannel() {
     }
     window.ethereum.removeListener("chainChanged", create);
     window.ethereum.on("chainChanged", create2);
-    const selectedValue = 1442;
+    const selectedValue = "1442";
     await switchNetwork(selectedValue);
   }
   const create2 = async () => {
