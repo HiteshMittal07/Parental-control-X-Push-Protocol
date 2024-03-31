@@ -27,10 +27,11 @@ export const Home = () => {
   const switchChain3 = async () => {
     window.ethereum.on("chainChanged", Deposit);
     const selectedValue = "1442";
-    await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await Deposit();
+    } else {
+      await switchNetwork(selectedValue);
     }
   };
   const Deposit = async () => {
@@ -80,10 +81,11 @@ export const Home = () => {
   const switchChain1 = async () => {
     window.ethereum.on("chainChanged", getBalance);
     const selectedValue = "1442";
-    await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await getBalance();
+    } else {
+      await switchNetwork(selectedValue);
     }
   };
   const getBalance = async () => {
@@ -99,10 +101,11 @@ export const Home = () => {
   const switchChain2 = async () => {
     window.ethereum.on("chainChanged", submitTx);
     const selectedValue = "1442";
-    await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await submitTx();
+    } else {
+      await switchNetwork(selectedValue);
     }
   };
   const submitTx = async () => {
@@ -142,10 +145,11 @@ export const Home = () => {
   const switchChain4 = async () => {
     window.ethereum.on("chainChanged", confirmTx);
     const selectedValue = "1442";
-    await switchNetwork(selectedValue);
     const chainId = getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await confirmTx();
+    } else {
+      await switchNetwork(selectedValue);
     }
   };
   const confirmTx = async () => {

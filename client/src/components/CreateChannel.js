@@ -14,12 +14,12 @@ import {
 export default function CreateChannel() {
   const switchChain = async () => {
     window.ethereum.on("chainChanged", create);
-    await switchNetwork("11155111");
     const chainId = getChainId();
     if (chainId == `0xAA36A7`) {
       await create();
+    } else {
+      await switchNetwork("11155111");
     }
-    console.log(chainId);
   };
   async function create() {
     const provider = getWeb3Provider();

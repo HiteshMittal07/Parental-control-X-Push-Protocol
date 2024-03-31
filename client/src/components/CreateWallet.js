@@ -51,7 +51,7 @@ export default function CreateWallet() {
       console.log(`Created at ${contractAddress}`);
       toast.success("Your Parental Wallet is Created");
       localStorage.setItem("owner", address);
-      localStorage.setItem("enter", "true");
+      localStorage.setItem("enter", true);
       localStorage.setItem("contractAddr", contractAddress);
       navigate("/home");
       event.removeListener();

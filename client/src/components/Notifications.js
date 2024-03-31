@@ -14,7 +14,6 @@ import {
 export default function Notifications() {
   const owner = localStorage.getItem("owner");
   const [status, setStatus] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
   const [loading, setLoading] = useState(false);
   const override = {
     display: "block",
@@ -36,6 +35,7 @@ export default function Notifications() {
         const tx = await contractRead.getNotifyStatus(address);
         if (tx) {
           setStatus(true);
+          localStorage.setItem("status", true);
           setLoading(false);
           console.log("set");
         } else {
@@ -47,8 +47,8 @@ export default function Notifications() {
     };
 
     const check2 = async () => {
-      if (status == true) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+      if (localStorage.getItem("status")) {
+        const provider = getWeb3Provider();
         const selectedValue = "11155111";
         await switchNetwork(selectedValue);
         const signer = provider.getSigner();
@@ -63,16 +63,16 @@ export default function Notifications() {
           (obj) => obj.channel.toLowerCase() == owner.toLowerCase()
         );
         console.log(isOwnerSubscribed);
-        setSubscribed(isOwnerSubscribed);
+        localStorage.setItem("subscribe", isOwnerSubscribed);
         setLoading(false);
       } else {
         return;
       }
     };
-    if (status == false) {
+    if (!localStorage.getItem("status")) {
       check();
     }
-    if (status == true && subscribed == false) {
+    if (localStorage.getItem("status") && !localStorage.getItem("subscribe")) {
       setLoading(true);
       check2();
     }
@@ -86,8 +86,8 @@ export default function Notifications() {
         </>
       ) : (
         <>
-          {status ? (
-            subscribed ? (
+          {localStorage.getItem("status") ? (
+            localStorage.getItem("subscribe") ? (
               <NotificationController />
             ) : (
               <Subscribe />

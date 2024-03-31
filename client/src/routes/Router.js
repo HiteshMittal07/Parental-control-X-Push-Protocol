@@ -5,30 +5,23 @@ import { Routes, Route } from "react-router-dom";
 import Initial from "../components/Initial";
 import Notifications from "../components/Notifications";
 import Info from "../components/Info";
+import PrivateRoute from "./PrivateComponent";
 const Router = () => {
   return (
     <Routes>
       {localStorage.getItem("enter") !== true && (
         <Route path="/" element={<Initial />} />
       )}
-      {localStorage.getItem("enter") && (
-        <Route path="/home" element={<Home />} />
-      )}
-      {localStorage.getItem("enter") ? (
-        <Route path="/transaction" element={<Transaction />} />
-      ) : (
-        ""
-      )}
-      {localStorage.getItem("enter") ? (
-        <Route path="/owners" element={<Owners />} />
-      ) : (
-        ""
-      )}
-      {localStorage.getItem("enter") ? (
-        <Route path="/notifications" element={<Notifications />} />
-      ) : (
-        ""
-      )}
+      <Route path="/home" element={<PrivateRoute Component={Home} />} />
+      <Route
+        path="/transaction"
+        element={<PrivateRoute Component={Transaction} />}
+      />
+      <Route path="/owners" element={<PrivateRoute Component={Owners} />} />
+      <Route
+        path="/notifications"
+        element={<PrivateRoute Component={Notifications} />}
+      />
       <Route path="/info" element={<Info />} />
     </Routes>
   );

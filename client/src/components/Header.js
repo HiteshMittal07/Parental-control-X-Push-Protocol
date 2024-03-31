@@ -155,6 +155,8 @@ const Header = () => {
                         localStorage.removeItem("enter");
                         localStorage.removeItem("owner");
                         localStorage.removeItem("contractAddr");
+                        localStorage.removeItem("status");
+                        localStorage.removeItem("subscribe");
                         navigate("/");
                         toast.success("Exited successfully");
                       }}
