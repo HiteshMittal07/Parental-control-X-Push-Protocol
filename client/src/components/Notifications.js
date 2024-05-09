@@ -21,14 +21,14 @@ export default function Notifications() {
   };
   useEffect(() => {
     const provider = getWeb3Provider();
-    const contractAddress = getAddress("1442");
+    const contractAddress = getAddress("534351");
     const contractRead = getContractRead(provider, contractAddress);
     const switchChain = async (selectedValue) => {
       await switchNetwork(selectedValue);
     };
     const check = async () => {
       setLoading(true);
-      switchChain("1442");
+      switchChain("534351");
       const address = owner;
       console.log(address);
       try {

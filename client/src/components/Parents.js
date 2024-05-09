@@ -22,7 +22,7 @@ const Owners = () => {
     const switchChain = async () => {
       try {
         setLoading(true);
-        const selectedValue = "1442";
+        const selectedValue = "534351";
         await switchNetwork(selectedValue);
         setSwitched(true);
       } catch (error) {

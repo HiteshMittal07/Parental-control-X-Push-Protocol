@@ -30,7 +30,7 @@ const Header = () => {
       return;
     }
     try {
-      await switchNetwork("1442");
+      await switchNetwork("534351");
       const { ethereum } = window;
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",

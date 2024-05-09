@@ -19,7 +19,7 @@ export default function JoinWallet(props) {
   const navigate = useNavigate();
   const switchChain = async () => {
     window.ethereum.on("chainChanged", join);
-    const selectedValue = "1442";
+    const selectedValue = "534351";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -33,7 +33,7 @@ export default function JoinWallet(props) {
       toast.error("enter valid address");
       return;
     }
-    const contractAddress = getAddress("1442");
+    const contractAddress = getAddress("534351");
     let provider = getWeb3Provider();
     let signer = provider.getSigner();
     setShowModal(false);
