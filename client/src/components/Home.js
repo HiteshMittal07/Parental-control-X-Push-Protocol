@@ -26,7 +26,7 @@ export const Home = () => {
   };
   const switchChain3 = async () => {
     window.ethereum.on("chainChanged", Deposit);
-    const selectedValue = "1442";
+    const selectedValue = "534351";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await Deposit();
@@ -68,7 +68,7 @@ export const Home = () => {
     const switchChain = async () => {
       try {
         setLoading(true);
-        const selectedValue = "1442";
+        const selectedValue = "534351";
         await switchNetwork(selectedValue);
         setLoading(false);
       } catch (error) {
@@ -80,7 +80,7 @@ export const Home = () => {
 
   const switchChain1 = async () => {
     window.ethereum.on("chainChanged", getBalance);
-    const selectedValue = "1442";
+    const selectedValue = "534351";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await getBalance();
@@ -100,7 +100,7 @@ export const Home = () => {
   const owner2 = owner;
   const switchChain2 = async () => {
     window.ethereum.on("chainChanged", submitTx);
-    const selectedValue = "1442";
+    const selectedValue = "534351";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await submitTx();
@@ -110,7 +110,7 @@ export const Home = () => {
   };
   const submitTx = async () => {
     let provider = getWeb3Provider();
-    const selectedValue = "1442";
+    const selectedValue = "534351";
     await switchNetwork(selectedValue);
     let signer = provider.getSigner();
     let contractRead = getParentalContractRead(provider, contractAddress);
@@ -129,13 +129,12 @@ export const Home = () => {
     const address = document.querySelector("#subAddress").value;
     const value = document.querySelector("#subValue").value;
     const amount = ethers.utils.parseEther(value);
-    const message = document.querySelector("#message").value;
-    if (!address || !value || !message) {
+    if (!address || !value) {
       toast.error("fill the required fields");
       return;
     }
     try {
-      const tx2 = await contract.SubmitTransaction(address, amount, message);
+      const tx2 = await contract.SubmitTransaction(address, amount);
       await tx2.wait();
     } catch (error) {
       toast.error(error.reason);
@@ -144,7 +143,7 @@ export const Home = () => {
 
   const switchChain4 = async () => {
     window.ethereum.on("chainChanged", confirmTx);
-    const selectedValue = "1442";
+    const selectedValue = "534351";
     const chainId = getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await confirmTx();
@@ -238,21 +237,12 @@ export const Home = () => {
                     className="form-control"
                   />
                 </div>
-                <div className="input-group mb-2">
+                <div className="input-group mb-4">
                   <input
                     type="text"
                     id="subValue"
                     placeholder="Enter the Amount"
                     className="form-control"
-                  />
-                </div>
-                <div className="input-group mb-2">
-                  <textarea
-                    id="message"
-                    placeholder="Enter the Message"
-                    className="form-control"
-                    rows={3}
-                    cols={50}
                   />
                 </div>
                 <div className="input-group mb-3">
