@@ -32,7 +32,6 @@ contract Parental is AccessControl {
         uint value;
         bool executed;
         uint noOfvotes;
-        string message;
         uint totalVotes;
     }
     mapping(uint => mapping(address => bool)) public isConfirmed;
@@ -105,9 +104,8 @@ contract Parental is AccessControl {
      * @dev Functionality for submitting a transaction
      * @param _to Recipient address
      * @param _value Amount to be sent
-     * @param msg1 Message for parents specifying the use of the transaction
      */
-    function SubmitTransaction(address _to, uint _value, string memory msg1) public {
+    function SubmitTransaction(address _to, uint _value) public {
         require(hasRole(PARENT_ROLE,msg.sender) || hasRole(CHILD_ROLE,msg.sender),"You don't have rights to submit transaction");
         uint txIndex = transactions.length;
         transactions.push(Transaction({
@@ -116,7 +114,6 @@ contract Parental is AccessControl {
             value: _value,
             executed: false,
             noOfvotes: 0,
-            message: msg1,
             totalVotes: votes
         }));
         emit SubmitTrans(msg.sender, txIndex+1, _to, _value);
