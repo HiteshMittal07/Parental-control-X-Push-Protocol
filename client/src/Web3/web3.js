@@ -1,14 +1,15 @@
 import { ethers, providers } from "ethers";
 import abi from "../contractJson/CreateWallet.json";
 import abi1 from "../contractJson/Parental.json";
-import abi2 from "../contractJson/push.json"
+import abi2 from "../contractJson/push.json";
 import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 export const contractAddress = {
-  polygon_zkEVM: "0xb65f926c6c420671892561334C289485faC9309E",
+  polygon_zkEVM: "0xa2202D3148ac0F0F44b0bED0153248a0524EdA8D",
   push_sepolia: "0x37c779a1564DCc0e3914aB130e0e787d93e21804",
-  Sepolia_testnet: "coming soon",
+  Sepolia_testnet: "0xe3820f03feCe5E93e54EBb44a4476E3c066ea7dE",
   arbitrum_sepolia: "coming soon",
-  scroll_Sepolia: "coming soon",
+  scroll_Sepolia: "0x0950A655d5CdC5bD0aF061b241F4FBf18b4abd6F",
+  BNB_testnet: "0xe591A89874b21e4F462Bd2DdbcbF27384E872ea5",
 };
 export function getWeb3Provider() {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -47,30 +48,38 @@ export const getParentalContractRead = (provider, address) => {
   return new ethers.Contract(address, contractABI, provider);
 };
 
-export const getPushContractRead=(provider,address)=>{
-  const contractABI=abi2.result;
-  return new ethers.Contract(address,contractABI,provider);
-}
+export const getPushContractRead = (provider, address) => {
+  const contractABI = abi2.result;
+  return new ethers.Contract(address, contractABI, provider);
+};
 export const getAddress = (Id) => {
-  if (Id === "1442") {
+  if (Id === "2442") {
     return contractAddress.polygon_zkEVM;
   } else if (Id === "11155111") {
     return contractAddress.push_sepolia;
+  } else if (Id === "534351") {
+    return contractAddress.scroll_Sepolia;
   }
 };
 export const getNetworkName = (Id) => {
-  if (Id === "1442") {
+  if (Id === "2442") {
     return "Polygon zkEVM Testnet";
+  } else if (Id === "534351") {
+    return "Scroll Sepolia";
   }
 };
 const getRpc = (Id) => {
-  if (Id === "1442") {
-    return "https://rpc.public.zkevm-test.net/";
+  if (Id === "2442") {
+    return "https://rpc.cardona.zkevm-rpc.com";
+  } else if (Id === "534351") {
+    return "https://scroll-sepolia.blockpi.network/v1/rpc/public";
   }
 };
 const getBlockUrl = (Id) => {
-  if (Id === "1442") {
+  if (Id === "2442") {
     return "https://explorer.public.zkevm-test.net/";
+  } else if (Id === "534351") {
+    return "https://sepolia.scrollscan.com";
   }
 };
 export const addNetwork = async (Id) => {
