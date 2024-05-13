@@ -8,7 +8,7 @@ Parental Control is a decentralized application (dApp) that solves these challen
 
 # Parental Control
 
-Parental Control is a decentralized application (dApp) integrated with push protocol, deployed on the PolygonZkEVM testnet. It is designed to empower parents in managing family finances. The dApp allows users to create a parental wallet, add family members or children to the wallet, submit transactions, and vote on transactions. Notifications for transactions are sent to the inbox of owners (parents) for approval.
+Parental Control is a decentralized application (dApp) integrated with push protocol, deployed on the Scroll Sepolia testnet. It is designed to empower parents in managing family finances. The dApp allows users to create a parental wallet, add family members or children to the wallet, submit transactions, and vote on transactions. Notifications for transactions are sent to the inbox of owners (parents) for approval.
 
 ## Technologies Used
 
@@ -17,13 +17,13 @@ Parental Control is a decentralized application (dApp) integrated with push prot
 - React.js
 - JavaScript
 - Hardhat
-- PolygonZkEVM testnet
+- PolygonZkEVM testnet- Changed to Scroll sepolia due to it's Unavailability.
 
 ## How to Use
 
 1. **Create Wallet:**
 
-   - To create a wallet, users need to have PolygonZkEVM testnet ETHs.
+   - To create a wallet, users need to have Scroll Sepolia testnet ETHs.
    - Navigate to the "Create Wallet" section and follow the instructions to set up your parental wallet.
 
 2. **Join Wallet:**
