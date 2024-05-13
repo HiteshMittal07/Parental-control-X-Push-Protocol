@@ -24,6 +24,7 @@ export default function CreateChannel() {
   async function create() {
     const provider = getWeb3Provider();
     const signer = provider.getSigner();
+    const address = await signer.getAddress();
     const userAlice = await PushAPI.initialize(signer, {
       env: CONSTANTS.ENV.STAGING,
     });
@@ -44,6 +45,7 @@ export default function CreateChannel() {
         description: "Your local channel to communicates among you",
         icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAz0lEQVR4AcXBsU0EQQyG0e+saWJ7oACiKYDMEZVs6GgSpC2BIhzRwAS0sgk9HKn3gpFOAv3v3V4/3+4U4Z1q5KTy42Ql940qvFONnFSGmCFmiN2+fj7uCBlihpgh1ngwcvKfwjuVIWaIGWKNB+GdauSk8uNkJfeNKryzYogZYoZY40m5b/wlQ8wQM8TayMlKeKcaOVkJ71QjJyuGmCFmiDUe+HFy4VyEd57hx0mV+0ZliBlihlgL71w4FyMnVXhnZeSkiu93qheuDDFDzBD7BcCyMAOfy204AAAAAElFTkSuQmCC",
         url: "https://parental-control07.netlify.app/",
+        alias: `eip155:2442:${address}`,
       });
     } catch (error) {
       return;
