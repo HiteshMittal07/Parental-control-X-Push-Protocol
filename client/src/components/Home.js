@@ -26,7 +26,7 @@ export const Home = () => {
   };
   const switchChain3 = async () => {
     window.ethereum.on("chainChanged", Deposit);
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await Deposit();
@@ -68,7 +68,7 @@ export const Home = () => {
     const switchChain = async () => {
       try {
         setLoading(true);
-        const selectedValue = "534351";
+        const selectedValue = "2442";
         await switchNetwork(selectedValue);
         setLoading(false);
       } catch (error) {
@@ -80,7 +80,7 @@ export const Home = () => {
 
   const switchChain1 = async () => {
     window.ethereum.on("chainChanged", getBalance);
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await getBalance();
@@ -100,7 +100,7 @@ export const Home = () => {
   const owner2 = owner;
   const switchChain2 = async () => {
     window.ethereum.on("chainChanged", submitTx);
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await submitTx();
@@ -110,7 +110,7 @@ export const Home = () => {
   };
   const submitTx = async () => {
     let provider = getWeb3Provider();
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     await switchNetwork(selectedValue);
     let signer = provider.getSigner();
     let contractRead = getParentalContractRead(provider, contractAddress);
@@ -143,7 +143,7 @@ export const Home = () => {
 
   const switchChain4 = async () => {
     window.ethereum.on("chainChanged", confirmTx);
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     const chainId = getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
       await confirmTx();

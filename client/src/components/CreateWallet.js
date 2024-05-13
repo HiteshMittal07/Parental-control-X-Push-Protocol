@@ -20,7 +20,7 @@ export default function CreateWallet() {
   const navigate = useNavigate();
   const switchChain = async () => {
     window.ethereum.on("chainChanged", Create);
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -43,7 +43,7 @@ export default function CreateWallet() {
       toast.error("Insufficient Funds!! Check Info Page");
       return;
     }
-    const contractAddress = getAddress("534351");
+    const contractAddress = getAddress("2442");
     let contractRead = getContractRead(provider, contractAddress);
     let contract = contractRead.connect(signer);
 

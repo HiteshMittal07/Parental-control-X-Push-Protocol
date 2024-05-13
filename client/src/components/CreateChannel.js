@@ -52,14 +52,14 @@ export default function CreateChannel() {
     }
     window.ethereum.removeListener("chainChanged", create);
     window.ethereum.on("chainChanged", create2);
-    const selectedValue = "534351";
+    const selectedValue = "2442";
     await switchNetwork(selectedValue);
   }
   const create2 = async () => {
     window.ethereum.removeListener("chainChanged", create2);
     const provider = getWeb3Provider();
     const signer = provider.getSigner();
-    const contractAddress = getAddress("534351");
+    const contractAddress = getAddress("2442");
     const contractRead = getContractRead(provider, contractAddress);
     const contract2 = contractRead.connect(signer);
     const tx2 = await contract2.onNotification();
