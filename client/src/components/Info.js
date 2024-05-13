@@ -16,9 +16,9 @@ function Info() {
                 ETHs. Navigate to the "Create Wallet" section and follow the
                 instructions to set up your parental wallet.
                 <br />
-                To get PolygonZkEVM testnet ETHs, use the{" "}
-                <a href="https://faucet.polygon.technology/" target="_blank">
-                  PolygonZkEVM faucet
+                To get Scroll Sepolia testnet ETHs, use the{" "}
+                <a href="https://docs.scroll.io/en/user-guide/faucet/" target="_blank">
+                  Scroll Sepolia
                 </a>
                 .
               </p>
