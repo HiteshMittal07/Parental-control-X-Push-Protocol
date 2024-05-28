@@ -106,7 +106,7 @@ contract Parental is AccessControl {
      * @param _value Amount to be sent
      */
     function SubmitTransaction(address _to, uint _value) public {
-        require(hasRole(PARENT_ROLE,msg.sender) || hasRole(CHILD_ROLE,msg.sender),"You don't have rights to submit transaction");
+        require(hasRole(PARENT_ROLE,msg.sender) || hasRole(CHILD_ROLE,msg.sender),"You do not have rights to submit transaction");
         uint txIndex = transactions.length;
         transactions.push(Transaction({
             from: msg.sender,
