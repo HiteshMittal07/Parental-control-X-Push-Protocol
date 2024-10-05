@@ -22,7 +22,7 @@ contract CreateWallet {
      */
     function CreateParentalWallet() external {
         Wallet memory wallet = users[msg.sender];
-        if (!wallet.exists) {
+        if (wallet.exists) {
             revert UserAlreadyExists();
         }
         Parental instance = new Parental(msg.sender);
@@ -39,7 +39,7 @@ contract CreateWallet {
      */
     function onNotification() external {
         Wallet storage wallet = users[msg.sender];
-        if (wallet.exists) {
+        if (!wallet.exists) {
             revert UserIsNotOwner();
         } else if (wallet.notify) {
             revert NotifcationAlreadySet();
@@ -53,7 +53,7 @@ contract CreateWallet {
      */
     function joinWallet(address a) external view returns (address) {
         Wallet memory wallet = users[a];
-        if (wallet.exists) {
+        if (!wallet.exists) {
             revert UserDoesNotExist();
         }
         Parental instance = wallet.instance;
@@ -70,9 +70,13 @@ contract CreateWallet {
      */
     function getNotifyStatus(address a) external view returns (bool) {
         Wallet memory wallet = users[a];
-        if (wallet.exists) {
+        if (!wallet.exists) {
             revert UserDoesNotExist();
         }
         return (wallet.notify);
+    }
+
+    function getParentalWalletAddress() external view returns (address) {
+        return address(users[msg.sender].instance);
     }
 }

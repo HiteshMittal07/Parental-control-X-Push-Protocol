@@ -46,7 +46,7 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction exists
     modifier txExist(uint _txIndex) {
-        if (_txIndex < transactions.length) {
+        if (!(_txIndex < transactions.length)) {
             revert TransactionDoesNotExist();
         }
         _;
@@ -54,7 +54,7 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction has not been executed
     modifier notExecuted(uint _txIndex) {
-        if (!transactions[_txIndex].executed) {
+        if (transactions[_txIndex].executed) {
             revert TransactionAlreadyExecuted();
         }
         _;
@@ -62,7 +62,7 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction has not been confirmed by the sender
     modifier notConfirmed(uint _txIndex) {
-        if (!isConfirmed[_txIndex][msg.sender]) {
+        if (isConfirmed[_txIndex][msg.sender]) {
             revert TransactionAlreadyConfirmed();
         }
         _;
@@ -89,10 +89,10 @@ contract Parental is AccessControl {
      * @param child: Address of the user being added to the parental wallet as a child
      */
     function addChild(address child) external onlyRole(PARENT_ROLE) {
-        if (child != address(0)) {
+        if (child == address(0)) {
             revert InvalidAddress();
         }
-        if (!hasRole(CHILD_ROLE, child)) {
+        if (hasRole(CHILD_ROLE, child)) {
             revert ChildAlreadyExist();
         }
         _grantRole(CHILD_ROLE, child);
@@ -105,10 +105,10 @@ contract Parental is AccessControl {
      * @param parent Address of the user being added to the parental wallet as an parent
      */
     function addParent(address parent) external onlyRole(PARENT_ROLE) {
-        if (parent != address(0)) {
+        if (parent == address(0)) {
             revert InvalidAddress();
         }
-        if (!hasRole(PARENT_ROLE, parent)) {
+        if (hasRole(PARENT_ROLE, parent)) {
             revert ParentAlreadyExist();
         }
         _grantRole(PARENT_ROLE, parent);
@@ -131,10 +131,10 @@ contract Parental is AccessControl {
         notConfirmed(_txIndex - 1)
     {
         Transaction storage t = transactions[_txIndex - 1];
-        if (t.noOfvotes < votes) {
+        if (!(t.noOfvotes < votes)) {
             revert ConfirmationLimitReached();
         }
-        if (t.value <= address(this).balance) {
+        if (!(t.value <= address(this).balance)) {
             revert InsfficientWalletBalance();
         }
         t.noOfvotes += 1;
@@ -149,7 +149,8 @@ contract Parental is AccessControl {
      */
     function SubmitTransaction(address _to, uint _value) external {
         if (
-            hasRole(PARENT_ROLE, msg.sender) || hasRole(CHILD_ROLE, msg.sender)
+            !(hasRole(PARENT_ROLE, msg.sender) ||
+                hasRole(CHILD_ROLE, msg.sender))
         ) {
             revert InsufficientRights();
         }
@@ -179,7 +180,7 @@ contract Parental is AccessControl {
         notExecuted(_txIndex - 1)
     {
         Transaction storage transaction = transactions[_txIndex - 1];
-        if (transaction.noOfvotes == votes) {
+        if (!(transaction.noOfvotes == votes)) {
             revert InsufficientVotes();
         }
         transaction.executed = true;
