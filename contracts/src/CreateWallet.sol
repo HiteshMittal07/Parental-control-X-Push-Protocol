@@ -2,13 +2,12 @@
 pragma solidity ^0.8.6;
 import "./Parental.sol";
 
-error UserAlreadyExists();
-error UserDoesNotExist();
-error UserNotAuthorized();
-error UserIsNotOwner();
-error NotifcationAlreadySet();
-
 contract CreateWallet {
+    error UserAlreadyExists();
+    error UserDoesNotExist();
+    error UserNotAuthorized();
+    error UserIsNotOwner();
+    error NotifcationAlreadySet();
     struct Wallet {
         Parental instance;
         bool exists;

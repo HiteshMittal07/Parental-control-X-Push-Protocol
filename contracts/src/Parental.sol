@@ -2,18 +2,17 @@
 pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-error TransactionDoesNotExist();
-error TransactionAlreadyExecuted();
-error TransactionAlreadyConfirmed();
-error ChildAlreadyExist();
-error ParentAlreadyExist();
-error InsfficientWalletBalance();
-error InsufficientRights();
-error ConfirmationLimitReached();
-error InvalidAddress();
-error InsufficientVotes();
-
 contract Parental is AccessControl {
+    error TransactionDoesNotExist();
+    error TransactionAlreadyExecuted();
+    error TransactionAlreadyConfirmed();
+    error ChildAlreadyExist();
+    error ParentAlreadyExist();
+    error InsfficientWalletBalance();
+    error InsufficientRights();
+    error ConfirmationLimitReached();
+    error InvalidAddress();
+    error InsufficientVotes();
     struct Transaction {
         address from;
         address to;
