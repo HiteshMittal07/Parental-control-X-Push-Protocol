@@ -8,11 +8,18 @@ contract Parental is AccessControl {
     error TransactionAlreadyConfirmed();
     error ChildAlreadyExist();
     error ParentAlreadyExist();
-    error InsfficientWalletBalance();
+    error InsufficientWalletBalance();
     error InsufficientRights();
     error ConfirmationLimitReached();
     error InvalidAddress();
     error InsufficientVotes();
+    error TransferFailed();
+    error AlreadyHavingChildRole();
+    error AlreadyHavingParentRole();
+    error ParentDoesNotExist();
+    error ChildDoesNotExist();
+    error CannotRemoveFirstParent();
+    error TransactionNotConfirmed();
     struct Transaction {
         address from;
         address to;
@@ -22,7 +29,6 @@ contract Parental is AccessControl {
         uint totalVotes;
     }
     address[] private parents; // Stores the addresses of parents(owners)
-    address[] private children; // Stores the addresses of users who have access to this wallet as a child.
     Transaction[] private transactions;
     mapping(uint => mapping(address => bool)) private isConfirmed;
 
@@ -31,7 +37,9 @@ contract Parental is AccessControl {
     bytes32 private constant PARENT_ROLE = keccak256("PARENT_ROLE");
 
     event Deposit(address indexed sender, uint amount);
+    event Withdraw(address indexed claimer, uint amount);
     event ConfirmTrans(address indexed parent, uint indexed txIndex);
+    event RevokeConfirmation(address indexed parent, uint indexed txIndex);
     event RevokeTrans(address indexed parent, uint indexed txIndex);
     event ExecuteTrans(address indexed parent, uint indexed txIndex);
     event RemoveTrans(address indexed parent, uint indexed txIndex);
@@ -80,8 +88,24 @@ contract Parental is AccessControl {
     /**
      * @dev Functionality for depositing funds into the Parental wallet.
      */
-    function DepositEth() external payable {
+    function depositEth() external payable {
         emit Deposit(msg.sender, msg.value);
+    }
+
+    /**
+     * @dev Functionality for withdrawing funds from the Parental wallet.
+     * @param _amount: amount to be withdrawn.
+     * Notice: Only the parent can withdraw funds.
+     */
+    function withdrawEth(uint _amount) external payable onlyRole(PARENT_ROLE) {
+        if (_amount > address(this).balance) {
+            revert InsufficientWalletBalance();
+        }
+        (bool success, ) = payable(msg.sender).call{value: _amount}("");
+        if (!success) {
+            revert TransferFailed();
+        }
+        emit Withdraw(msg.sender, _amount);
     }
 
     /**
@@ -95,8 +119,10 @@ contract Parental is AccessControl {
         if (hasRole(CHILD_ROLE, child)) {
             revert ChildAlreadyExist();
         }
+        if (hasRole(PARENT_ROLE, child)) {
+            revert AlreadyHavingParentRole();
+        }
         _grantRole(CHILD_ROLE, child);
-        children.push(child);
         emit addchild(child, msg.sender);
     }
 
@@ -111,6 +137,9 @@ contract Parental is AccessControl {
         if (hasRole(PARENT_ROLE, parent)) {
             revert ParentAlreadyExist();
         }
+        if (hasRole(CHILD_ROLE, parent)) {
+            revert AlreadyHavingChildRole();
+        }
         _grantRole(PARENT_ROLE, parent);
         parents.push(parent);
         votes = votes + 1;
@@ -118,10 +147,52 @@ contract Parental is AccessControl {
     }
 
     /**
+     * @dev Functionality for removing a parent from the parental wallet
+     * @param parent : Address of the user being removed from the parental wallet as an parent
+     * Notice: First parent cannot be removed.
+     */
+    function removeParent(address parent) external onlyRole(PARENT_ROLE) {
+        if (parent == address(0)) {
+            revert InvalidAddress();
+        }
+        if (parent == parents[0]) {
+            revert CannotRemoveFirstParent();
+        }
+        if (!hasRole(PARENT_ROLE, parent)) {
+            revert ParentDoesNotExist();
+        }
+        uint parentLen = parents.length;
+        uint parentIndex = 1;
+        while (parent != parents[parentIndex]) {
+            parentIndex++;
+        }
+        for (uint i = parentIndex; i < parentLen - 1; i++) {
+            parents[i] = parents[i + 1];
+        }
+        parents.pop();
+        _revokeRole(PARENT_ROLE, parent);
+        votes = votes - 1;
+    }
+
+    /**
+     * @dev Functionality for removing a child from the parental wallet.
+     * @param child : Address of the user being removed from the parental wallet as a child
+     */
+    function removeChild(address child) external onlyRole(PARENT_ROLE) {
+        if (child == address(0)) {
+            revert InvalidAddress();
+        }
+        if (!hasRole(CHILD_ROLE, child)) {
+            revert ChildDoesNotExist();
+        }
+        _revokeRole(CHILD_ROLE, child);
+    }
+
+    /**
      * @dev Functionality for confirming a transaction
      * @param _txIndex Index of the transaction to be confirmed
      */
-    function ConfirmTransactions(
+    function confirmTransactions(
         uint _txIndex
     )
         external
@@ -135,7 +206,7 @@ contract Parental is AccessControl {
             revert ConfirmationLimitReached();
         }
         if (!(t.value <= address(this).balance)) {
-            revert InsfficientWalletBalance();
+            revert InsufficientWalletBalance();
         }
         t.noOfvotes += 1;
         isConfirmed[_txIndex - 1][msg.sender] = true;
@@ -143,11 +214,32 @@ contract Parental is AccessControl {
     }
 
     /**
+     * @dev Functionality for revoking a confirmation
+     * @param _txIndex : Index of the transaction confirmation to be revoked
+     */
+    function revokeConfirmation(
+        uint _txIndex
+    )
+        external
+        onlyRole(PARENT_ROLE)
+        notExecuted(_txIndex - 1)
+        txExist(_txIndex - 1)
+    {
+        if (!isConfirmed[_txIndex - 1][msg.sender]) {
+            revert TransactionNotConfirmed();
+        }
+        Transaction storage t = transactions[_txIndex - 1];
+        t.noOfvotes -= 1;
+        isConfirmed[_txIndex - 1][msg.sender] = false;
+        emit RevokeConfirmation(msg.sender, _txIndex);
+    }
+
+    /**
      * @dev Functionality for submitting a transaction
      * @param _to Recipient address
      * @param _value Amount to be sent
      */
-    function SubmitTransaction(address _to, uint _value) external {
+    function submitTransaction(address _to, uint _value) external {
         if (
             !(hasRole(PARENT_ROLE, msg.sender) ||
                 hasRole(CHILD_ROLE, msg.sender))
@@ -171,7 +263,7 @@ contract Parental is AccessControl {
      * @dev Functionality for executing a transaction
      * @param _txIndex Index of the transaction to be executed
      */
-    function ExecuteTransaction(
+    function executeTransaction(
         uint _txIndex
     )
         external
@@ -188,7 +280,9 @@ contract Parental is AccessControl {
             gas: 20000,
             value: transaction.value
         }("");
-        require(success, "Transaction execution failed");
+        if (!success) {
+            revert TransferFailed();
+        }
         emit ExecuteTrans(msg.sender, _txIndex - 1);
     }
 
@@ -213,10 +307,6 @@ contract Parental is AccessControl {
 
     function getParents() external view returns (address[] memory) {
         return parents;
-    }
-
-    function getChildren() external view returns (address[] memory) {
-        return children;
     }
 
     function getTransactionCount() external view returns (uint) {
