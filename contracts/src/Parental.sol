@@ -87,6 +87,8 @@ contract Parental is AccessControl {
 
     /**
      * @dev Functionality for depositing funds into the Parental wallet.
+     *
+     * Anyone can add deposit funds to this parental wallet.
      */
     function depositEth() external payable {
         emit Deposit(msg.sender, msg.value);
@@ -95,7 +97,8 @@ contract Parental is AccessControl {
     /**
      * @dev Functionality for withdrawing funds from the Parental wallet.
      * @param _amount: amount to be withdrawn.
-     * Notice: Only the parent can withdraw funds.
+     *
+     * Requirnments: Only the parent can withdraw funds.
      */
     function withdrawEth(uint _amount) external payable onlyRole(PARENT_ROLE) {
         if (_amount > address(this).balance) {
@@ -111,6 +114,8 @@ contract Parental is AccessControl {
     /**
      * @dev Functionality for adding a child to the parental wallet
      * @param child: Address of the user being added to the parental wallet as a child
+     *
+     * Notice: A user with parent role can't be assigned a child role.
      */
     function addChild(address child) external onlyRole(PARENT_ROLE) {
         if (child == address(0)) {
@@ -129,6 +134,8 @@ contract Parental is AccessControl {
     /**
      * @dev Functionality for adding another parent to the parental wallet
      * @param parent Address of the user being added to the parental wallet as an parent
+     *
+     * Notice: A user with child role cannot be added as a parent.
      */
     function addParent(address parent) external onlyRole(PARENT_ROLE) {
         if (parent == address(0)) {
@@ -149,6 +156,7 @@ contract Parental is AccessControl {
     /**
      * @dev Functionality for removing a parent from the parental wallet
      * @param parent : Address of the user being removed from the parental wallet as an parent
+     *
      * Notice: First parent cannot be removed.
      */
     function removeParent(address parent) external onlyRole(PARENT_ROLE) {
@@ -162,12 +170,10 @@ contract Parental is AccessControl {
             revert ParentDoesNotExist();
         }
         uint parentLen = parents.length;
-        uint parentIndex = 1;
-        while (parent != parents[parentIndex]) {
-            parentIndex++;
-        }
-        for (uint i = parentIndex; i < parentLen - 1; i++) {
-            parents[i] = parents[i + 1];
+        for (uint i = 1; i < parentLen - 1; i++) {
+            if (parents[i] == parent) {
+                parents[i] = parents[parentLen - 1];
+            }
         }
         parents.pop();
         _revokeRole(PARENT_ROLE, parent);
@@ -238,6 +244,8 @@ contract Parental is AccessControl {
      * @dev Functionality for submitting a transaction
      * @param _to Recipient address
      * @param _value Amount to be sent
+     *
+     * Notice: Anyone with child and parent role can submit a transaction.
      */
     function submitTransaction(address _to, uint _value) external {
         if (
@@ -296,14 +304,24 @@ contract Parental is AccessControl {
         uint256 TxLen = transactions.length;
         uint256 parentLen = parents.length;
         for (uint i = index - 1; i < TxLen - 1; i++) {
-            transactions[i] = transactions[i + 1];
+            unchecked {
+                transactions[i] = transactions[i + 1];
+            }
         }
         transactions.pop();
-        for (uint i = 0; i < parentLen; i++) {
-            isConfirmed[index - 1][parents[i]] = false;
+        if (transactions[index - 1].noOfvotes > 0) {
+            for (uint i = 0; i < parentLen; i++) {
+                unchecked {
+                    if (isConfirmed[index - 1][parents[i]]) {
+                        isConfirmed[index - 1][parents[i]] = false;
+                    }
+                }
+            }
         }
         emit RemoveTrans(msg.sender, index);
     }
+
+    /// Getter functions
 
     function getParents() external view returns (address[] memory) {
         return parents;
