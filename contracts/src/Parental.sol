@@ -10,7 +10,6 @@ contract Parental is AccessControl {
     error ParentAlreadyExist();
     error InsufficientWalletBalance();
     error InsufficientRights();
-    error ConfirmationLimitReached();
     error InvalidAddress();
     error InsufficientVotes();
     error TransferFailed();
@@ -20,6 +19,7 @@ contract Parental is AccessControl {
     error ChildDoesNotExist();
     error CannotRemoveFirstParent();
     error TransactionNotConfirmed();
+    error InvalidTransactionIndex();
     struct Transaction {
         address from;
         address to;
@@ -54,7 +54,10 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction exists
     modifier txExist(uint _txIndex) {
-        if (!(_txIndex < transactions.length)) {
+        if (_txIndex <= 0) {
+            revert InvalidTransactionIndex();
+        }
+        if (!(_txIndex - 1 < transactions.length)) {
             revert TransactionDoesNotExist();
         }
         _;
@@ -62,7 +65,7 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction has not been executed
     modifier notExecuted(uint _txIndex) {
-        if (transactions[_txIndex].executed) {
+        if (transactions[_txIndex - 1].executed) {
             revert TransactionAlreadyExecuted();
         }
         _;
@@ -70,7 +73,7 @@ contract Parental is AccessControl {
 
     // Modifier to check if a transaction has not been confirmed by the sender
     modifier notConfirmed(uint _txIndex) {
-        if (isConfirmed[_txIndex][msg.sender]) {
+        if (isConfirmed[_txIndex - 1][msg.sender]) {
             revert TransactionAlreadyConfirmed();
         }
         _;
@@ -203,20 +206,17 @@ contract Parental is AccessControl {
     )
         external
         onlyRole(PARENT_ROLE)
-        txExist(_txIndex - 1)
-        notExecuted(_txIndex - 1)
-        notConfirmed(_txIndex - 1)
+        txExist(_txIndex)
+        notExecuted(_txIndex)
+        notConfirmed(_txIndex)
     {
         Transaction storage t = transactions[_txIndex - 1];
-        if (!(t.noOfvotes < votes)) {
-            revert ConfirmationLimitReached();
-        }
         if (!(t.value <= address(this).balance)) {
             revert InsufficientWalletBalance();
         }
         t.noOfvotes += 1;
         isConfirmed[_txIndex - 1][msg.sender] = true;
-        emit ConfirmTrans(msg.sender, _txIndex);
+        emit ConfirmTrans(msg.sender, _txIndex - 1);
     }
 
     /**
@@ -225,19 +225,14 @@ contract Parental is AccessControl {
      */
     function revokeConfirmation(
         uint _txIndex
-    )
-        external
-        onlyRole(PARENT_ROLE)
-        notExecuted(_txIndex - 1)
-        txExist(_txIndex - 1)
-    {
+    ) external onlyRole(PARENT_ROLE) txExist(_txIndex) notExecuted(_txIndex) {
         if (!isConfirmed[_txIndex - 1][msg.sender]) {
             revert TransactionNotConfirmed();
         }
         Transaction storage t = transactions[_txIndex - 1];
         t.noOfvotes -= 1;
         isConfirmed[_txIndex - 1][msg.sender] = false;
-        emit RevokeConfirmation(msg.sender, _txIndex);
+        emit RevokeConfirmation(msg.sender, _txIndex - 1);
     }
 
     /**
@@ -273,12 +268,7 @@ contract Parental is AccessControl {
      */
     function executeTransaction(
         uint _txIndex
-    )
-        external
-        onlyRole(PARENT_ROLE)
-        txExist(_txIndex - 1)
-        notExecuted(_txIndex - 1)
-    {
+    ) external onlyRole(PARENT_ROLE) txExist(_txIndex) notExecuted(_txIndex) {
         Transaction storage transaction = transactions[_txIndex - 1];
         if (!(transaction.noOfvotes == votes)) {
             revert InsufficientVotes();
@@ -296,29 +286,33 @@ contract Parental is AccessControl {
 
     /**
      * @dev Functionality for removing a transaction from the logs
-     * @param index Index of the transaction to be removed
+     * @param _txIndex Index of the transaction to be removed
      */
     function removeTx(
-        uint256 index
-    ) external onlyRole(PARENT_ROLE) txExist(index - 1) notExecuted(index - 1) {
+        uint256 _txIndex
+    ) external onlyRole(PARENT_ROLE) txExist(_txIndex) notExecuted(_txIndex) {
         uint256 TxLen = transactions.length;
         uint256 parentLen = parents.length;
-        for (uint i = index - 1; i < TxLen - 1; i++) {
+        if (TxLen == _txIndex) {
+            transactions.pop();
+            return;
+        }
+        for (uint i = _txIndex - 1; i < TxLen - 1; i++) {
             unchecked {
                 transactions[i] = transactions[i + 1];
             }
         }
         transactions.pop();
-        if (transactions[index - 1].noOfvotes > 0) {
+        if (transactions[_txIndex - 1].noOfvotes > 0) {
             for (uint i = 0; i < parentLen; i++) {
                 unchecked {
-                    if (isConfirmed[index - 1][parents[i]]) {
-                        isConfirmed[index - 1][parents[i]] = false;
+                    if (isConfirmed[_txIndex - 1][parents[i]]) {
+                        isConfirmed[_txIndex - 1][parents[i]] = false;
                     }
                 }
             }
         }
-        emit RemoveTrans(msg.sender, index);
+        emit RemoveTrans(msg.sender, _txIndex - 1);
     }
 
     /// Getter functions
@@ -341,5 +335,15 @@ contract Parental is AccessControl {
 
     function isUser(address user) external view returns (bool) {
         return hasRole(PARENT_ROLE, user) || hasRole(CHILD_ROLE, user);
+    }
+
+    function getIsConfirmed(
+        uint _txIndex,
+        address _parent
+    ) external view returns (bool) {
+        if (_txIndex <= 0) {
+            revert InvalidTransactionIndex();
+        }
+        return isConfirmed[_txIndex - 1][_parent];
     }
 }
