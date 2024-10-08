@@ -12,6 +12,8 @@ contract ParentalTest is Test {
     address TO = makeAddr("to");
     address THIRD_PERSON = makeAddr("thirdPerson");
     uint256 AMOUNT_TO_SEND = 1 ether;
+    uint256 DEPOSIT_AMOUNT = 2 ether;
+    uint256 VALID_INDEX = 1;
     bytes32 private constant CHILD_ROLE = keccak256("CHILD_ROLE");
     bytes32 private constant PARENT_ROLE = keccak256("PARENT_ROLE");
 
@@ -28,15 +30,16 @@ contract ParentalTest is Test {
     // testing depositing eth to the contract
     function testDepositEth() external {
         vm.startPrank(PARENT);
-        parental.depositEth{value: 1 ether}();
-        assertEq(address(parental).balance, 1 ether);
+        console.log(address(parental).balance);
+        parental.depositEth{value: DEPOSIT_AMOUNT}();
+        assertEq(address(parental).balance, DEPOSIT_AMOUNT);
         vm.stopPrank();
     }
 
     // testing withdrawing eth from the contract, with different reverts.
     function testWithdrawEth() external {
         vm.startPrank(PARENT);
-        parental.depositEth{value: 2 ether}();
+        parental.depositEth{value: DEPOSIT_AMOUNT}();
         parental.withdrawEth(1 ether);
         assertEq(address(parental).balance, 1 ether);
 
@@ -88,7 +91,7 @@ contract ParentalTest is Test {
         // checking if child role is revoked after removal.
         parental.removeChild(CHILD);
         assertEq(parental.hasRole(CHILD_ROLE, CHILD), false);
-        
+
         vm.expectRevert(Parental.ChildDoesNotExist.selector);
         parental.removeChild(CHILD);
 
@@ -130,7 +133,7 @@ contract ParentalTest is Test {
     function testSubmitTransaction() external {
         vm.startPrank(PARENT);
         parental.addChild(CHILD);
-        parental.depositEth{value: 2 ether}();
+        parental.depositEth{value: DEPOSIT_AMOUNT}();
 
         vm.stopPrank();
         vm.startPrank(CHILD);
@@ -141,5 +144,98 @@ contract ParentalTest is Test {
         vm.prank(THIRD_PERSON);
         vm.expectRevert(Parental.InsufficientRights.selector);
         parental.submitTransaction(TO, AMOUNT_TO_SEND);
+    }
+
+    function testConfirmTransaction() external {
+        vm.startPrank(PARENT);
+        parental.addChild(CHILD);
+        address PARENT2 = makeAddr("parent2");
+        parental.addParent(PARENT2);
+        parental.depositEth{value: 1 ether}();
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        parental.confirmTransactions(1);
+        assertEq(parental.getTransaction()[0].noOfvotes, 1);
+
+        // reverting if transaction is already confirmed by a parent
+        vm.expectRevert(Parental.TransactionAlreadyConfirmed.selector);
+        parental.confirmTransactions(1);
+
+        // reverting if transaction index is invalid or we can if it is less than 0;
+        vm.expectRevert(Parental.InvalidTransactionIndex.selector);
+        parental.confirmTransactions(0);
+        vm.stopPrank();
+
+        // confirmation by other parents also
+        vm.startPrank(PARENT2);
+        parental.confirmTransactions(1);
+        assertEq(parental.getTransaction()[0].noOfvotes, 2);
+        vm.stopPrank();
+
+        // reverting on confirmation try by child
+        vm.startPrank(CHILD);
+        vm.expectRevert();
+        parental.confirmTransactions(0);
+
+        parental.submitTransaction(TO, 2 ether);
+        vm.stopPrank();
+
+        vm.prank(PARENT);
+        vm.expectRevert(Parental.InsufficientWalletBalance.selector);
+        parental.confirmTransactions(2);
+    }
+
+    function testRevokeConfirmations() external {
+        vm.startPrank(PARENT);
+        parental.depositEth{value: DEPOSIT_AMOUNT}();
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        parental.confirmTransactions(VALID_INDEX);
+
+        parental.revokeConfirmation(VALID_INDEX);
+        assertEq(parental.getIsConfirmed(VALID_INDEX, PARENT), false);
+
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        vm.expectRevert(Parental.TransactionNotConfirmed.selector);
+        parental.revokeConfirmation(VALID_INDEX + 1);
+    }
+
+    function testExecuteConfirmations() external {
+        vm.startPrank(PARENT);
+        parental.depositEth{value: DEPOSIT_AMOUNT}();
+        parental.addChild(CHILD);
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        parental.confirmTransactions(VALID_INDEX);
+
+        parental.executeTransaction(VALID_INDEX);
+        assertEq(parental.getTransaction()[0].executed, true);
+        vm.expectRevert(Parental.TransactionAlreadyExecuted.selector);
+        parental.executeTransaction(VALID_INDEX);
+        assertEq(address(parental).balance, DEPOSIT_AMOUNT - AMOUNT_TO_SEND);
+        assertEq(address(TO).balance, AMOUNT_TO_SEND);
+        vm.stopPrank();
+
+        vm.prank(CHILD);
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+
+        vm.startPrank(PARENT);
+        vm.expectRevert(Parental.InsufficientVotes.selector);
+        parental.executeTransaction(VALID_INDEX + 1);
+    }
+
+    function testRemoveTransactions() external {
+        vm.startPrank(PARENT);
+        parental.depositEth{value: DEPOSIT_AMOUNT}();
+        parental.addChild(CHILD);
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        parental.confirmTransactions(VALID_INDEX);
+        parental.removeTx(VALID_INDEX);
+        assertEq(parental.getTransaction().length, 0);
+
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        parental.submitTransaction(TO, AMOUNT_TO_SEND);
+
+        parental.removeTx(VALID_INDEX);
+        assertEq(parental.getTransactionCount(), 1);
+
+        vm.stopPrank();
     }
 }
