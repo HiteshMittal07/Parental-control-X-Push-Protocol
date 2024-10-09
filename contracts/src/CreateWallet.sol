@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.6;
+pragma solidity ^0.8.20;
 import "./Parental.sol";
 
 contract CreateWallet {
@@ -15,12 +15,12 @@ contract CreateWallet {
     }
     mapping(address => Wallet) private users;
 
-    event created(address contractAddress);
+    event Created(address contractAddress);
 
     /**
      *  @dev : Creates new Parental wallet and owner of wallet is creator of wallet.
      */
-    function CreateParentalWallet() external {
+    function createParentalWallet() external {
         Wallet memory wallet = users[msg.sender];
         if (wallet.exists) {
             revert UserAlreadyExists();
@@ -31,7 +31,7 @@ contract CreateWallet {
             exists: true,
             notify: false
         });
-        emit created(address(instance));
+        emit Created(address(instance));
     }
 
     /**

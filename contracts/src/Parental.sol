@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.6;
+pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract Parental is AccessControl {
@@ -43,8 +43,10 @@ contract Parental is AccessControl {
     event RevokeTrans(address indexed parent, uint indexed txIndex);
     event ExecuteTrans(address indexed parent, uint indexed txIndex);
     event RemoveTrans(address indexed parent, uint indexed txIndex);
-    event addparent(address parent, address adder);
-    event addchild(address child, address adder);
+    event ParentAdded(address parent, address adder);
+    event ChildAdded(address child, address adder);
+    event ParentRemoved(address parent, address remover);
+    event ChildRemoved(address child, address remover);
     event SubmitTrans(
         address indexed parent,
         uint indexed txIndex,
@@ -107,11 +109,11 @@ contract Parental is AccessControl {
         if (_amount > address(this).balance) {
             revert InsufficientWalletBalance();
         }
+        emit Withdraw(msg.sender, _amount);
         (bool success, ) = payable(msg.sender).call{value: _amount}("");
         if (!success) {
             revert TransferFailed();
         }
-        emit Withdraw(msg.sender, _amount);
     }
 
     /**
@@ -131,7 +133,7 @@ contract Parental is AccessControl {
             revert AlreadyHavingParentRole();
         }
         _grantRole(CHILD_ROLE, child);
-        emit addchild(child, msg.sender);
+        emit ChildAdded(child, msg.sender);
     }
 
     /**
@@ -153,7 +155,7 @@ contract Parental is AccessControl {
         _grantRole(PARENT_ROLE, parent);
         parents.push(parent);
         votes = votes + 1;
-        emit addparent(parent, msg.sender);
+        emit ParentAdded(parent, msg.sender);
     }
 
     /**
@@ -181,6 +183,7 @@ contract Parental is AccessControl {
         parents.pop();
         _revokeRole(PARENT_ROLE, parent);
         votes = votes - 1;
+        emit ParentRemoved(parent, msg.sender);
     }
 
     /**
@@ -195,6 +198,7 @@ contract Parental is AccessControl {
             revert ChildDoesNotExist();
         }
         _revokeRole(CHILD_ROLE, child);
+        emit ChildRemoved(child, msg.sender);
     }
 
     /**
@@ -274,6 +278,7 @@ contract Parental is AccessControl {
             revert InsufficientVotes();
         }
         transaction.executed = true;
+        emit ExecuteTrans(msg.sender, _txIndex - 1);
         (bool success, ) = transaction.to.call{
             gas: 20000,
             value: transaction.value
@@ -281,7 +286,6 @@ contract Parental is AccessControl {
         if (!success) {
             revert TransferFailed();
         }
-        emit ExecuteTrans(msg.sender, _txIndex - 1);
     }
 
     /**
