@@ -20,22 +20,52 @@ contract CreateWalletTest is Test {
     }
 
     function testCreateParentalWallet() external {
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
         address wallet = createWallet.getParentalWalletAddress();
         vm.expectRevert(CreateWallet.UserAlreadyExists.selector);
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
         console.log(wallet);
+    }
+
+    function testCreateParentalWalletDos() external {
+        address user = address(20);
+        uint256 gasStartOne = gasleft();
+        vm.prank(user);
+        createWallet.createParentalWallet();
+        uint256 gasEndOne = gasleft();
+
+        uint256 gasStart = gasleft();
+        for (uint160 i = 1; i < 10; i++) {
+            address user_dummy = address(i);
+            vm.prank(user_dummy);
+            createWallet.createParentalWallet();
+        }
+        uint256 gasEnd = gasleft();
+
+        uint256 gasStartTwo = gasleft();
+        createWallet.createParentalWallet();
+        uint256 gasEndTwo = gasleft();
+
+        uint256 gasStartThree = gasleft();
+        vm.prank(msg.sender);
+        createWallet.createParentalWallet();
+        uint256 gasEndThree = gasleft();
+
+        console.log("Gas used: ", gasStartOne - gasEndOne);
+        console.log("Gas used: ", gasStart - gasEnd);
+        console.log("Gas used: ", gasStartTwo - gasEndTwo);
+        console.log("Gas used: ", gasStartThree - gasEndThree);
     }
 
     function testJoinWallet() external {
         vm.expectRevert(CreateWallet.UserDoesNotExist.selector);
         createWallet.joinWallet(address(this));
 
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
         createWallet.joinWallet(address(this));
 
         vm.startPrank(USER);
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
 
         vm.expectRevert(CreateWallet.UserNotAuthorized.selector);
         createWallet.joinWallet(address(this));
@@ -43,7 +73,7 @@ contract CreateWalletTest is Test {
     }
 
     function testNotification() external {
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
         createWallet.onNotification();
 
         vm.prank(USER);
@@ -58,7 +88,7 @@ contract CreateWalletTest is Test {
         vm.expectRevert(CreateWallet.UserDoesNotExist.selector);
         assertEq(createWallet.getNotifyStatus(USER), false);
 
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
         createWallet.onNotification();
 
         assertEq(createWallet.getNotifyStatus(address(this)), true);
