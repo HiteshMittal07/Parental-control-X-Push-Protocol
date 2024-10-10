@@ -16,6 +16,7 @@ contract CreateWallet {
     mapping(address => Wallet) private users;
 
     event Created(address contractAddress);
+    event NotifcationTurnedOn(address contractAddress, address user);
 
     /**
      *  @dev : Creates new Parental wallet and owner of wallet is creator of wallet.
@@ -45,6 +46,7 @@ contract CreateWallet {
             revert NotifcationAlreadySet();
         }
         wallet.notify = true;
+        emit NotifcationTurnedOn(address(wallet.instance), msg.sender);
     }
 
     /**
