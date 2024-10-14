@@ -18,7 +18,7 @@ contract ParentalIntegrationTest is Test {
         vm.recordLogs();
 
         // Call the function to test
-        createWallet.CreateParentalWallet();
+        createWallet.createParentalWallet();
         console.log(createWallet.getParentalWalletAddress());
         // Fetch the logs after the function call
         Vm.Log[] memory logs = vm.getRecordedLogs();

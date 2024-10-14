@@ -238,4 +238,15 @@ contract ParentalTest is Test {
 
         vm.stopPrank();
     }
+
+    function testRemoveTransactionsForGas() external {
+        vm.startPrank(PARENT);
+        for (uint256 i = 0; i < 100; i++) {
+            parental.submitTransaction(TO, AMOUNT_TO_SEND);
+        }
+        uint256 gasStart = gasleft();
+        parental.removeTx(VALID_INDEX);
+        uint256 gasEnd = gasleft();
+        console.log("Gas used for removeTx: ", gasStart - gasEnd);
+    }
 }
