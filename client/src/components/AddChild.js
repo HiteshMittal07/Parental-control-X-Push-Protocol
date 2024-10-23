@@ -14,7 +14,7 @@ export default function AddUser() {
   const owner = localStorage.getItem("owner");
   async function Adduser() {
     let provider = getWeb3Provider();
-    const selectedValue = "2442";
+    const selectedValue = "534351";
     await switchNetwork(selectedValue);
     let signer = provider.getSigner();
     let contractRead = getParentalContractRead(provider, contractAddress);

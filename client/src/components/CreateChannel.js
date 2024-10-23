@@ -45,21 +45,21 @@ export default function CreateChannel() {
         description: "Your local channel to communicates among you",
         icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAz0lEQVR4AcXBsU0EQQyG0e+saWJ7oACiKYDMEZVs6GgSpC2BIhzRwAS0sgk9HKn3gpFOAv3v3V4/3+4U4Z1q5KTy42Ql940qvFONnFSGmCFmiN2+fj7uCBlihpgh1ngwcvKfwjuVIWaIGWKNB+GdauSk8uNkJfeNKryzYogZYoZY40m5b/wlQ8wQM8TayMlKeKcaOVkJ71QjJyuGmCFmiDUe+HFy4VyEd57hx0mV+0ZliBlihlgL71w4FyMnVXhnZeSkiu93qheuDDFDzBD7BcCyMAOfy204AAAAAElFTkSuQmCC",
         url: "https://parental-control07.netlify.app/",
-        alias: `eip155:2442:${address}`,
+        alias: `eip155:534351:${address}`,
       });
     } catch (error) {
       return;
     }
     window.ethereum.removeListener("chainChanged", create);
     window.ethereum.on("chainChanged", create2);
-    const selectedValue = "2442";
+    const selectedValue = "534351";
     await switchNetwork(selectedValue);
   }
   const create2 = async () => {
     window.ethereum.removeListener("chainChanged", create2);
     const provider = getWeb3Provider();
     const signer = provider.getSigner();
-    const contractAddress = getAddress("2442");
+    const contractAddress = getAddress("534351");
     const contractRead = getContractRead(provider, contractAddress);
     const contract2 = contractRead.connect(signer);
     const tx2 = await contract2.onNotification();

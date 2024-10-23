@@ -8,7 +8,7 @@ export const contractAddress = {
   push_sepolia: "0x37c779a1564DCc0e3914aB130e0e787d93e21804",
   Sepolia_testnet: "0xe3820f03feCe5E93e54EBb44a4476E3c066ea7dE",
   arbitrum_sepolia: "coming soon",
-  scroll_Sepolia: "0x0950A655d5CdC5bD0aF061b241F4FBf18b4abd6F",
+  scroll_Sepolia: "0x08dedd26815FB34389C36aBBB90c7ae6FA957169",
   BNB_testnet: "0xe591A89874b21e4F462Bd2DdbcbF27384E872ea5",
 };
 export function getWeb3Provider() {

@@ -20,7 +20,7 @@ export default function CreateWallet() {
   const navigate = useNavigate();
   const switchChain = async () => {
     window.ethereum.on("chainChanged", Create);
-    const selectedValue = "2442";
+    const selectedValue = "534351";
     await switchNetwork(selectedValue);
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
@@ -43,11 +43,11 @@ export default function CreateWallet() {
       toast.error("Insufficient Funds!! Check Info Page");
       return;
     }
-    const contractAddress = getAddress("2442");
+    const contractAddress = getAddress("534351");
     let contractRead = getContractRead(provider, contractAddress);
     let contract = contractRead.connect(signer);
 
-    contractRead.on("created", (contractAddress, event) => {
+    contractRead.on("Created", (contractAddress, event) => {
       console.log(`Created at ${contractAddress}`);
       toast.success("Your Parental Wallet is Created");
       localStorage.setItem("owner", address);
@@ -58,7 +58,7 @@ export default function CreateWallet() {
     });
     try {
       setLoading(true);
-      const tx = await contract.CreateParentalWallet();
+      const tx = await contract.createParentalWallet();
       await tx.wait();
     } catch (error) {
       setLoading(false);
