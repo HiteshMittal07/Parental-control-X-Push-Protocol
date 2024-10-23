@@ -77,8 +77,4 @@ contract CreateWallet {
         }
         return (wallet.notify);
     }
-
-    function getParentalWalletAddress() external view returns (address) {
-        return address(users[msg.sender].instance);
-    }
 }
