@@ -24,12 +24,12 @@ export const Home = () => {
     display: "block",
     marginTop: "200px",
   };
-  const switchChain3 = async () => {
-    window.ethereum.on("chainChanged", Deposit);
-    const selectedValue = "2442";
+  const switchChain = async (func) => {
+    window.ethereum.on("chainChanged", func);
+    const selectedValue = "534351";
     const chainId = await getChainId();
     if (chainId == `0x${Number(selectedValue).toString(16)}`) {
-      await Deposit();
+      await func();
     } else {
       await switchNetwork(selectedValue);
     }
@@ -57,37 +57,58 @@ export const Home = () => {
     }
     const option = { value: ethers.utils.parseEther(amount) };
     try {
-      const tx = await contract.DepositEth(option);
+      const tx = await contract.depositEth(option);
       await tx.wait();
     } catch (error) {
       toast.error("Error depositing amount");
     }
   };
 
+  const WithdrawBalance = async () => {
+    let provider = getWeb3Provider();
+    let signer = provider.getSigner();
+    let contractRead = getParentalContractRead(provider, contractAddress);
+    let contract = contractRead.connect(signer);
+    contractRead.on("Withdraw", async (claimer, amount, event) => {
+      window.ethereum.removeListener("chainChanged", WithdrawBalance);
+      await switchNetwork("11155111");
+      const userAlice = await getUser(signer, owner);
+      const a = parseInt(amount) / Math.pow(10, 18);
+      const title = `Withdraw by ${claimer}`;
+      const body = `${a} ETH`;
+      await sendNotification(userAlice, title, body);
+      toast.success("Withdrawn successfully");
+      event.removeListener();
+    });
+    const amount = document.querySelector("#amount").value;
+    if (!amount) {
+      toast.error("Enter a valid amount");
+      return;
+    }
+    const option = ethers.utils.parseEther(amount);
+    try {
+      const tx = await contract.withdrawEth(option, { gasLimit: 3000000 });
+      await tx.wait();
+    } catch (error) {
+      toast.error(error);
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const switchChain = async () => {
+    const switchChain_effect = async () => {
       try {
         setLoading(true);
-        const selectedValue = "2442";
+        const selectedValue = "534351";
         await switchNetwork(selectedValue);
         setLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
-    switchChain();
+    switchChain_effect();
   }, []);
 
-  const switchChain1 = async () => {
-    window.ethereum.on("chainChanged", getBalance);
-    const selectedValue = "2442";
-    const chainId = await getChainId();
-    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
-      await getBalance();
-    } else {
-      await switchNetwork(selectedValue);
-    }
-  };
   const getBalance = async () => {
     let provider = getWeb3Provider();
     let contractRead = getParentalContractRead(provider, contractAddress);
@@ -98,19 +119,9 @@ export const Home = () => {
   };
 
   const owner2 = owner;
-  const switchChain2 = async () => {
-    window.ethereum.on("chainChanged", submitTx);
-    const selectedValue = "2442";
-    const chainId = await getChainId();
-    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
-      await submitTx();
-    } else {
-      await switchNetwork(selectedValue);
-    }
-  };
   const submitTx = async () => {
     let provider = getWeb3Provider();
-    const selectedValue = "2442";
+    const selectedValue = "534351";
     await switchNetwork(selectedValue);
     let signer = provider.getSigner();
     let contractRead = getParentalContractRead(provider, contractAddress);
@@ -138,17 +149,6 @@ export const Home = () => {
       await tx2.wait();
     } catch (error) {
       toast.error(error.reason);
-    }
-  };
-
-  const switchChain4 = async () => {
-    window.ethereum.on("chainChanged", confirmTx);
-    const selectedValue = "2442";
-    const chainId = getChainId();
-    if (chainId == `0x${Number(selectedValue).toString(16)}`) {
-      await confirmTx();
-    } else {
-      await switchNetwork(selectedValue);
     }
   };
   const confirmTx = async () => {
@@ -196,30 +196,37 @@ export const Home = () => {
               <div className="balance-info">
                 <h3 className="balance-title">Balance: {balance} ETH</h3>
                 <button
-                  onClick={switchChain1}
+                  onClick={() => switchChain(getBalance)}
                   className="btn btn-primary balance-btn"
                 >
                   Get Balance
                 </button>
               </div>
 
-              <h2>Deposit Amount</h2>
+              <h2>Deposit / Withdraw</h2>
               <div className="deposit-box">
                 <div className="input-group mb-1">
                   <input
                     type="text"
                     id="amount"
-                    placeholder="Enter the Deposit Amount"
+                    placeholder="Enter the Amount"
                     className="form-control custom-input"
                   />
                 </div>
               </div>
-              <div className="input-group mb-1">
+              <div className="input-group mb-1 d-flex justify-content-between">
                 <button
                   className="btn btn-danger deposit-btn"
-                  onClick={switchChain3}
+                  onClick={() => switchChain(Deposit)}
                 >
                   Deposit
+                </button>
+
+                <button
+                  className="btn btn-danger withdraw-btn"
+                  onClick={() => switchChain(WithdrawBalance)}
+                >
+                  Withdraw
                 </button>
               </div>
             </div>
@@ -248,7 +255,7 @@ export const Home = () => {
                 <div className="input-group mb-3">
                   <button
                     className="btn btn-danger submit-btn"
-                    onClick={switchChain2}
+                    onClick={() => switchChain(submitTx)}
                   >
                     Submit
                   </button>
@@ -268,7 +275,7 @@ export const Home = () => {
                 <div className="input-group mb-3">
                   <button
                     className="btn btn-primary confirm-btn"
-                    onClick={switchChain4}
+                    onClick={() => switchChain(confirmTx)}
                   >
                     Confirm
                   </button>
@@ -279,7 +286,7 @@ export const Home = () => {
           <section className="add card">
             <div className="card-body">
               <div className="add-owner">
-                <h2>Add Parent</h2>
+                <h2>Add / Remove Parent</h2>
                 <AddOwner />
               </div>
 
